@@ -1,5 +1,5 @@
 import './App.css';
-import MenuContainer from './containers/menuContainer';
+import MenuContainer from './pages/menu.jsx';
 
 function App() {
   return (
