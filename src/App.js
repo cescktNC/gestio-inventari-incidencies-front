@@ -1,10 +1,10 @@
-import './App.css';
+import Pages from "./pages/pages";
 import MenuContainer from './pages/menu.jsx';
 
 function App() {
   return (
     <div className="App">
-      <MenuContainer />
+      <Pages />
     </div>
   );
 }
