@@ -34,6 +34,7 @@ const Img = styled.img`
 
 const NameApp = styled.span`
     font-size: 1.2rem;
+    color: white;
 `;
 
 const ImatgeLogo = styled.svg`
@@ -44,6 +45,7 @@ const ImatgeLogo = styled.svg`
     min-height: 20px;
     font-size: 20px;
     line-height: 20;
+    fill: white;
 `;
 
 export default Logo;

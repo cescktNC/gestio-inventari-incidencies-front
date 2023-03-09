@@ -1,6 +1,5 @@
-// import logo from './logo.svg';
-// import './App.css';
-import Pages from "./pages/Pages";
+import Pages from "./pages/pages";
+import MenuContainer from './pages/menu.jsx';
 
 function App() {
   return (
