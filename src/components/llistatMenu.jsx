@@ -16,7 +16,7 @@ function CreacioContingutInventari() {
     a.classList.add("active");
   }
   return (
-    <div className="BG-black"> 
+    <> 
       <li>
         <div>
           <span className="span">Inventari</span>
@@ -61,7 +61,7 @@ function CreacioContingutInventari() {
           <span className="spanSub">Exemplars</span>
         </div>
       </a>
-    </div>
+    </>
   );
 }
 
