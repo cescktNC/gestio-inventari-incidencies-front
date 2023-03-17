@@ -1,10 +1,15 @@
-import Logo from "../components/Logo";
-import React from 'react';
+import MenuContainer from "../containers/menuContainer";
+import React from "react";
+import "../css/styleMenu.css";
 
 function Menu() {
-  return (
-    <Logo />
-  )
+	return (
+		<div className="container">
+			<div className="divMenu BG-black">
+				<MenuContainer />
+			</div>
+		</div>
+	);
 }
 
 export default Menu;
