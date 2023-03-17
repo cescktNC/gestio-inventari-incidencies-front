@@ -1,12 +1,12 @@
-import Menu from "./menu";
+import Menu from "./Menu";
 import React from 'react';
-import Login from '../containers/loginContainer';
+// import Login from '../containers/loginContainer';
 
 function Pages() {
   return (
     <div>
-      <Login />
-        {/* <Menu /> */}
+      {/* <Login /> */}
+        <Menu />
     </div>
   );
 }

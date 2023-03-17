@@ -1,13 +1,23 @@
-import Login from '../components/login';
-import Register from '../components/register';
+// import useState from "react";
+// import Login from "../components/login";
+// import Register from "../components/register";
 
-function loginContainer() {
-    return (
-      <div>
-          <Login />
-          <Register />
-      </div>
-    )
-  }
-  
-  export default loginContainer;
+// function loginContainer() {
+// 	const [currentForm, setCurrentForm] = useState("login");
+
+// 	const toggleForm = formName => {
+// 		setCurrentForm(formName);
+// 	};
+
+// 	return (
+// 		<div>
+// 			{currentForm === "login" ? (
+// 				<Login onFormSwitch={toggleForm} />
+// 			) : (
+// 				<Register onFormSwitch={toggleForm} />
+// 			)}
+// 		</div>
+// 	);
+// }
+
+// export default loginContainer;
