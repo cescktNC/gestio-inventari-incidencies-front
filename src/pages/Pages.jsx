@@ -1,10 +1,12 @@
 import Menu from "./menu";
 import React from 'react';
+import Login from '../containers/loginContainer';
 
 function Pages() {
   return (
     <div>
-        <Menu />
+      <Login />
+        {/* <Menu /> */}
     </div>
   );
 }
