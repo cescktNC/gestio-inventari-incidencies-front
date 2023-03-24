@@ -2,10 +2,10 @@ import React from "react";
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
 
-export const LlistatMenu = () => {
+export const LlistatMenu = ({user}) => {
 	return (
 		<div className="containerMenu">
-			<Profile />
+			<Profile user={user}/>
 			<ul className="menu">
 				<CreacioContingutInventari />
 				<CreacioContingutGeneral />
@@ -16,10 +16,10 @@ export const LlistatMenu = () => {
 	);
 }
 
-function Profile() {
-	const name = "Francesc Navarro";
-	const email = "cesccat82@gmail.com";
-	const imageUrl = "/images/padregato.jpg";
+function Profile({user}) {
+	const name = user.nom +" "+user.cognoms;
+	const email = user.email;
+	const imageUrl = user.profilePicture;
 
 	return (
 		<div className="justify-center items-center flex-col flex">
