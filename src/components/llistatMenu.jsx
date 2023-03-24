@@ -2,7 +2,7 @@ import React from "react";
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
 
-function llistatMenu() {
+export const LlistatMenu = () => {
 	return (
 		<div className="containerMenu">
 			<Profile />
@@ -222,5 +222,3 @@ function LogoFinal() {
 		</div>
 	);
 }
-
-export default llistatMenu;
