@@ -2,14 +2,15 @@ import React from "react";
 import "../css/styleLlistatMenu.css";
 import '../css/styleImage.css';
 
-function llistatMenu() {
+export const LlistatMenu = () => {
   const name = 'Francesc Navarro';
   const email = 'cesccat82@gmail.com';
   const imageUrl = '/images/padregato.jpg';
+  
   return (
     <>
       <div className="user-profile profile-left profile-blue">
-      <img src={imageUrl} alt="Profile" className="profile-image" />
+        <img src={imageUrl} alt="Profile" className="profile-image" />
         <h2 className="profile-name">{name}</h2>
         <p className="profile-email">{email}</p>
       </div>
@@ -19,12 +20,14 @@ function llistatMenu() {
     </>
   );
 }
+
 function CreacioContingutInventari() {
   function handleClick(a) {
     const active = document.getElementsByClassName("active")[0];
     if (active) active.classList.remove("active");
     a.classList.add("active");
   }
+
   return (
     <> 
       <li>
@@ -52,7 +55,8 @@ function CreacioContingutInventari() {
         <div className="divEnllaç">
           <span className="spanSub">Subcategories</span>
         </div>
-      </a><a
+      </a>
+      <a
         href="http://localhost:3000/"
         className="a"
         role="button"
@@ -61,7 +65,8 @@ function CreacioContingutInventari() {
         <div className="divEnllaç">
           <span className="spanSub">Materials</span>
         </div>
-      </a><a
+      </a>
+      <a
         href="http://localhost:3000/"
         className="a"
         role="button"
@@ -74,5 +79,3 @@ function CreacioContingutInventari() {
     </>
   );
 }
-
-export default llistatMenu;
