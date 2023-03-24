@@ -2,7 +2,7 @@ import React from "react";
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
 
-export const LlistatMenu = ({user}) => {
+function LlistatMenu({user})  {
 	return (
 		<div className="containerMenu">
 			<Profile user={user}/>
@@ -222,3 +222,5 @@ function LogoFinal() {
 		</div>
 	);
 }
+
+export default LlistatMenu;

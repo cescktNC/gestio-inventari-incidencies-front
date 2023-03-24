@@ -1,17 +1,15 @@
 import Login from "../components/login";
 import Register from "../components/register";
 
-function loginContainer({currentForm,toggleForm}) {
+export function LoginContainer({currentForm}) {
 
 	return (
-		<div>
+		<div className="App">
 			{currentForm === "login" ? (
-				<Login onFormSwitch={toggleForm} />
+				<Login />
 			) : (
-				<Register onFormSwitch={toggleForm} />
+				<Register />
 			)}
 		</div>
 	);
 }
-
-export default loginContainer;

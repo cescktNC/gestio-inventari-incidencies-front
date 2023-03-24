@@ -1,9 +1,10 @@
 import Pages from "./pages/Pages";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Login } from './components/login'
-import { Register }from "./components/register";
-import { LlistatMenu } from "./components/llistatMenu";
-import './css/styleLogin.css';
+
+import { Menu } from './pages/Menu';
+
+
+import { LoginContainer } from "./containers/loginContainer";
 
 function App() {
 	
@@ -13,9 +14,9 @@ function App() {
 			</div> */	
 			<Router>
 			<Routes>
-			  <Route path="/login" element={<Login/>}/>
-			  <Route path="/register" element={<Register/>}/>
-			  <Route path="/llistatMenu" element={<LlistatMenu/>}/>
+			  <Route path="/login" element={<LoginContainer currentForm={'login'} />}/>
+			  <Route path="/register" element={<LoginContainer currentForm='register'/>}/>
+			  <Route path="/llistatMenu" element={<Menu/>}/>
 			</Routes>
 			</Router>
 	)

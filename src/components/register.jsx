@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import '../css/styleLogin.css';
 
-export const Register = (props) => {
+function Register() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');

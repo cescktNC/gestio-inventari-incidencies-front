@@ -12,16 +12,14 @@ export function Menu() {
 	// 		.then(json => setUser(json));
 	// }, []);
 
-	const user = 
-		{
-			nom: "Francesc",
-			cognoms: "Navarro",
-			dni: "11112222S",
-			carrec: "Professor",
-			email: "cesccat82@gmail.com",
-			profilePicture: "/images/padregato.jpg",
-		};
-	console.log(user)
+	const user = {
+		nom: "Francesc",
+		cognoms: "Navarro",
+		dni: "11112222S",
+		carrec: "Professor",
+		email: "cesccat82@gmail.com",
+		profilePicture: "/images/padregato.jpg",
+	};
 	return (
 		<div className="container">
 			<div className="divMenu BG-black">
