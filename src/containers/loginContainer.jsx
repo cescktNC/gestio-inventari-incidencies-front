@@ -4,7 +4,7 @@ import Register from "../components/register";
 export function LoginContainer({currentForm}) {
 
 	return (
-		<div className="App">
+		<div>
 			{currentForm === "login" ? (
 				<Login />
 			) : (

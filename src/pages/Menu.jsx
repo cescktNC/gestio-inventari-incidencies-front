@@ -20,6 +20,7 @@ export function Menu() {
 		email: "cesccat82@gmail.com",
 		profilePicture: "/images/padregato.jpg",
 	};
+	
 	return (
 		<div className="container">
 			<div className="divMenu BG-black">
