@@ -5,11 +5,9 @@ import { Register }from "./components/register";
 import { LlistatMenu } from "./components/llistatMenu";
 import './css/styleLogin.css';
 
-
 function App() {
 	
 	return (
-
 			/* <div className="App">
 				<Pages />
 			</div> */	
@@ -21,7 +19,6 @@ function App() {
 			</Routes>
 			</Router>
 	)
-		
 }
 
 export default App;
