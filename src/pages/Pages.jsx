@@ -1,18 +1,19 @@
 // import Menu from "./Menu";
-import {React, useState} from 'react';
-import Login from '../containers/loginContainer';
+// import {React, useState} from 'react';
+// import Login from '../containers/loginContainer';
+import { Menu } from './Menu';
 
 function Pages() {
-  const [currentForm, setCurrentForm] = useState("login");
+  // const [currentForm, setCurrentForm] = useState("login");
 
-	const toggleForm = formName => {
-		setCurrentForm(formName);
-	};
+	// const toggleForm = formName => {
+	// 	setCurrentForm(formName);
+	// };
 
   return (
     <div>
-      <Login toggleForm={toggleForm} currentForm={currentForm}/>
-        {/* <Menu /> */}
+      {/* <Login toggleForm={toggleForm} currentForm={currentForm}/> */}
+        <Menu />
     </div>
   );
 }

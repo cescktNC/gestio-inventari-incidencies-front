@@ -1,12 +1,34 @@
 import MenuContainer from "../containers/menuContainer";
-import React from "react";
+import UserContainer from "../containers/userContainer";
+// import { useEffect, useState, React } from "react";
 import "../css/styleMenu.css";
 
 export function Menu() {
+	// const [user, setUser] = useState([]);
+
+	// useEffect(() => {
+	// 	fetch("http://localhost:5000")
+	// 		.then(response => response.json())
+	// 		.then(json => setUser(json));
+	// }, []);
+
+	const user = 
+		{
+			nom: "Francesc",
+			cognoms: "Navarro",
+			dni: "11112222S",
+			carrec: "Professor",
+			email: "cesccat82@gmail.com",
+			profilePicture: "/images/padregato.jpg",
+		};
+	console.log(user)
 	return (
 		<div className="container">
 			<div className="divMenu BG-black">
-				<MenuContainer />
+				<MenuContainer user={user} />
+			</div>
+			<div className="divContingut">
+				<UserContainer user={user} />
 			</div>
 		</div>
 	);
