@@ -83,6 +83,10 @@
   .register-form {
     animation: slide-up 4s ease;
   }
+
+  .error-message {
+    color: red;
+  }
   
   @keyframes slide-up {
     from {
