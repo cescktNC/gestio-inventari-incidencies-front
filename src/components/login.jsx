@@ -1,20 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/styleLogin.css";
 
-function Login (){
+function Login() {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
+	const [clicked, setClicked] = useState(false);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (clicked) {
+			fetch("http://localhost:5000/autenticacions/loginAPI", {
+				method: "POST",
+				body: JSON.stringify({ email: email, password: pass }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then(response => response.json())
+				.then(json => {
+					window.localStorage.setItem('usuariId',json.usuariId);
+					window.localStorage.setItem('carrec',json.carrec);
+					navigate("/llistatMenu");
+				});
+		}
+	});
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		console.log(email);
-		navigate("/llistatMenu");
+		// console.log(email);
+		setClicked(true);
+
 	};
-	const handleRegisterFormSwitch = () => {
-		navigate("/register");
-	};
+	function handleRegisterFormSwitch() {
+		// navigate("/register");
+	}
 
 	return (
 		<div className="auth-form-container">
@@ -45,6 +65,6 @@ function Login (){
 			</button>
 		</div>
 	);
-};
+}
 
 export default Login;
