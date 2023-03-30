@@ -1,20 +1,17 @@
-// import Menu from "./Menu";
-// import {React, useState} from 'react';
-// import Login from '../containers/loginContainer';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Menu } from './Menu';
+import { LoginContainer } from "../containers/loginContainer";
 
 function Pages() {
-  // const [currentForm, setCurrentForm] = useState("login");
-
-	// const toggleForm = formName => {
-	// 	setCurrentForm(formName);
-	// };
-
+  
   return (
-    <div>
-      {/* <Login toggleForm={toggleForm} currentForm={currentForm}/> */}
-        <Menu />
-    </div>
+    <Router>
+    <Routes>
+      <Route path="/login" element={<LoginContainer currentForm={'login'} />}/>
+      <Route path="/register" element={<LoginContainer currentForm='register'/>}/>
+      <Route path="/llistatMenu" element={<Menu/>}/>
+    </Routes>
+    </Router>
   );
 }
 
