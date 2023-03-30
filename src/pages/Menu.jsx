@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import MenuContainer from "../containers/menuContainer";
 import UserContainer from "../containers/userContainer";
-import { useEffect, useState, React } from "react";
+import { useEffect } from "react";
 import "../css/styleMenu.css";
 
 export function Menu() {

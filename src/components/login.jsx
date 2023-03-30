@@ -33,7 +33,7 @@ function Login() {
 
 	};
 	function handleRegisterFormSwitch() {
-		// navigate("/register");
+		 navigate("/register");
 	}
 
 	return (
