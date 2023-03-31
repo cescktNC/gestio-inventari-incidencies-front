@@ -35,7 +35,9 @@ function Login() {
 		else setClicked(false);
 	};
 	function handleRegisterFormSwitch() {
-		navigate("/register");
+
+		 navigate("/register");
+
 	}
 
 	return (
