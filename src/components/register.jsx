@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../css/styleLogin.css';
@@ -6,15 +6,37 @@ import '../css/styleLogin.css';
 function Register() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [confirm_password, setconfirm_password] = useState('');
     const [name, setName] = useState('');
     const [cognoms, setCognoms] = useState('');
+    const [clicked, setClicked] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+		if (clicked) {
+			fetch("http://localhost:5000/autenticacions/registerAPI", {
+				method: "POST",
+				body: JSON.stringify({ name: name, cognoms: cognoms, email:email, password: pass, confirm_password: confirm_password }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then(response => response.json())
+				.then(json => {
+                    console.log(json);
+					window.localStorage.setItem('name',json.name);
+					window.localStorage.setItem('cognoms',json.cognoms);
+					navigate("/llistatMenu");
+				});
+		}
+	},[clicked]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
-        navigate('/llistatMenu');
+        // console.log(email);
+        setClicked(true);
+        
+      
     }
     const handleLoginFormSwitch = () => {
         navigate('/login');
@@ -38,6 +60,10 @@ function Register() {
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password"
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$" required/>
                 {!pass && <p className="error-message">La contrasenya es obligatoria</p>}
+                <label htmlFor="password">Confirma Contrasenya</label>
+                <input value={confirm_password} onChange={(e) => setconfirm_password(e.target.value)} type="password" placeholder="********" id="password" name="password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$" required/>
+                {!confirm_password && <p className="error-message">Confirma Contrasenya</p>}
                 <button type="submit">Registra't</button>
             </form>
             <button className="link-btn" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
