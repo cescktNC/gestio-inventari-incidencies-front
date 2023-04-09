@@ -1,15 +1,20 @@
 import Login from "../components/login";
 import Register from "../components/register";
+import { Route, Routes} from "react-router-dom";
 
-export function LoginContainer({currentForm}) {
+export function LoginContainer() {
 
 	return (
-		<div className="App">
-			{currentForm === "login" ? (
-				<Login />
-			) : (
-				<Register />
-			)}
-		</div>
+
+		<Routes>
+
+			<Route path="/login" element={<Login />} />
+
+			<Route path="/register" element={<Register />} />
+
+		</Routes>
+
 	);
 }
+
+export default LoginContainer;

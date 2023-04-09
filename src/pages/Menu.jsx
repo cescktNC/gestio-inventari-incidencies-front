@@ -1,6 +1,7 @@
 import MenuContainer from "../containers/menuContainer";
 import UserContainer from "../containers/userContainer";
-import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../css/styleMenu.css";
 
 export function Menu() {
@@ -16,16 +17,25 @@ export function Menu() {
 				setUser(json.usuari);
 			});
 	}, []);
-  
+
+
 	return (
+
 		<div className="container">
 			<div className="divMenu BG-black">
 				<MenuContainer user={user} />
 			</div>
 			<div className="divContingut">
-				<UserContainer user={user} />
+			
+				<Routes>
+					<Route path="/user/*" element={<UserContainer user={user} />} />
+				</Routes>
+				
 			</div>
 		</div>
+
 	);
 
 }
+
+

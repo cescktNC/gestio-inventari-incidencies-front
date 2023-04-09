@@ -7,6 +7,7 @@ function LlistatMenu({user})  {
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
+				<CreacioContingutUsuari />
 				<CreacioContingutInventari />
 				<CreacioContingutGeneral />
 				<CreacioContingutReserves />
@@ -34,11 +35,40 @@ function Profile({user}) {
 	);
 }
 
+function CreacioContingutUsuari(){
+	function handleClick(a) {
+		const active = document.getElementsByClassName("active")[0];
+		if (active) active.classList.remove("active");
+		else a.classList.add("active");
+	}
+
+	return (
+		<>
+			<li>
+				<div>
+					<span className="span">Usuari</span>
+					<p className="p">Gestió d'usuari</p>
+				</div>
+			</li>
+			<a
+				href="http://localhost:3000/home"
+				className="a"
+				role="button"
+				onClick={event => handleClick(event.currentTarget)}
+			>
+				<div className="divEnllaç">
+					<span className="spanSub">Usuari</span>
+				</div>
+			</a>
+		</>
+	);
+}
+
 function CreacioContingutInventari() {
 	function handleClick(a) {
 		const active = document.getElementsByClassName("active")[0];
 		if (active) active.classList.remove("active");
-		a.classList.add("active");
+		else a.classList.add("active");
 	}
 
 	return (

@@ -1,17 +1,20 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { Menu } from './Menu';
 import { LoginContainer } from "../containers/loginContainer";
 
 function Pages() {
-  
+  let isLoggedIn = window.localStorage.getItem('id');
+
   return (
-    <Router>
     <Routes>
-      <Route path="/" element={<LoginContainer currentForm={'login'} />}/>
-      <Route path="/register" element={<LoginContainer currentForm='register'/>}/>
-      <Route path="/llistatMenu" element={<Menu/>}/>
+      {isLoggedIn ? (
+        <Route path="/" element={<Navigate to="/home/user/show" />} />
+      ) : (
+        <Route path="/" element={<Navigate to="/auth/login" />} />
+      )}
+      <Route path="/auth/*" element={<LoginContainer />} />
+      <Route path="/home/*" element={<Menu />} />
     </Routes>
-    </Router>
   );
 }
 

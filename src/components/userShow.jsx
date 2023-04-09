@@ -1,5 +1,5 @@
 function UserShow({ user }) {
-	let imgProfile= 'http://localhost:5000/'+user.profilePicture;
+	let imgProfile= 'http://localhost:5000/'+ user.profilePicture;
 	return (
 		<>
 			<div>
