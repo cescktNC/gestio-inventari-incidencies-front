@@ -4,7 +4,7 @@ function Logo() {
     return (
         <Wrapper>
             <WrapperLogo>
-                <Img src="images/logo_vidal_i_barraquer.jpg" alt='Logo Institut F. Vidal i Barraquer' />
+                <Img src={process.env.PUBLIC_URL +"/images/logo_vidal_i_barraquer.jpg"} alt='Logo Institut F. Vidal i Barraquer' />
                 <NameApp>GIIF</NameApp>
             </WrapperLogo>
             <ImatgeLogo xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">

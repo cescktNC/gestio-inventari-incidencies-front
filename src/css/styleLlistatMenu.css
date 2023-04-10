@@ -29,7 +29,7 @@
 	list-style: none;
 }
 
-.active {
+.activep {
 	pointer-events: none;
 	transition: border-radius 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
 	color: rgb(255, 255, 255);
@@ -93,7 +93,7 @@
 .divLogo {
 	opacity: 0.1;
 	padding-bottom: 4.8rem;
-	/* padding-top: 4.8rem; */
+	padding-top: 4.8rem; 
 	justify-content: center;
 	align-items: center;
 	display: flex;
@@ -105,3 +105,97 @@
 	height: auto;
 	display: block;
 }
+
+.buttonMenu{
+	padding: 0;
+	width: 2rem;
+	height: 2rem;
+	margin-left: -1.2rem;
+	margin-right: -1.2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	box-sizing: border-box;
+	background-color: transparent;
+	outline: 0px;
+	border: 0px none;
+	margin: 0px;
+	cursor: pointer;
+	user-select: none;
+	vertical-align: middle;
+	appearance: none;
+	text-decoration: none;
+	text-align: center;
+	flex: 0 0 auto;
+	border-radius: 50%;
+	overflow: visible;
+	color: rgb(255, 255, 255);
+	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	font-size: 2.8rem;
+	background-image: none;
+	text-transform: none;
+}
+
+.svgContainer{
+	fill: currentColor;
+	flex-shrink: 0;
+	color: inherit;
+	width: 16px;
+	height: 16px;
+	min-width: 16px;
+	min-height: 16px;
+	font-size: 16px;
+	line-height: 16;
+	display: block;
+	vertical-align: middle;
+}
+
+.ulSecundari{
+	list-style: none;
+	margin: 0px;
+	position: relative;
+	padding: 0px;
+}
+
+.liSecundari{
+	min-height: 44px;
+	width: 100%;
+	border-radius: 6px;
+	margin: 0px 0px 4px;
+	padding: 10px 16px;
+	color: rgba(255, 255, 255, 0.7);
+	background-color: transparent;
+	outline: 0px;
+	border: 0px none;
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	text-decoration: none;
+	box-sizing: border-box;
+	text-align: left;
+	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.divContainerSubMenu{
+	min-height: 0px;
+	height: auto;
+	transition-duration: 300ms;
+	overflow: visible;
+	transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+}
+
+.divFlexSubMenu{
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.divSubMenu{
+	width: 100%;
+} 

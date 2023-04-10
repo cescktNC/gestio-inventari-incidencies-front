@@ -21,11 +21,11 @@ export function Menu() {
 
 	return (
 
-		<div className="container">
+		<div className="containerPrincipal">
 			<div className="divMenu BG-black">
 				<MenuContainer user={user} />
 			</div>
-			<div className="divContingut">
+			<div className="container">
 			
 				<Routes>
 					<Route path="/user/*" element={<UserContainer user={user} />} />
