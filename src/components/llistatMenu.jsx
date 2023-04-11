@@ -136,29 +136,33 @@ function CreacioContingutInventari({carrec}) {
 				</div>
 			</li>
 			<ul className="ulSecundari">
-				<li className="d-flex">
-					<Link
-						to="user/show"
-						className="a"
-						role="button"
-					>
-						<div className="divEnllaç">
-							<span className="spanSub">Materials</span>
-						</div>
-					</Link>
-				</li>
-				<li className="d-flex">
-					<Link
-						to="user/show"
-						className="a"
-						role="button"
+			{(carrec !== 'Alumne' || carrec !== 'Professor') && (
+				<>
+					<li className="d-flex">
+						<Link
+							to="user/show"
+							className="a"
+							role="button"
+						>
+							<div className="divEnllaç">
+								<span className="spanSub">Materials</span>
+							</div>
+						</Link>
+					</li>
+					<li className="d-flex">
+						<Link
+							to="user/show"
+							className="a"
+							role="button"
 
-					>
-						<div className="divEnllaç">
-							<span className="spanSub">Exemplars</span>
-						</div>
-					</Link>
-				</li>
+						>
+							<div className="divEnllaç">
+								<span className="spanSub">Exemplars</span>
+							</div>
+						</Link>
+					</li>
+				</>
+			)}
 				<li className="d-flex">
 					<Link
 						to="user/show"
