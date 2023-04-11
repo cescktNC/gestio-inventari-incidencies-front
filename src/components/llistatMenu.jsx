@@ -5,14 +5,17 @@ import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
 
 function LlistatMenu({user})  {
+
+	const carrec = window.localStorage.getItem('carrec');
+
 	return (
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari />
-				<CreacioContingutInventari />
-				<CreacioContingutGeneral />
-				<CreacioContingutReserves />
+				<CreacioContingutUsuari carrec={carrec} />
+				<CreacioContingutInventari carrec={carrec} />
+				<CreacioContingutGeneral carrec={carrec} />
+				<CreacioContingutReserves carrec={carrec} />
 			</ul>
 			<LogoFinal />
 		</div>
@@ -37,16 +40,13 @@ function Profile({user}) {
 	);
 }
 
-function ButtonSubMenu({componentActual, setComponentActual}){
-	function handleClick(e){
-		if(componentActual) setComponentActual(false);
-		else setComponentActual(true);
-	}
+function ButtonSubMenu({componentActual, handleClick}){
+
 	return(
 		<button 
 		className="buttonMenu" 
 		tabIndex={0}
-		onClick={event => handleClick(event)}
+		onClick={handleClick}
 		>
 			<svg className="svgContainer" size="16" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
 				{componentActual ? <SVGRight /> : <SVGDown />}
@@ -71,89 +71,61 @@ function SVGDown(){
 	)
 }
 
-function CreacioMenuUsuari({componentActual}){
-	if(!componentActual){
-		return(
-			<div className="divContainerSubMenu">
-				<div className="divFlexSubMenu">
-					<div className="divSubMenu">
-						<Link
-						to="user/show"
-						className="a"
-						role="button"
-						>
-							<div className="divEnllaç">
-								<span className="spanSub">Perfil</span>
-							</div>
-							
-						</Link>
-					</div>
-					<div className="divSubMenu">
-						<Link
-						to="user/list"
-						className="a"
-						role="button"
-						>
-							<div className="divEnllaç">
-								<span className="spanSub">Llistat</span>
-							</div>
-							
-						</Link>
-					</div>
-				</div>
-			</div>
-		)
-	}
-}
-
-function CreacioContingutUsuari(){
-	// function handleClick(a) {
-	// 	const active = document.getElementsByClassName("active")[0];
-	// 	if (active) active.classList.remove("active");
-	// 	else a.classList.add("active");
-	// }
-
+function CreacioContingutUsuari({carrec}){
 	const [componentActual, setComponentActual] = useState(true);
 
+	function handleClick(){
+
+		setComponentActual(prevState => !prevState);
+
+	}
 
 	return (
 		<>
-			<li>
+			<li className="d-flex">
 				<div>
 					<span className="span">Usuari</span>
 					<p className="p">Gestió d'usuari</p>
 				</div>
 			</li>
 			<ul className="ulSecundari">
-				<li>
+				<li className="d-flex">
 					<Link
 					to="user/show"
 					className="a"
 					role="button"
+					onClick={handleClick}
 					>
 						<div className="divEnllaç">
 							<span className="spanSub">Usuari</span>
 						</div>
-
-						<ButtonSubMenu componentActual={componentActual} setComponentActual={setComponentActual} />
-						
 					</Link>
-				</li>
-				<CreacioMenuUsuari componentActual={componentActual} /> 
-				
 
+					<ButtonSubMenu componentActual={componentActual} handleClick={handleClick} />
+
+				</li>
+
+				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} /> 
+				
 			</ul>
 			
 		</>
 	);
 }
 
-function CreacioContingutInventari() {
-	// function handleClick(a) {
-	// 	const active = document.getElementsByClassName("active")[0];
-	// 	if (active) active.classList.remove("active");
-	// 	else a.classList.add("active");
-	// }
+function CreacioContingutInventari({carrec}) {
+
+	const [subMenuState, setSubMenuState] = useState({
+		prestec: true,
+		incidencia: true
+	});
+
+	function handleSubMenuClick(menuItem) {
+		setSubMenuState(prevState => ({
+			...prevState,
+			[menuItem]: !prevState[menuItem]
+		}));
+	}
 
 	return (
 		<>
@@ -163,164 +135,193 @@ function CreacioContingutInventari() {
 					<p className="p">Gestió d'inventari</p>
 				</div>
 			</li>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Materials</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Exemplars</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Prestec</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Incidencia</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
+			<ul className="ulSecundari">
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Materials</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Exemplars</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+						onClick={()=>handleSubMenuClick('prestec')}
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Prestec</span>
+						</div>
+					</Link>
+					<ButtonSubMenu componentActual={subMenuState.prestec} handleClick={()=>handleSubMenuClick('prestec')} />
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+						onClick={()=>handleSubMenuClick('incidencia')}
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Incidencia</span>
+						</div>
+					</Link>
+					<ButtonSubMenu componentActual={subMenuState.incidencia} handleClick={()=>handleSubMenuClick('incidencia')} />
+				</li>
+			</ul>
 		</>
 	);
 }
 
-function CreacioContingutGeneral() {
-	// function handleClick(a) {
-	// 	const active = document.getElementsByClassName("active")[0];
-	// 	if (active) active.classList.remove("active");
-	// 	a.classList.add("active");
-	// }
+function CreacioContingutGeneral({carrec}) {
 
 	return (
 		<>
-			<li>
+			<li className="d-flex">
 				<div>
 					<span className="span">General</span>
 					<p className="p">Gestió general</p>
 				</div>
 			</li>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Categories</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Subcategories</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Centre</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Planta</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Localització</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
+			<ul className="ulSecundari">
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Categories</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Subcategories</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Centre</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Planta</span>
+						</div>
+					</Link>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Localització</span>
+						</div>
+					</Link>
+				</li>
+			</ul>
 		</>
 	);
 }
 
-function CreacioContingutReserves() {
-	// function handleClick(a) {
-	// 	const active = document.getElementsByClassName("active")[0];
-	// 	if (active) active.classList.remove("active");
-	// 	a.classList.add("active");
-	// }
+function CreacioContingutReserves({carrec}) {
+
+	const [subMenuState, setSubMenuState] = useState({
+		reserva: true,
+		sessio: true
+	});
+
+	function handleSubMenuClick(menuItem) {
+		setSubMenuState(prevState => ({
+			...prevState,
+			[menuItem]: !prevState[menuItem]
+		}));
+	}
 
 	return (
 		<>
-			<li>
+			<li className="d-flex">
 				<div>
 					<span className="span">Reserves</span>
 					<p className="p">Gestió reserves</p>
 				</div>
 			</li>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Reserva</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Sessio</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
-			<Link
-				to="user/show"
-				className="a"
-				role="button"
-			>
-				<div className="divEnllaç">
-					<span className="spanSub">Cadira</span>
-				</div>
-				<ButtonSubMenu />
-			</Link>
+			<ul className="ulSecundari">
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+						onClick={()=>handleSubMenuClick('reserva')}
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Reserva</span>
+						</div>
+				</Link>
+					<ButtonSubMenu componentActual={subMenuState.reserva} handleClick={ () => handleSubMenuClick('reserva')} />
+			</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+						onClick={()=>handleSubMenuClick('sessio')}
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Sessio</span>
+						</div>
+					</Link>
+					<ButtonSubMenu componentActual={subMenuState.sessio} handleClick={ () => handleSubMenuClick('sessio')}/>
+				</li>
+				<li className="d-flex">
+					<Link
+						to="user/show"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Cadira</span>
+						</div>
+					</Link>
+				</li>
+			</ul>
 		</>
 	);
 }
@@ -337,6 +338,44 @@ function LogoFinal() {
 	);
 }
 
+/**********************************************************
+ ************************ SubMenu *************************
+ **********************************************************/
 
+function CreacioSubMenuUsuari({componentActual, carrec}){
+	if(!componentActual){
+		return(
+			<div className="divContainerSubMenu">
+				<div className="divFlexSubMenu">
+					<div className="divSubMenu">
+						<Link
+						to="user/show"
+						className="a"
+						role="button"
+						>
+							<div className="divEnllaç">
+								<span className="spanSub">Perfil</span>
+							</div>
+							
+						</Link>
+					</div>
+					{carrec !== 'Alumne' && (
+						<div className="divSubMenu">
+							<Link
+							to="user/list"
+							className="a"
+							role="button"
+							>
+								<div className="divEnllaç">
+									<span className="spanSub">Llistat</span>
+								</div>
+							</Link>
+						</div>
+					)}
+				</div>
+			</div>
+		)
+	}
+}
 
 export default LlistatMenu;

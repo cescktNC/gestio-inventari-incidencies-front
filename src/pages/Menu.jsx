@@ -10,7 +10,7 @@ export function Menu() {
 	useEffect(() => {
 		fetch(
 			"http://localhost:5000/usuaris/user/" +
-				window.localStorage.getItem("usuariId"),
+				window.localStorage.getItem("id"),
 		)
 			.then(response => response.json())
 			.then(json => {

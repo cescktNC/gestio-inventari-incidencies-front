@@ -115,7 +115,7 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
                     <Link className="page-link" to={`?page=${parseInt(currentPage) + 1}`} aria-label="Siguiente">
                         <span aria-hidden="true">&raquo;</span>
-                        <span className="sr-only">Siguiente</span>
+                        <span className="sr-only">Següent</span>
                     </Link>
                 </li>
                 
