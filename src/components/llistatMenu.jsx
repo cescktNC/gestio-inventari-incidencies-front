@@ -1,5 +1,5 @@
 import {React, useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
@@ -347,6 +347,17 @@ function LogoFinal() {
  **********************************************************/
 
 function CreacioSubMenuUsuari({componentActual, carrec}){
+
+	const navigate = useNavigate();
+
+	function handleClick(e){
+		e.preventDefault();
+		window.localStorage.removeItem("id");
+		window.localStorage.removeItem("carrec");
+		navigate("/")
+
+	}
+
 	if(!componentActual){
 		return(
 			<div className="divContainerSubMenu">
@@ -376,6 +387,17 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 							</Link>
 						</div>
 					)}
+					<div className="divSubMenu">
+							<Link
+							className="a"
+							role="button"
+							onClick={(event)=>handleClick(event)}
+							>
+								<div className="divEnllaç">
+									<span className="spanSub">LogOut</span>
+								</div>
+							</Link>
+						</div>
 				</div>
 			</div>
 		)

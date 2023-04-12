@@ -16,9 +16,6 @@ function UserList(){
         });
     }, [currentPage]);
 
-    console.log(currentPage)
-    console.log(totalPages)
-
     return (
         <div className="d-flex align-items-center ">
             <div className="mx-auto">
@@ -42,7 +39,7 @@ function UserTable({list}){
                 <th scope="col">Email</th>
                 <th scope="col">Imatge de perfil</th>
                 <th scope="col">
-                    <Link to="#/create" className="btn btn-primary">Nou</Link>
+                    <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
                 </th>
             </tr>
         </thead>
@@ -77,7 +74,7 @@ function UserTbody({list}){
                 <img className="img-fluid mx-auto imgLlistat" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
             </td>
             <td>
-                <Link className="btn btn-secondary" to="*/update/{user._id}">Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Edit</Link>
             </td>
         </tr>
     ));
