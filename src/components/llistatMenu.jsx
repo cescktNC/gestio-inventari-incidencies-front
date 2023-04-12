@@ -136,7 +136,7 @@ function CreacioContingutInventari({carrec}) {
 				</div>
 			</li>
 			<ul className="ulSecundari">
-			{(carrec !== 'Alumne' || carrec !== 'Professor') && (
+			{(carrec !== 'Alumne' && carrec !== 'Professor') && (
 				<>
 					<li className="d-flex">
 						<Link
@@ -354,6 +354,7 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 		e.preventDefault();
 		window.localStorage.removeItem("id");
 		window.localStorage.removeItem("carrec");
+		window.localStorage.removeItem("token");
 		navigate("/")
 
 	}

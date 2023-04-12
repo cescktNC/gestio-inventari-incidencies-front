@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import {React, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/styleLogin.css";
 
@@ -7,34 +7,37 @@ function Login() {
 	const [pass, setPass] = useState("");
 	const [comprobacioEmail, setcomprobacioEmail] = useState(false);
 	const [ComprobacioPass, setComprobacioPass] = useState(false);
-	const [clicked, setClicked] = useState(false);
+	const [message, setMessage] = useState('');
+	const [errors, setErrors] = useState([]);
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (clicked) {
-		fetch("http://localhost:5000/autenticacions/loginAPI", {
-			method: "POST",
-			body: JSON.stringify({ email: email, password: pass }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json)
-				window.localStorage.setItem("id", json.usuariId);
-				window.localStorage.setItem("carrec", json.carrec);
-				navigate("/home/user/show");
-			});
-		}
-	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (comprobacioEmail && ComprobacioPass) setClicked(true);
-		else setClicked(false);
-	};
+		if (comprobacioEmail && ComprobacioPass) {
+			fetch("http://localhost:5000/autenticacions/loginAPI", {
+				method: "POST",
+				body: JSON.stringify({ email: email, password: pass }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json)
+				if(json.message !== undefined) setMessage(json.message);
+				if(json.errors !== undefined) setErrors(json.errors);
+				if(message === '' && errors.length === 0){
+					window.localStorage.setItem("id", json.token.idUsuari);
+					window.localStorage.setItem("carrec", json.carrec);
+					window.localStorage.setItem("token", json.token);
+					navigate("/home/user/show");
+				}	
+			});
+
+			//p&3Y55CSxma6
+		}
+	}
 
 	function handleRegisterFormSwitch() {
 		navigate("/auth/register");
@@ -45,6 +48,8 @@ function Login() {
 			<div className="auth-form-container">
 				<h2>Inicia Sessió</h2>
 				<form className="login-form" onSubmit={handleSubmit}>
+					{(errors.length !== 0 && (<DivArrayErrors errors={errors} />) )}
+					{(message !== '' && (<DivMessage message={message}  />) )}
 					<InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
 					<p id="errorEmail" className="error-message"></p>
 
@@ -58,6 +63,22 @@ function Login() {
 			</div>
 		</div>
 	);
+}
+
+function DivMessage({message}){
+	return(
+		<div className="alert alert-danger">
+			<p className="text-danger">{message}</p>
+		</div>
+	)
+}
+//{errors}
+function DivArrayErrors({errors}){
+	return(
+		<ul className="alert alert-danger list-unstyled">
+			{errors.map((error, index) => <li key={index}>{error}</li>)}
+		</ul>
+	)
 }
 
 function InputEmail({email, setEmail, setcomprobacioEmail}) {
