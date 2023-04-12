@@ -21,6 +21,7 @@ function Login() {
 		})
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json)
 				window.localStorage.setItem("id", json.usuariId);
 				window.localStorage.setItem("carrec", json.carrec);
 				navigate("/home/user/show");
@@ -34,7 +35,7 @@ function Login() {
 		if (comprobacioEmail && ComprobacioPass) setClicked(true);
 		else setClicked(false);
 	};
-	
+
 	function handleRegisterFormSwitch() {
 		navigate("/auth/register");
 	}

@@ -23,7 +23,7 @@ function LlistatMenu({user})  {
 }
 
 function Profile({user}) {
-	const name = user.nom +" "+user.cognoms;
+	const name = user.nom + " " + user.cognoms;
 	const email = user.email;
 	const imageUrl = 'http://localhost:5000/'+user.profilePicture;
 
