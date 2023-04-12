@@ -16,14 +16,14 @@ function Login() {
 			method: "POST",
 			body: JSON.stringify({ email: email, password: pass }),
 			headers: {
-			"Content-Type": "application/json",
+				"Content-Type": "application/json",
 			},
 		})
 			.then((response) => response.json())
 			.then((json) => {
-			window.localStorage.setItem("id", json.usuariId);
-			window.localStorage.setItem("carrec", json.carrec);
-			navigate("/home/user/show");
+				window.localStorage.setItem("id", json.usuariId);
+				window.localStorage.setItem("carrec", json.carrec);
+				navigate("/home/user/show");
 			});
 		}
 	});

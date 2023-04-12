@@ -13,12 +13,12 @@ function Register() {
     const [confirm_password, setconfirm_password] = useState('');
 
 
-    const [comprobacioName,setcomprobacioName]=useState(false);
-    const [comprobacioCognoms,setcomprobacioCognoms]=useState(false);
-    const [comprobacioDNI,setcomprobacioDNI]=useState(false);
-    const [comprobacioEmail,setcomprobacioEmail]=useState(false);
-    const [ComprobacioPass,setComprobacioPass]=useState(false);
-    const [comprobacioConfirm_pass,setcomprobacioConfirm_pass]=useState(false);
+    const [comprobacioName, setcomprobacioName]=useState(false);
+    const [comprobacioCognoms, setcomprobacioCognoms]=useState(false);
+    const [comprobacioDNI, setcomprobacioDNI]=useState(false);
+    const [comprobacioEmail, setcomprobacioEmail]=useState(false);
+    const [ComprobacioPass, setComprobacioPass]=useState(false);
+    const [comprobacioConfirm_pass, setcomprobacioConfirm_pass]=useState(false);
 
     const [clicked, setClicked] = useState(false);
     const navigate = useNavigate();
@@ -53,34 +53,36 @@ function Register() {
     }
 
     return (
-        <div className="auth-form-container">
-            <h2>Registra't</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <InputName name={name} setName={setName} setcomprobacioName={setcomprobacioName} />
-                <p className="error-message" id="errorName"></p>
+        <div className="App">
+            <div className="auth-form-container">
+                <h2>Registra't</h2>
+                <form className="register-form" onSubmit={handleSubmit}>
+                    <InputName name={name} setName={setName} setcomprobacioName={setcomprobacioName} />
+                    <p className="error-message" id="errorName"></p>
 
-                <InputCognoms cognoms={cognoms} setCognoms={setCognoms} setcomprobacioCognoms={setcomprobacioCognoms} />
-                <p className="error-message" id="errorCognoms"></p>
+                    <InputCognoms cognoms={cognoms} setCognoms={setCognoms} setcomprobacioCognoms={setcomprobacioCognoms} />
+                    <p className="error-message" id="errorCognoms"></p>
 
-                <InputDNI dni={dni} setDNI={setDNI} setcomprobacioDNI={setcomprobacioDNI} />
-                <p className="error-message" id="errorDNI"></p>
+                    <InputDNI dni={dni} setDNI={setDNI} setcomprobacioDNI={setcomprobacioDNI} />
+                    <p className="error-message" id="errorDNI"></p>
 
-                <InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
-                <p className="error-message" id="errorEmail"></p>
+                    <InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
+                    <p className="error-message" id="errorEmail"></p>
 
-                <InputPassword pass={pass} setPass={setPass} setComprobacioPass={setComprobacioPass} />
-                <p className="error-message" id="errorPassword"></p>
-                
-                <InputConfPassword 
-                    pass={pass} 
-                    confirm_password={confirm_password} 
-                    setconfirm_password={setconfirm_password} 
-                    setcomprobacioConfirm_pass={setcomprobacioConfirm_pass} 
-                />
-                <p className="error-message" id="errorConfPass"></p>
-                <button type="submit">Registra't</button>
-            </form>
-            <button className="link-btn" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
+                    <InputPassword pass={pass} setPass={setPass} setComprobacioPass={setComprobacioPass} />
+                    <p className="error-message" id="errorPassword"></p>
+                    
+                    <InputConfPassword 
+                        pass={pass} 
+                        confirm_password={confirm_password} 
+                        setconfirm_password={setconfirm_password} 
+                        setcomprobacioConfirm_pass={setcomprobacioConfirm_pass} 
+                    />
+                    <p className="error-message" id="errorConfPass"></p>
+                    <button type="submit">Registra't</button>
+                </form>
+                <button className="link-btn" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
+            </div>
         </div>
     )
 }

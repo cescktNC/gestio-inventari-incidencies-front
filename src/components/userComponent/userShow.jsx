@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 function UserShow({ user }) {
 	let imgProfile= 'http://localhost:5000/'+ user.profilePicture;
 	return (
-		<>
+		<div>
 			<div>
 				<img src={imgProfile} alt="" />
 			</div>
@@ -20,7 +22,19 @@ function UserShow({ user }) {
 			<div>
 				<p>{user.email}</p>
 			</div>
-		</>
+			<div className="divSubMenu">
+				<Link
+				to="/home/user/update"
+				className="btn btn-primary"
+				role="button"
+				>
+					<div className="divEnllaç">
+						<span className="spanSub">Edita</span>
+					</div>
+					
+				</Link>
+			</div>
+		</div>
 	);
 }
 
