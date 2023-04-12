@@ -11,6 +11,7 @@ function UserContainer({user}){
 
             <Route path="/show" element={<UserShow user={user}/>} />
             <Route path="/list" element={<UserList />} />
+            <Route path="/update/:id" element={<UserUpdate />} />
 
         </Routes>
     )

@@ -30,9 +30,11 @@ function Login() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
 		if (comprobacioEmail && ComprobacioPass) setClicked(true);
 		else setClicked(false);
 	};
+	
 	function handleRegisterFormSwitch() {
 		navigate("/auth/register");
 	}
