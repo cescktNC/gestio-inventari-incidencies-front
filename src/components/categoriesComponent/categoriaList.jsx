@@ -1,84 +1,70 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleUser.css'
+import '../../css/styleCategories.css'
 
-function UserList(){
+function CategoryList() {
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+
     useEffect(() => {
-        fetch("http://localhost:5000/usuaris/user?page=" + currentPage)
-        .then(response => response.json())
-        .then(json => {
-            setList(json.list);
-            setCurrentPage(json.currentPage);
-            setTotalPages(json.totalPages);
-        });
+        fetch("http://localhost:5000/categories/APIlist?page=" + currentPage)
+            .then(response => response.json())
+            .then(json => {               
+                setList(json.list);
+                setCurrentPage(json.currentPage);
+                setTotalPages(json.totalPages);
+            });
     }, [currentPage]);
-   
+
     return (
         <div className="d-flex align-items-center ">
             <div className="mx-auto">
-                <UserTable list={list} />
+                <CategoryTable list={list} />
                 <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )
 }
 
-function UserTable({list}){
+function CategoryTable({ list }) {
 
-    return(
-    <table className="table table-responsive table-striped table-hover ">
-        <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Cognoms</th>
-                <th scope="col">DNI</th>
-                <th scope="col">Càrrec</th>
-                <th scope="col">Email</th>
-                <th scope="col">Imatge de perfil</th>
-                <th scope="col">
-                    <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <UserTbody list={list}></UserTbody>
-        </tbody>
-    </table>
-)
+    return (
+        <table className="table table-responsive table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th scope="col">Codi</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">
+                        <Link to="/home/categories/create" className="btn btn-primary">Nou</Link>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <CategoryTbody list={list}></CategoryTbody>
+            </tbody>
+        </table>
+    )
 
 }
 
-function UserTbody({list}){
+function CategoryTbody({ list }) {
 
-    return list.map((user, index) =>( 
+    return list.map((category, index) => (
         <tr key={index}>
             <td>
-                { user.nom }
+                {category.codi}
             </td>
             <td>
-                { user.cognoms }
+                {category.nom}
             </td>
             <td>
-                { user.dni }
-            </td>
-            <td>
-                { user.carrec }
-            </td>
-            <td>
-                { user.email }
-            </td>
-            <td>
-                <img className="img-fluid mx-auto imgLlistat" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
-            </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/categories/update/${category._id}`}>Edit</Link>
             </td>
         </tr>
     ));
 }
+
 
 
 function Paginate({currentPage, totalPages, setCurrentPage}){
@@ -141,4 +127,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default UserList;
+export default CategoryList;

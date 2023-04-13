@@ -207,7 +207,7 @@ function CreacioContingutGeneral({carrec}) {
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="categories/list"
 						className="a"
 						role="button"
 					>
