@@ -21,7 +21,6 @@ export function Menu() {
 		)
 		.then(response => response.json())
 		.then(json => {
-			console.log(json)
 			setUser(json.usuari);
 		});
 	}, []);

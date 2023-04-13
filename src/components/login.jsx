@@ -14,6 +14,9 @@ function Login() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		console.log(comprobacioEmail)
+		console.log(ComprobacioPass)
+
 		if (comprobacioEmail && ComprobacioPass) {
 			fetch("http://localhost:5000/autenticacions/loginAPI", {
 				method: "POST",
@@ -34,7 +37,6 @@ function Login() {
 				}	
 			});
 
-			//p&3Y55CSxma6
 		}
 	}
 
@@ -47,12 +49,15 @@ function Login() {
 			<div className="auth-form-container">
 				<h2>Inicia Sessió</h2>
 				<form className="login-form" onSubmit={handleSubmit}>
+
 					{(errors.length !== 0 && (<DivArrayErrors errors={errors} />) )}
+
 					{(message !== '' && (<DivMessage message={message}  />) )}
-					<InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
+
+					<InputEmail  setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
 					<p id="errorEmail" className="error-message"></p>
 
-					<InputPassword pass={pass} setPass={setPass} setComprobacioPass={setComprobacioPass} />
+					<InputPassword setPass={setPass} setComprobacioPass={setComprobacioPass} />
 					<p id="errorPassword" className="error-message"></p>
 					<button type="submit">Inicia Sessió</button>
 				</form>
@@ -80,14 +85,16 @@ function DivArrayErrors({errors}){
 	)
 }
 
-function InputEmail({email, setEmail, setcomprobacioEmail}) {
+function InputEmail({ setEmail, setcomprobacioEmail }) {
 
 	return (
 		<>
 			<label htmlFor="email">Correu Electronic</label>
 			<input
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
+				onChange={(e) => {
+					setEmail(e.target.value)
+					ComprobacioEmail(e.target.value, {setcomprobacioEmail})
+				}}
 				onBlur={(e) => ComprobacioEmail(e.target.value, {setcomprobacioEmail})}
 				type="email"
 				placeholder="exemple@exemple.com"
@@ -98,15 +105,17 @@ function InputEmail({email, setEmail, setcomprobacioEmail}) {
 	);
 }
 
-function InputPassword({pass, setPass,setComprobacioPass}) {
+function InputPassword({ setPass, setComprobacioPass }) {
 
 	return (
 		<>
 			<label htmlFor="password">Contrasenya</label>
 			<input
-				value={pass}
-				onChange={(e) => setPass(e.target.value)}
-				onBlur={(e) => ComprobacioPassword(pass, {setComprobacioPass})}
+				onChange={(e) => {
+					setPass(e.target.value)
+					ComprobacioPassword(e.target.value, {setComprobacioPass})
+				}}
+				onBlur={(e) => ComprobacioPassword(e.target.value, {setComprobacioPass})}
 				type="password"
 				placeholder="********"
 				pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$'
