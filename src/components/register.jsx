@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import '../css/styleLogin.css';
@@ -19,15 +19,16 @@ function Register() {
     const [comprobacioEmail, setcomprobacioEmail]=useState(false);
     const [ComprobacioPass, setComprobacioPass]=useState(false);
     const [comprobacioConfirm_pass, setcomprobacioConfirm_pass]=useState(false);
-
-    const [clicked, setClicked] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-		if (clicked) {
-			fetch("http://localhost:5000/autenticacions/registerAPI", {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+		if (comprobacioName && comprobacioCognoms && comprobacioDNI && 
+            comprobacioEmail && ComprobacioPass && comprobacioConfirm_pass) {
+                fetch("http://localhost:5000/autenticacions/registerAPI", {
 				method: "POST",
-				body: JSON.stringify({ nom: name, cognoms: cognoms, dni:dni, email:email, password: pass, confirm_password: confirm_password }),
+				body: JSON.stringify({ nom: name, cognoms: cognoms, dni: dni, email: email, password: pass, confirm_password: confirm_password }),
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -38,15 +39,7 @@ function Register() {
 					window.localStorage.setItem("carrec", json.user.carrec);
 					navigate("/home/user/show");
 				});
-		}
-	});
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-		if (comprobacioName && comprobacioCognoms && comprobacioDNI && 
-            comprobacioEmail && ComprobacioPass && comprobacioConfirm_pass) setClicked(true);
-		else setClicked(false);
+            }
     }
     const handleLoginFormSwitch = () => {
         navigate('/auth/login');

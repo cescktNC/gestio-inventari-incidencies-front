@@ -24,11 +24,10 @@ function Login() {
 			})
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json)
 				if(json.message !== undefined) setMessage(json.message);
 				if(json.errors !== undefined) setErrors(json.errors);
 				if(message === '' && errors.length === 0){
-					window.localStorage.setItem("id", json.token.idUsuari);
+					window.localStorage.setItem("id", json.id);
 					window.localStorage.setItem("carrec", json.carrec);
 					window.localStorage.setItem("token", json.token);
 					navigate("/home/user/show");

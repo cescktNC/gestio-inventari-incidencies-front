@@ -9,13 +9,21 @@ export function Menu() {
 
 	useEffect(() => {
 		fetch(
-			"http://localhost:5000/usuaris/user/" +
-				window.localStorage.getItem("id"),
+			"http://localhost:5000/usuaris/user/" + window.localStorage.getItem("id"),
+			{
+				method: "GET",
+				headers: {
+				  "Authorization": "Bearer " + window.localStorage.getItem("token"),
+				  "Content-Type": "application/json",
+				  "Accept-Type": "application/json"
+				},
+			}
 		)
-			.then(response => response.json())
-			.then(json => {
-				setUser(json.usuari);
-			});
+		.then(response => response.json())
+		.then(json => {
+			console.log(json)
+			setUser(json.usuari);
+		});
 	}, []);
 
 
@@ -26,7 +34,6 @@ export function Menu() {
 				<MenuContainer user={user} />
 			</div>
 			<div className="container">
-			
 				<Routes>
 					<Route path="/user/*" element={<UserContainer user={user} />} />
 				</Routes>

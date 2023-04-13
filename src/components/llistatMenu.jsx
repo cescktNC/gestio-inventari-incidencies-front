@@ -370,7 +370,7 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 						role="button"
 						>
 							<div className="divEnllaç">
-								<span className="spanSub">Perfil</span>
+								<span className="spanSubMenu">Perfil</span>
 							</div>
 							
 						</Link>
@@ -383,7 +383,7 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 							role="button"
 							>
 								<div className="divEnllaç">
-									<span className="spanSub">Llistat</span>
+									<span className="spanSubMenu">Llistat</span>
 								</div>
 							</Link>
 						</div>
@@ -395,7 +395,7 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 							onClick={(event)=>handleClick(event)}
 							>
 								<div className="divEnllaç">
-									<span className="spanSub">LogOut</span>
+									<span className="spanSubMenu">LogOut</span>
 								</div>
 							</Link>
 						</div>
