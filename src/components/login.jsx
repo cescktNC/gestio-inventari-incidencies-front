@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/styleLogin.css";
 
@@ -7,6 +7,7 @@ function Login() {
 	const [pass, setPass] = useState("");
 	const [comprobacioEmail, setcomprobacioEmail] = useState(false);
 	const [ComprobacioPass, setComprobacioPass] = useState(false);
+	const [userData, setUserData] = useState({ id: '', carrec: '', token: '' });
 	const [message, setMessage] = useState('');
 	const [errors, setErrors] = useState([]);
 	const navigate = useNavigate();
@@ -14,8 +15,9 @@ function Login() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		console.log(comprobacioEmail)
-		console.log(ComprobacioPass)
+		setMessage('');
+		setErrors([]);
+		setUserData({ id: '', carrec: '', token: '' });
 
 		if (comprobacioEmail && ComprobacioPass) {
 			fetch("http://localhost:5000/autenticacions/loginAPI", {
@@ -27,18 +29,34 @@ function Login() {
 			})
 			.then((response) => response.json())
 			.then((json) => {
-				if(json.message !== undefined) setMessage(json.message);
+				console.info(json)
+				if(json.message !== undefined) {
+					let string = json.message;
+					setMessage(string.toString());
+				}
 				if(json.errors !== undefined) setErrors(json.errors);
-				if(message === '' && errors.length === 0){
-					window.localStorage.setItem("id", json.id);
-					window.localStorage.setItem("carrec", json.carrec);
-					window.localStorage.setItem("token", json.token);
-					navigate("/home/user/show");
-				}	
-			});
 
+				if (json.id !== undefined) {
+					setUserData({
+						id: json.id,
+						carrec: json.carrec,
+						token: json.token.token
+					});
+				}
+				
+			});
 		}
+
 	}
+
+	useEffect(() => {
+		if (message === "" && errors.length === 0 && userData.id !== '') {
+			window.localStorage.setItem("id", userData.id);
+			window.localStorage.setItem("carrec", userData.carrec);
+			window.localStorage.setItem("token", userData.token);
+			navigate("/home/user/show");
+		}
+	}, [message, errors, userData]);
 
 	function handleRegisterFormSwitch() {
 		navigate("/auth/register");

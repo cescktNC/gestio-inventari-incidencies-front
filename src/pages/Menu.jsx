@@ -6,21 +6,21 @@ import "../css/styleMenu.css";
 
 export function Menu() {
 	const [user, setUser] = useState([]);
-
+	console.log(window.localStorage.getItem("token"))
 	useEffect(() => {
 		fetch(
 			"http://localhost:5000/usuaris/user/" + window.localStorage.getItem("id"),
 			{
 				method: "GET",
 				headers: {
-				  "Authorization": "Bearer " + window.localStorage.getItem("token"),
-				  "Content-Type": "application/json",
-				  "Accept-Type": "application/json"
+					"Authorization": "Bearer " + window.localStorage.getItem("token"),
+					"Content-Type": "application/json",
 				},
 			}
 		)
 		.then(response => response.json())
 		.then(json => {
+			console.log(json)
 			setUser(json.usuari);
 		});
 	}, []);
