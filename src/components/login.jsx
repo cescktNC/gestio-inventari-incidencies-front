@@ -29,7 +29,6 @@ function Login() {
 			})
 			.then((response) => response.json())
 			.then((json) => {
-				console.info(json)
 				if(json.message !== undefined) {
 					let string = json.message;
 					setMessage(string.toString());
@@ -40,7 +39,7 @@ function Login() {
 					setUserData({
 						id: json.id,
 						carrec: json.carrec,
-						token: json.token.token
+						token: json.token
 					});
 				}
 				

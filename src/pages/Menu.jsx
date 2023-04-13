@@ -6,7 +6,6 @@ import "../css/styleMenu.css";
 
 export function Menu() {
 	const [user, setUser] = useState([]);
-	console.log(window.localStorage.getItem("token"))
 	useEffect(() => {
 		fetch(
 			"http://localhost:5000/usuaris/user/" + window.localStorage.getItem("id"),
@@ -20,7 +19,6 @@ export function Menu() {
 		)
 		.then(response => response.json())
 		.then(json => {
-			console.log(json)
 			setUser(json.usuari);
 		});
 	}, []);
