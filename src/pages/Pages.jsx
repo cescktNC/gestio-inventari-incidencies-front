@@ -8,12 +8,14 @@ function Pages() {
   return (
     <Routes>
       {isLoggedIn ? (
-        <Route path="/" element={<Navigate to="/home/user/show" />} />
+        <>
+          <Route path="/" element={<Navigate to="/home/user/show" />} />
+          <Route path="/home/*" element={<Menu />} />
+        </>
       ) : (
         <Route path="/" element={<Navigate to="/auth/login" />} />
       )}
       <Route path="/auth/*" element={<LoginContainer />} />
-      <Route path="/home/*" element={<Menu />} />
     </Routes>
   );
 }

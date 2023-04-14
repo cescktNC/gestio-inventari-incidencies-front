@@ -24,7 +24,7 @@ function UserShow({ user }) {
 			</div>
 			<div className="divSubMenu">
 				<Link
-				to="/home/user/update"
+				to={`/home/user/update/${user.id}`}
 				className="btn btn-primary"
 				role="button"
 				>
