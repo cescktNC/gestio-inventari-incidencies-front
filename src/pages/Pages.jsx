@@ -1,9 +1,15 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Menu } from './Menu';
+import { useEffect, useState } from 'react';
 import { LoginContainer } from "../containers/loginContainer";
 
+
 function Pages() {
-  let isLoggedIn = window.localStorage.getItem('id');
+  const [isLoggedIn, setIsLoggedIn] = useState('');
+  
+  useEffect(() =>{
+    setIsLoggedIn(window.localStorage.getItem('token'));
+  }, [])
 
   return (
     <Routes>

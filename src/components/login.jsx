@@ -30,8 +30,7 @@ function Login() {
 			.then((response) => response.json())
 			.then((json) => {
 				if(json.message !== undefined) {
-					let string = json.message;
-					setMessage(string.toString());
+					setMessage(json.message);
 				}
 				if(json.errors !== undefined) setErrors(json.errors);
 
@@ -53,7 +52,7 @@ function Login() {
 			window.localStorage.setItem("id", userData.id);
 			window.localStorage.setItem("carrec", userData.carrec);
 			window.localStorage.setItem("token", userData.token);
-			navigate("/home/user/show");
+			navigate("/home/user/show/" + userData.id);
 		}
 	}, [message, errors, userData]);
 
@@ -93,7 +92,8 @@ function DivMessage({message}){
 		</div>
 	)
 }
-//{errors}
+
+
 function DivArrayErrors({errors}){
 	return(
 		<ul className="alert alert-danger list-unstyled">

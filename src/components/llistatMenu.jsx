@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../css/styleLlistatMenu.css";
@@ -12,7 +12,7 @@ function LlistatMenu({user})  {
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari carrec={carrec} />
+				<CreacioContingutUsuari carrec={carrec} id={user.id} />
 				<CreacioContingutInventari carrec={carrec} />
 				<CreacioContingutGeneral carrec={carrec} />
 				<CreacioContingutReserves carrec={carrec} />
@@ -71,7 +71,7 @@ function SVGDown(){
 	)
 }
 
-function CreacioContingutUsuari({carrec}){
+function CreacioContingutUsuari({carrec, id}){
 	const [componentActual, setComponentActual] = useState(true);
 
 	function handleClick(){
@@ -91,7 +91,7 @@ function CreacioContingutUsuari({carrec}){
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-					to="user/show"
+					to={`user/show/${id}`}
 					className="a"
 					role="button"
 					onClick={handleClick}
@@ -105,7 +105,7 @@ function CreacioContingutUsuari({carrec}){
 
 				</li>
 
-				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} /> 
+				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} id={id} /> 
 				
 			</ul>
 			
@@ -342,21 +342,21 @@ function LogoFinal() {
 	);
 }
 
-/**********************************************************
+/*
+ **********************************************************
  ************************ SubMenu *************************
- **********************************************************/
+ **********************************************************
+*/
 
-function CreacioSubMenuUsuari({componentActual, carrec}){
-
-	const navigate = useNavigate();
+function CreacioSubMenuUsuari({componentActual, carrec, id}){
+	const navigate = useNavigate()
 
 	function handleClick(e){
 		e.preventDefault();
 		window.localStorage.removeItem("id");
 		window.localStorage.removeItem("carrec");
 		window.localStorage.removeItem("token");
-		navigate("/")
-
+		navigate("/auth/login");
 	}
 
 	if(!componentActual){
@@ -365,7 +365,7 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 				<div className="divFlexSubMenu">
 					<div className="divSubMenu">
 						<Link
-						to="user/show"
+						to={`user/show/${id}`}
 						className="a"
 						role="button"
 						>
@@ -390,9 +390,10 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 					)}
 					<div className="divSubMenu">
 							<Link
-							className="a"
-							role="button"
-							onClick={(event)=>handleClick(event)}
+								className="a"
+								role="button"
+								to="/auth/login"
+								onClick={(event)=>handleClick(event)}
 							>
 								<div className="divEnllaç">
 									<span className="spanSubMenu">LogOut</span>

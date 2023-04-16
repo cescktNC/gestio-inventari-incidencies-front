@@ -18,9 +18,14 @@ function UserList(){
 
     return (
         <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <UserTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            <div className="card mt-2">
+                <div className="card-body">
+                    <h5 className="card-title">Usuaris</h5>
+                    <div className="mx-auto">
+                        <UserTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -30,7 +35,7 @@ function UserTable({list}){
 
     return(
     <table className="table table-responsive table-striped table-hover ">
-        <thead>
+        <thead className="thead-green">
             <tr>
                 <th scope="col">Nom</th>
                 <th scope="col">Cognoms</th>
@@ -38,7 +43,7 @@ function UserTable({list}){
                 <th scope="col">Càrrec</th>
                 <th scope="col">Email</th>
                 <th scope="col">Imatge de perfil</th>
-                <th scope="col">
+                <th scope="col" colSpan={2} className="W-15">
                     <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
                 </th>
             </tr>
@@ -70,11 +75,14 @@ function UserTbody({list}){
             <td>
                 { user.email }
             </td>
-            <td>
-                <img className="img-fluid mx-auto imgLlistat" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
+            <td className="W-15">
+                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/user/delete/${user._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));
@@ -96,12 +104,17 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
         <nav>
             <ul className="pagination">
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to="?page=1" aria-label="Anterior">
+                    <Link className="page-link" to="?page=1" aria-label="Anterior" onClick={() => setCurrentPage(1)}>
                         <span>Primer</span>
                     </Link>
                 </li>
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${currentPage - 1}`} aria-label="Anterior">
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${currentPage - 1}`} 
+                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        aria-label="Anterior"
+                    >
                         <span aria-hidden="true">&laquo;</span>
                         <span className="sr-only">Anterior</span>
                     </Link>
@@ -110,14 +123,19 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                 <PagesLinks startPage={startPage} endPage={endPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${parseInt(currentPage) + 1}`} aria-label="Siguiente">
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${parseInt(currentPage) + 1}`} 
+                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        aria-label="Siguiente"
+                    >
                         <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
                     </Link>
                 </li>
                 
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${totalPages}`} aria-label="Siguiente">
+                    <Link className="page-link" to={`?page=${totalPages}`} onClick={() => setCurrentPage(totalPages)}  aria-label="Siguiente">
                         <span className="sr-only">Ultim</span>
                     </Link>
                 </li>    
@@ -133,7 +151,7 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     for (let i = startPage; i <= endPage; i++) {
         pageLinks.push(
             <li className={`page-item ${i === parseInt(currentPage) ? 'active' : ''}`} key={i}>
-                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)}>{i}</Link>
+                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)} >{i}</Link>
             </li>
         )
     }

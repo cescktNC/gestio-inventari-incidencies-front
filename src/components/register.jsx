@@ -1,46 +1,95 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ComprobacioName, ComprobacioCognoms, ComprobacioDNI, 
+    ComprobacioEmail, ComprobacioPassword, ComprobacioConfPassword} from "../js/comprobacioCampsFormulariUser";
 
 import '../css/styleLogin.css';
 
 function Register() {
 
-    const [name, setName] = useState('');
-    const [cognoms, setCognoms] = useState('');
-    const [dni, setDNI] = useState('');
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
-    const [confirm_password, setconfirm_password] = useState('');
+    const [user, setUser] = useState({
+        nom: '',
+        cognoms: '',
+        dni: '',
+        email: '',
+        password: '',
+        confirm_password: ''
+    });
+
+    const [errorsBack, setErrorsBack] = useState([]);
+	const [errorBack, setErrorBack] = useState('');
+
+    const [comprobacio, setComprobacio] = useState({
+        comprobacioName: false,
+        comprobacioCognoms: false,
+        comprobacioDNI: false,
+        comprobacioEmail: false,
+        comprobacioPass: false,
+        comprobacioConfirmPass: false
+    });
+
+    
+    const [errors, setErrors] = useState({
+        errorName: '',
+        errorCognoms: '',
+        errorDNI: '',
+        errorEmail:'',
+        errorPass: '',
+        errorConfPass:''
+    });
 
 
-    const [comprobacioName, setcomprobacioName]=useState(false);
-    const [comprobacioCognoms, setcomprobacioCognoms]=useState(false);
-    const [comprobacioDNI, setcomprobacioDNI]=useState(false);
-    const [comprobacioEmail, setcomprobacioEmail]=useState(false);
-    const [ComprobacioPass, setComprobacioPass]=useState(false);
-    const [comprobacioConfirm_pass, setcomprobacioConfirm_pass]=useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-		if (comprobacioName && comprobacioCognoms && comprobacioDNI && 
-            comprobacioEmail && ComprobacioPass && comprobacioConfirm_pass) {
+        const { nom, cognoms, dni, email, password, confirm_password } = {...user};
+
+		if (!Object.values(comprobacio).includes(false)) {
                 fetch("http://localhost:5000/autenticacions/registerAPI", {
 				method: "POST",
-				body: JSON.stringify({ nom: name, cognoms: cognoms, dni: dni, email: email, password: pass, confirm_password: confirm_password }),
+				body: JSON.stringify({ nom: nom, cognoms: cognoms, dni: dni, email: email, password: password, confirm_password: confirm_password }),
 				headers: {
 					"Content-Type": "application/json",
 				},
 			})
 				.then(response => response.json())
 				.then(json => {
-					window.localStorage.setItem("id", json.user._id);
-					window.localStorage.setItem("carrec", json.user.carrec);
-					navigate("/home/user/show");
+                    console.log(json)
+                    if(json.error !== undefined) setErrorBack(json.error);
+
+                    if(json.errors !== undefined) setErrorsBack(json.errors);
+    
+                    if (json.user._id !== undefined) {
+                        window.localStorage.setItem("token", json.token);
+                        window.localStorage.setItem("id", json.user._id);
+                        window.localStorage.setItem("carrec", json.user.carrec);
+                        navigate(`/home/user/show/${json.user._id}`);
+                    }
+
 				});
             }
     }
+
+    const handleChange = input => {
+		setUser({ ...user, [input.name]: input.value });
+	};
+
+    const handleComprobacio = (camp, valor) => {
+        setComprobacio({
+        ...comprobacio,
+        [camp]: valor
+        });
+    };
+
+    const handleErrors = (camp, valor) => {
+        setErrors({
+        ...errors,
+        [camp]: valor
+        });
+    };
+
     const handleLoginFormSwitch = () => {
         navigate('/auth/login');
     }
@@ -50,28 +99,34 @@ function Register() {
             <div className="auth-form-container">
                 <h2>Registra't</h2>
                 <form className="register-form" onSubmit={handleSubmit}>
-                    <InputName name={name} setName={setName} setcomprobacioName={setcomprobacioName} />
-                    <p className="error-message" id="errorName"></p>
+                    {(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
 
-                    <InputCognoms cognoms={cognoms} setCognoms={setCognoms} setcomprobacioCognoms={setcomprobacioCognoms} />
-                    <p className="error-message" id="errorCognoms"></p>
+                    {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
 
-                    <InputDNI dni={dni} setDNI={setDNI} setcomprobacioDNI={setcomprobacioDNI} />
-                    <p className="error-message" id="errorDNI"></p>
+                    <InputName name={user.nom} handleChange={handleChange} handleComprobacio={handleComprobacio} handleErrors={handleErrors} />
+                    {errors.errorName && (<pre className="error-message">{errors.errorName}</pre>)}
 
-                    <InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
-                    <p className="error-message" id="errorEmail"></p>
+                    <InputCognoms cognoms={user.cognoms} handleChange={handleChange} handleComprobacio={handleComprobacio} handleErrors={handleErrors} />
+                    {errors.errorCognoms && (<pre className="error-message">{errors.errorCognoms}</pre>)}
 
-                    <InputPassword pass={pass} setPass={setPass} setComprobacioPass={setComprobacioPass} />
-                    <p className="error-message" id="errorPassword"></p>
+                    <InputDNI dni={user.dni} handleChange={handleChange} handleComprobacio={handleComprobacio} handleErrors={handleErrors} />
+                    {errors.errorDNI && (<pre className="error-message" >{errors.errorDNI}</pre>)}
+
+                    <InputEmail email={user.email} handleChange={handleChange} handleComprobacio={handleComprobacio} handleErrors={handleErrors} />
+                    {errors.errorEmail && (<pre className="error-message">{errors.errorEmail}</pre>)}
+
+                    <InputPassword pass={user.password} handleChange={handleChange} handleComprobacio={handleComprobacio} handleErrors={handleErrors} />
+                    {errors.errorPass && (<pre className="error-message" >{errors.errorPass}</pre>)}
                     
                     <InputConfPassword 
-                        pass={pass} 
-                        confirm_password={confirm_password} 
-                        setconfirm_password={setconfirm_password} 
-                        setcomprobacioConfirm_pass={setcomprobacioConfirm_pass} 
+                        userPass={user.password} 
+                        confirm_password={user.confirm_password} 
+                        handleChange={handleChange} 
+                        handleComprobacio={handleComprobacio} 
+                        handleErrors={handleErrors} 
                     />
-                    <p className="error-message" id="errorConfPass"></p>
+                    {errors.errorConfPass && (<pre className="error-message" >{errors.errorConfPass}</pre>)}
+
                     <button type="submit">Registra't</button>
                 </form>
                 <button className="link-btn" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
@@ -80,15 +135,34 @@ function Register() {
     )
 }
 
-function InputName({name, setName, setcomprobacioName}){
+function DivMessage({message}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{message}</p>
+        </div>
+    )
+}
+
+function DivArrayErrors({errors}){
+    console.log(errors)
+    return(
+        <ul className="alert alert-danger list-unstyled">
+            {errors.map((error, index) => <li key={index}>{error.msg}</li>)}
+        </ul>
+    )
+}
+
+
+
+function InputName({name, handleChange, handleComprobacio, handleErrors}){
     return(
         <>
-            <label htmlFor="name">Nom</label>
+            <label htmlFor="nom">Nom</label>
             <input 
                 value={name} 
-                name="name" 
-                onChange={(e) => setName(e.target.value)} 
-                onBlur={(e) => ComprobacioName(e.target.value, {setcomprobacioName})}
+                name="nom" 
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
                 id="name" 
                 placeholder="Nom" 
                 pattern="^[a-zA-ZÀ-ÿ\s]+$" 
@@ -98,15 +172,15 @@ function InputName({name, setName, setcomprobacioName}){
     )
 }
 
-function InputCognoms({cognoms, setCognoms, setcomprobacioCognoms}){
+function InputCognoms({cognoms, handleChange, handleComprobacio, handleErrors}){
     return(
         <>
             <label htmlFor="cognoms">Cognoms</label>
             <input 
                 value={cognoms} 
                 name="cognoms" 
-                onChange={(e) => setCognoms(e.target.value)} 
-                onBlur={(e) => ComprobacioCognoms(e.target.value, {setcomprobacioCognoms})}
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioCognoms(e.target.value, {handleComprobacio, handleErrors})}
                 id="cognoms" 
                 placeholder="Cognoms" 
                 required
@@ -115,15 +189,15 @@ function InputCognoms({cognoms, setCognoms, setcomprobacioCognoms}){
     )
 }
 
-function InputDNI({dni, setDNI, setcomprobacioDNI}){
+function InputDNI({dni, handleChange, handleComprobacio, handleErrors}){
     return(
         <>
             <label htmlFor="dni">DNI</label>
             <input 
                 value={dni} 
                 name="dni" 
-                onChange={(e) => setDNI(e.target.value)} 
-                onBlur={(e) => ComprobacioDNI(e.target.value, {setcomprobacioDNI})}
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioDNI(e.target.value, {handleComprobacio, handleErrors})}
                 id="dni" 
                 placeholder="11111111S" 
                 required
@@ -132,15 +206,15 @@ function InputDNI({dni, setDNI, setcomprobacioDNI}){
     )
 }
 
-function InputEmail({email, setEmail, setcomprobacioEmail}){
+function InputEmail({email, handleChange, handleComprobacio, handleErrors}){
     return(
         <>
             <label htmlFor="email">Correu Electronic</label>
             <input 
                 value={email} 
                 name="email" 
-                onChange={(e) => setEmail(e.target.value)} 
-                onBlur={(e) => ComprobacioEmail(e.target.value, {setcomprobacioEmail})}
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioEmail(e.target.value, {handleComprobacio, handleErrors})}
                 id="email" 
                 type="email" 
                 placeholder="youremail@gmail.com"
@@ -151,15 +225,15 @@ function InputEmail({email, setEmail, setcomprobacioEmail}){
     )
 }
 
-function InputPassword({pass, setPass, setComprobacioPass}){
+function InputPassword({pass,  handleChange, handleComprobacio, handleErrors}){
     return(
         <>
             <label htmlFor="password">Contrasenya</label>
             <input 
                 value={pass} 
                 name="password" 
-                onChange={(e) => setPass(e.target.value)} 
-                onBlur={(e) => ComprobacioPassword(e.target.value, {setComprobacioPass})}
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioPassword(e.target.value, {handleComprobacio, handleErrors})}
                 id="password" 
                 type="password" 
                 placeholder="********"
@@ -170,138 +244,23 @@ function InputPassword({pass, setPass, setComprobacioPass}){
     )
 }
 
-function InputConfPassword({pass, confirm_password, setconfirm_password, setcomprobacioConfirm_pass}){
+function InputConfPassword({userPass, confirm_password, handleChange, handleComprobacio, handleErrors}){
     return(
         <>
             <label htmlFor="password">Confirma Contrasenya</label>
             <input 
-            value={confirm_password} 
-            onChange={(e) => setconfirm_password(e.target.value)} 
-            onBlur={(e) => ComprobacioConfPassword(e.target.value, {pass, setcomprobacioConfirm_pass})}
-            type="password" placeholder="********" id="password" name="password"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$" required/>
+                value={confirm_password} 
+                onChange={(e) => handleChange(e.target)}
+                onBlur={(e) => ComprobacioConfPassword(e.target.value, {userPass, handleComprobacio, handleErrors})}
+                type="password" 
+                placeholder="********" 
+                id="password" 
+                name="confirm_password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$" 
+                required
+            />
         </>
     )
-}
-
-//Validació
-
-function ComprobacioName(name, {setcomprobacioName}){
-    let pattName = /[0-9!@#$%^&*()_\-+={}[\]|:;"'<>,.?/`~¡¿]/g;
-    let errorName = document.getElementById('errorName');
-    errorName.innerText='';
-
-    if(name === ''){
-        errorName.innerText='El camp Nom es obligatori';
-        return setcomprobacioName(false);
-    }
-
-    if(pattName.test(name)) {
-        errorName.innerText='El nom no pot contenir numeros o caracteres especials';
-        setcomprobacioName(false);
-    }
-    else setcomprobacioName(true);
-}
-
-function ComprobacioCognoms(cognoms,{setcomprobacioCognoms}){
-    let pattCognoms=/[0-9!@#$%^&*()_\-+={}[\]|:;"'<>,.?/`~¡¿]/g;
-    let errorCognoms = document.getElementById('errorCognoms');
-    errorCognoms.innerText='';
-
-    if(cognoms === ''){
-        errorCognoms.innerText='El camp Cognoms es obligatori';
-        return setcomprobacioCognoms(false);
-    }
-
-    if(pattCognoms.test(cognoms)){
-        errorCognoms.innerText='Els cognoms no poden contenir numeros o caracteres especials';
-        setcomprobacioCognoms(false);
-    }
-    else   setcomprobacioCognoms(true);
-}
-
-function ComprobacioDNI(dni,{setcomprobacioDNI}){
-    let pattDNI = /^[\d]{8}[a-z]{1}$/i;
-    let errorDNI = document.getElementById('errorDNI');
-    errorDNI.innerText='';
-
-    let letters = ['T','R','W','A','G','M','Y','F','P','D','X','B','N','J','Z','S','Q','V','H','L','C','K','E'];
-
-    let dniModificat = dni.replaceAll(' ', ''); 
-    let lletra = dniModificat.substring(dniModificat.length - 1); 
-
-    dniModificat = dniModificat.substring(0, dniModificat.length - 1);
-    let index = dniModificat % 23;
-
-
-    if(dni === ''){
-        errorDNI.innerText='El camp DNI es obigatori';
-        return setcomprobacioDNI(false);
-    }
-
-    if(!pattDNI.test(dni)){
-        errorDNI.innerText='Format incorrecte';
-        return setcomprobacioDNI(false);  
-    }
-
-    if (letters[index] === lletra) setcomprobacioDNI(true);
-    else setcomprobacioDNI(true);
-}
-
-function ComprobacioEmail(email,{setcomprobacioEmail}) {
-	let pattEmail = /^[\w_.+-]+@[\w-]+\.[\w-.]+$/i;
-	let errorEmail = document.getElementById("errorEmail");
-	errorEmail.innerText = "";
-
-	if (email === "") {
-		errorEmail.innerText = "El camp correu electronic es obigatori";
-		return setcomprobacioEmail(false);
-	}
-
-	if (pattEmail.test(email)) setcomprobacioEmail(true);
-	else {
-		errorEmail.innerText = "Format incorrecte";
-		setcomprobacioEmail(false);
-	}
-}
-
-function ComprobacioPassword(pass, {setComprobacioPass}) {
-	let pattPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-	let errorPass = document.getElementById("errorPassword");
-	errorPass.innerText = "";
-
-	if (pass === "") {
-		errorPass.innerText = "El camp contrasenya es obligatori";
-		return setComprobacioPass(false);
-	}
-
-	if (pattPassword.test(pass)) setComprobacioPass(true);
-	else {
-		errorPass.innerText = "Format incorrecte, \nmínim 8 caràcters, \nalmenys una mínuscula, \nuna majúscula i un número";
-            setComprobacioPass(false);
-	}
-}
-
-function ComprobacioConfPassword(confirm_password, {pass, setcomprobacioConfirm_pass}){
-    let pattPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-	let errorConfPass = document.getElementById("errorConfPass");
-	errorConfPass.innerText = "";
-
-	if (confirm_password === "") {
-		errorConfPass.innerText = "El camp confirma contrasenya es obligatori";
-		return setcomprobacioConfirm_pass(false);
-	}
-
-    if(pass !== confirm_password){
-        errorConfPass.innerText = "Les contrasenyas no coincideixen";
-		return setcomprobacioConfirm_pass(false);
-    }
-
-	if (pattPassword.test(confirm_password)) setcomprobacioConfirm_pass(true);
-	else {
-		errorConfPass.innerText = "Format incorrecte, \nmínim 8 caràcters, \nalmenys una mínuscula, \nuna majúscula i un número";
-            setcomprobacioConfirm_pass(false);
-	}
 }
 
 export default Register;
