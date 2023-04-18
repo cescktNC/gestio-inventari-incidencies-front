@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { nomesTreballadors, nomesEncaregatMaterial } from "../js/comprobacioCarrecs"
 
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
@@ -7,12 +8,12 @@ import "../css/styleImage.css";
 function LlistatMenu({user})  {
 
 	const carrec = window.localStorage.getItem('carrec');
-
+	const id = window.localStorage.getItem('id');
 	return (
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari carrec={carrec} id={user.id} />
+				<CreacioContingutUsuari carrec={carrec} id={id} />
 				<CreacioContingutInventari carrec={carrec} />
 				<CreacioContingutGeneral carrec={carrec} />
 				<CreacioContingutReserves carrec={carrec} />
@@ -136,11 +137,11 @@ function CreacioContingutInventari({carrec}) {
 				</div>
 			</li>
 			<ul className="ulSecundari">
-			{(carrec !== 'Alumne' && carrec !== 'Professor') && (
+			{nomesEncaregatMaterial() && (
 				<>
 					<li className="d-flex">
 						<Link
-							to="user/show"
+							to="material/list"
 							className="a"
 							role="button"
 						>

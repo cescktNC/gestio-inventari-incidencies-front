@@ -62,7 +62,9 @@
   }
   
   input[type="text"], 
-  input[type="password"] {
+  input[type="password"],
+  input[type="email"],
+  option {
     background-color: #f2f2f2;
     color: #333;
   }

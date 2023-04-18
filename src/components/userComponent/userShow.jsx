@@ -1,8 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import "../../css/styleUser.css"
-import { ComprobacioPassword,ComprobacioNewPassword,  ComprobacioConfNewPassword } from '../../js/comprobacioCampsFormulariUser';
-// const bcrypt = require('bcrypt');
+import { ComprobacioPassword, ComprobacioNewPassword, ComprobacioConfNewPassword } from '../../js/comprobacioCampsFormulariUser';
 
 
 function UserShow() {
@@ -43,6 +42,8 @@ function UserShow() {
 	const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
 
+	const [message, setMessage] = useState('');
+
 	useEffect(() => {
 		fetch(
 			"http://localhost:5000/usuaris/user/" + id,
@@ -62,40 +63,37 @@ function UserShow() {
 
 	let imgProfile = 'http://localhost:5000/'+ user.profilePicture;
 
-	// const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	const salt = bcrypt.genSaltSync(12);
-	// 	console.log('a')
-	// 	console.log(pass)
-	// 	if (!Object.values(comprobacio).includes(false)) {
-	// 	console.log('b')
-	// 		let hashPass = {
-	// 			password: bcrypt.hashSync(pass.password, salt),
-	// 			password1: bcrypt.hashSync(pass.password1, salt),
-	// 			password2: bcrypt.hashSync(pass.password2, salt)
-	// 		};
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
-	// 		fetch("http://localhost:5000/usuaris/user/password/" + id, {
-	// 			method: "PUT",
-	// 			body: JSON.stringify({ hashPass: hashPass }),
-	// 			headers: {
-	// 			"Content-Type": "application/json",
-	// 			},
-	// 		})
-	// 		.then((response) => response.json())
-	// 		.then((json) => {
-	// 			console.log(json)
+		if (!Object.values(comprobacio).includes(false)) {
 
-	// 			if(json.error !== undefined) setErrorBack(json.error);
+			fetch("http://localhost:5000/usuaris/user/password/" + id, {
+				method: "PUT",
+				body: JSON.stringify({ pass }),
+				headers: {
+				"Content-Type": "application/json",
+				},
+			})
+			.then((response) => response.json())
+			.then((json) => {
+				console.log(json)
+
+				if(json.error !== undefined) setErrorBack(json.error);
 		
-	// 			if(json.errors !== undefined) setErrorsBack(json.errors);
+				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-	// 			if (json.ok) {
-	// 				console.log(json)
-	// 			}
-	// 		});
-	// 	}
-	// }
+				if (json.ok) {
+					setMessage(json.message);
+					setPass({
+						password: '',
+						password1: '',
+						password2: ''
+					})
+				}
+			});
+		}
+	}
 
 	const handleChange = input => {
 		setPass({ ...pass, [input.name]: input.value });
@@ -140,15 +138,44 @@ function UserShow() {
 									handleComprobacio={handleComprobacio}
 									errors={errors}
 									handleErrors={handleErrors}
-									// handleSubmit={handleSubmit}
+									handleSubmit={handleSubmit}
 								/>
 							)}
+							{(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
+
+							{(errorBack !== '' && (<DivErrorMessage message={errorBack}  />) )}
+
+							{(message !== '' && (<DivMessage message={message}  />) )}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
+}
+
+function DivMessage({message}){
+	return(
+		<div className="alert alert-success">
+			<p className="text-success">{message}</p>
+		</div>
+	)
+}
+
+function DivErrorMessage({message}){
+	return(
+		<div className="alert alert-danger">
+			<p className="text-danger">{message}</p>
+		</div>
+	)
+}
+
+function DivArrayErrors({errors}){
+	return(
+		<ul className="alert alert-danger list-unstyled">
+			{errors.map((error, index) => <li key={index}>{error}</li>)}
+		</ul>
+	)
 }
 
 function DivEnllaços({id, pass, handleChange, handleComprobacio, errors, handleErrors, handleSubmit}){
@@ -173,7 +200,7 @@ function DivEnllaços({id, pass, handleChange, handleComprobacio, errors, handle
 					aria-expanded="false"
 					aria-controls="collapseExample"
 				>
-				Cambiar contrassenya
+				Cambiar contrasenya
 				</a>
 			</p>
 			<div className="collapse" id="password">
@@ -202,7 +229,7 @@ function DivEnllaços({id, pass, handleChange, handleComprobacio, errors, handle
 							handleErrors={handleErrors}
 						/>
 						{errors.errorConfNewPass && (<p className="error-message" >{errors.errorConfNewPass}</p>)}
-						<button type="submit" className="btn btn-primary">Actualitzar contrassenya</button>
+						<button type="submit" className="btn btn-primary">Actualitzar contrasenya</button>
 					</form>
 				</div>
 			</div>
@@ -213,7 +240,7 @@ function DivEnllaços({id, pass, handleChange, handleComprobacio, errors, handle
 function InputPassword({userPass, handleChange, handleComprobacio, handleErrors}){
 	return(
 		<>
-			<label form="password">Contrassenya Antiga</label>
+			<label form="password">Contrasenya Antiga</label>
 			<input
 				type="password"
 				name="password"
@@ -229,7 +256,7 @@ function InputPassword({userPass, handleChange, handleComprobacio, handleErrors}
 function InputNewPassword({userPass, handleChange, handleComprobacio, handleErrors}){
 	return(
 		<>
-			<label form="password">Contrassenya Nova</label>
+			<label form="password">Contrasenya Nova</label>
 			<input
 				type="password"
 				name="password1"
@@ -245,7 +272,7 @@ function InputNewPassword({userPass, handleChange, handleComprobacio, handleErro
 function InputConfirmNewPassword({userPass, userConfirmPass, handleChange, handleComprobacio, handleErrors}){
 	return(
 		<>
-			<label form="password">Repeteix Contrassenya Nova</label>
+			<label form="password">Repeteix Contrasenya Nova</label>
 			<input
 				type="password"
 				name="password2"

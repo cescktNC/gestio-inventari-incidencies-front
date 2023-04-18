@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ComprobacioName, ComprobacioCognoms, ComprobacioDNI, 
           ComprobacioEmail, ComprobacioPassword, ComprobacioConfPassword} from "../../js/comprobacioCampsFormulariUser";
 
+import { nomesAdmin } from "../../js/comprobacioCarrecs";
+
 function UserUpdate(){
   const { id } = useParams();
   const navigate = useNavigate();
@@ -174,14 +176,28 @@ function UserUpdate(){
               />
               {errors.errorEmail && (<p className="error-message">{errors.errorEmail}</p>)}
 
-              <CambiaPassword 
-                userPass={user.password1}
-                userConfirmPass={user.password2} 
-                handleChange={handleChange} 
-                handleComprobacio={handleComprobacio} 
-                errors={errors}
-                handleErrors={handleErrors}
-              />
+                {nomesAdmin() && (
+                  <div className="form-group card card-body">
+                    <InputPassword 
+                      userPass={user.password1} 
+                      handleChange={handleChange} 
+                      handleComprobacio={handleComprobacio} 
+                      handleErrors={handleErrors} 
+                    />
+                    {errors.errorPass && (<p className="error-message" >{errors.errorPass}</p>)}
+    
+                    <InputConfirmPassword 
+                      userPass={user.password1} 
+                      userConfirmPass={user.password2} 
+                      handleChange={handleChange}
+                      handleComprobacio={handleComprobacio} 
+                      handleErrors={handleErrors}
+                    />
+                    {errors.errorConfPass && (<p className="error-message" >{errors.errorConfPass}</p>)}
+    
+                  </div>
+                )}
+
 
               {/* <InputprofilePicture userProfile={user.profilePicture} handleChangeFile={handleChangeFile} /> */}
 
@@ -292,46 +308,6 @@ function InputEmail({emailUser, handleChange, handleComprobacio, handleErrors}){
         required
       />
     </div>
-  )
-}
-
-function CambiaPassword({userPass, userConfirmPass, handleChange, handleComprobacio, errors, handleErrors}){
-  return(
-    <>
-      <p>
-        <a
-          className="btn btn-primary"
-          data-bs-toggle="collapse"
-          href="#password"
-          role="button"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-        >
-          Canviar Password
-        </a>
-      </p>
-      <div className="collapse" id="password">
-        <div className="form-group card card-body">
-          <InputPassword 
-            userPass={userPass} 
-            handleChange={handleChange} 
-            handleComprobacio={handleComprobacio} 
-            handleErrors={handleErrors} 
-          />
-          {errors.errorPass && (<p className="error-message" >{errors.errorPass}</p>)}
-
-          <InputConfirmPassword 
-            userPass={userPass} 
-            userConfirmPass={userConfirmPass} 
-            handleChange={handleChange}
-            handleComprobacio={handleComprobacio} 
-            handleErrors={handleErrors}
-          />
-          {errors.errorConfPass && (<p className="error-message" >{errors.errorConfPass}</p>)}
-
-        </div>
-      </div>
-    </>
   )
 }
 
