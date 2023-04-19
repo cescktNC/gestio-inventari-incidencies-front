@@ -240,7 +240,7 @@ function CreacioContingutGeneral({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="planta/list"
 						className="a"
 						role="button"
 					>
@@ -251,7 +251,7 @@ function CreacioContingutGeneral({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="localitzacio/list"
 						className="a"
 						role="button"
 					>
