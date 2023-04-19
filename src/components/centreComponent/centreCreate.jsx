@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CentreCreate(props) {
+  const navigate = useNavigate();
   const [CentreData, setCentreData] = useState({
     nom: "",
     codi: "",
@@ -13,15 +15,15 @@ function CentreCreate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/centre/create", {
+    fetch("http://localhost:5000/centre/APIcreate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(CentreData),
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          props.history.push("/home/centre");
+        if (json.ok) {
+          navigate("/home/centre");
         } else {
           alert("Error al crear el centre");
         }

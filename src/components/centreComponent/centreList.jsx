@@ -11,7 +11,6 @@ function CentreList() {
         fetch("http://localhost:5000/centre/APIlist?page=" + currentPage)
             .then(response => response.json())
             .then(json => {
-                console.log(json)
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -36,7 +35,7 @@ function CentreTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/centre/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -61,7 +60,10 @@ function CentreTbody({ list }) {
             </td>
 
             <td>
-                <Link className="btn btn-secondary" to={`/home/centre/update/${centre._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/centre/update/${centre._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/centre/delete/${centre._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));

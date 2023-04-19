@@ -152,7 +152,7 @@ function CreacioContingutInventari({carrec}) {
 					</li>
 					<li className="d-flex">
 						<Link
-							to="user/show"
+							to="exemplar/list"
 							className="a"
 							role="button"
 
@@ -166,7 +166,7 @@ function CreacioContingutInventari({carrec}) {
 			)}
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="prestec/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('prestec')}
@@ -179,7 +179,7 @@ function CreacioContingutInventari({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="incidencia/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('incidencia')}

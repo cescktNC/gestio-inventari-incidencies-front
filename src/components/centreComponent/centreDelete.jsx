@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function CentreDelete(props) {
   const { id } = useParams();
   
+  const navigate = useNavigate();
 
   const [CentreData, setCentreData] = useState({
     nom: "",
@@ -11,19 +12,20 @@ function CentreDelete(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/centre/${id}`)
+    fetch(`http://localhost:5000/centre/APIshow/${id}`)
       .then((response) => response.json())
-      .then((json) => setCentreData(json));
+      .then((json) => setCentreData(json.centre));
   }, [id]);
 
+
   const handleDelete = () => {
-    fetch(`http://localhost:5000/centre/delete/${id}`, {
+    fetch(`http://localhost:5000/centre/APIdelete/${id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          props.history.push("/home/centre");
+        if (json.ok) {
+          navigate("/home/centre");
         } else {
           alert("Error al eliminar el centre");
         }
@@ -32,7 +34,7 @@ function CentreDelete(props) {
 
   return (
     <div>
-      <h1>Eliminar centre {id}</h1>
+      <h1>Eliminar centre {CentreData.nom}</h1>
       <div>
         <p>Estàs a punt d'eliminar el següent centre:</p>
         <ul>
