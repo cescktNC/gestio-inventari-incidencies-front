@@ -1,5 +1,5 @@
 .span {
-	font-size: 12px;
+	font-size: 1.5rem;
 	color: rgb(129, 140, 248);
 	font-weight: 600;
 	text-transform: uppercase;
@@ -12,7 +12,7 @@
 }
 
 .p {
-	font-size: 11px;
+	font-size: 1.2rem;
 	color: rgb(156, 163, 175);
 	letter-spacing: 0.06px;
 	font-weight: 500;
@@ -68,7 +68,19 @@
 .spanSub {
 	line-height: 20px;
 	font-weight: 500;
-	font-size: 1.3rem;
+	font-size: 1.15rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 0px;
+	font-family: Inter var, Roboto, "Helvetica", Arial, sans-serif;
+	display: block;
+}
+
+.spanSubMenu{
+	line-height: 20px;
+	font-weight: 500;
+	font-size: 1rem;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -148,7 +160,6 @@
 	font-size: 16px;
 	line-height: 16;
 	display: block;
-	vertical-align: middle;
 }
 
 .ulSecundari{

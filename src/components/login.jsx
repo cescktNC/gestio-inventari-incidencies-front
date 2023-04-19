@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import {React, useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/styleLogin.css";
 
@@ -7,34 +7,55 @@ function Login() {
 	const [pass, setPass] = useState("");
 	const [comprobacioEmail, setcomprobacioEmail] = useState(false);
 	const [ComprobacioPass, setComprobacioPass] = useState(false);
-	const [clicked, setClicked] = useState(false);
+	const [userData, setUserData] = useState({ id: '', carrec: '', token: '' });
+	const [message, setMessage] = useState('');
+	const [errors, setErrors] = useState([]);
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (clicked) {
-		fetch("http://localhost:5000/autenticacions/loginAPI", {
-			method: "POST",
-			body: JSON.stringify({ email: email, password: pass }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				window.localStorage.setItem("id", json.usuariId);
-				window.localStorage.setItem("carrec", json.carrec);
-				navigate("/home/user/show");
-			});
-		}
-	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (comprobacioEmail && ComprobacioPass) setClicked(true);
-		else setClicked(false);
-	};
-	
+		setMessage('');
+		setErrors([]);
+		setUserData({ id: '', carrec: '', token: '' });
+
+		if (comprobacioEmail && ComprobacioPass) {
+			fetch("http://localhost:5000/autenticacions/loginAPI", {
+				method: "POST",
+				body: JSON.stringify({ email: email, password: pass }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => response.json())
+			.then((json) => {
+				if(json.message !== undefined) {
+					setMessage(json.message);
+				}
+				if(json.errors !== undefined) setErrors(json.errors);
+
+				if (json.id !== undefined) {
+					setUserData({
+						id: json.id,
+						carrec: json.carrec,
+						token: json.token
+					});
+				}
+				
+			});
+		}
+
+	}
+
+	useEffect(() => {
+		if (message === "" && errors.length === 0 && userData.id !== '') {
+			window.localStorage.setItem("id", userData.id);
+			window.localStorage.setItem("carrec", userData.carrec);
+			window.localStorage.setItem("token", userData.token);
+			navigate("/home/user/show/" + userData.id);
+		}
+	}, [message, errors, userData]);
+
 	function handleRegisterFormSwitch() {
 		navigate("/auth/register");
 	}
@@ -44,10 +65,15 @@ function Login() {
 			<div className="auth-form-container">
 				<h2>Inicia Sessió</h2>
 				<form className="login-form" onSubmit={handleSubmit}>
-					<InputEmail email={email} setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
+
+					{(errors.length !== 0 && (<DivArrayErrors errors={errors} />) )}
+
+					{(message !== '' && (<DivMessage message={message}  />) )}
+
+					<InputEmail  setEmail={setEmail} setcomprobacioEmail={setcomprobacioEmail} />
 					<p id="errorEmail" className="error-message"></p>
 
-					<InputPassword pass={pass} setPass={setPass} setComprobacioPass={setComprobacioPass} />
+					<InputPassword setPass={setPass} setComprobacioPass={setComprobacioPass} />
 					<p id="errorPassword" className="error-message"></p>
 					<button type="submit">Inicia Sessió</button>
 				</form>
@@ -59,14 +85,33 @@ function Login() {
 	);
 }
 
-function InputEmail({email, setEmail, setcomprobacioEmail}) {
+function DivMessage({message}){
+	return(
+		<div className="alert alert-danger">
+			<p className="text-danger">{message}</p>
+		</div>
+	)
+}
+
+
+function DivArrayErrors({errors}){
+	return(
+		<ul className="alert alert-danger list-unstyled">
+			{errors.map((error, index) => <li key={index}>{error}</li>)}
+		</ul>
+	)
+}
+
+function InputEmail({ setEmail, setcomprobacioEmail }) {
 
 	return (
 		<>
 			<label htmlFor="email">Correu Electronic</label>
 			<input
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
+				onChange={(e) => {
+					setEmail(e.target.value)
+					ComprobacioEmail(e.target.value, {setcomprobacioEmail})
+				}}
 				onBlur={(e) => ComprobacioEmail(e.target.value, {setcomprobacioEmail})}
 				type="email"
 				placeholder="exemple@exemple.com"
@@ -77,15 +122,17 @@ function InputEmail({email, setEmail, setcomprobacioEmail}) {
 	);
 }
 
-function InputPassword({pass, setPass,setComprobacioPass}) {
+function InputPassword({ setPass, setComprobacioPass }) {
 
 	return (
 		<>
 			<label htmlFor="password">Contrasenya</label>
 			<input
-				value={pass}
-				onChange={(e) => setPass(e.target.value)}
-				onBlur={(e) => ComprobacioPassword(pass, {setComprobacioPass})}
+				onChange={(e) => {
+					setPass(e.target.value)
+					ComprobacioPassword(e.target.value, {setComprobacioPass})
+				}}
+				onBlur={(e) => ComprobacioPassword(e.target.value, {setComprobacioPass})}
 				type="password"
 				placeholder="********"
 				pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$'

@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleUser.css'
 
-import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs"
-
-function UserList(){
+function MaterialList(){
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
-        fetch("http://localhost:5000/usuaris/user?page=" + currentPage)
+        fetch("http://localhost:5000/materials/material?page=" + currentPage)
         .then(response => response.json())
         .then(json => {
             setList(json.list);
@@ -17,14 +14,14 @@ function UserList(){
             setTotalPages(json.totalPages);
         });
     }, [currentPage]);
-   
-    return (
+
+    return(
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
                 <div className="card-body">
                     <h5 className="card-title">Usuaris</h5>
                     <div className="mx-auto">
-                        <UserTable list={list} />
+                        <MaterialTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                     </div>
                 </div>
@@ -33,68 +30,70 @@ function UserList(){
     )
 }
 
-function UserTable({list}){
+function MaterialTable({list}){
 
     return(
         <table className="table table-responsive table-striped table-hover ">
             <thead className="thead-green">
                 <tr>
+                    <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Cognoms</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Càrrec</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Imatge de perfil</th>
-                    <th scope="col" colSpan={2} className="W-15">
-                        <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
+                    <th scope="col">Descripció</th>
+                    <th scope="col">Preu de compra</th>
+                    <th scope="col">Any de compra</th>
+                    <th scope="col">Fotografia</th>
+                    <th scope="col">Nom Categoria</th>
+                    <th scope="col">
+                        <Link to="/home/material/create" className="btn btn-primary">Nou</Link>
+                    </th>
+                    <th scope="col">
+                        <Link to="/materials/import" class="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <UserTbody list={list}></UserTbody>
+                <MaterialTbody list={list}></MaterialTbody>
             </tbody>
         </table>
     )
 
 }
 
-function UserTbody({list}){
+function MaterialTbody({list}){
 
-    return list.map((user, index) =>( 
+    return list.map((material, index) =>( 
         <tr key={index}>
             <td>
-                { user.nom }
+                { material.codi }
             </td>
             <td>
-                { user.cognoms }
+                { material.nom }
             </td>
             <td>
-                { user.dni }
+                { material.descripcio }
             </td>
             <td>
-                { user.carrec }
+                { material.preuCompra + '€' }
             </td>
             <td>
-                { user.email }
+                { material.anyCompra.substring(0, 4) }
             </td>
             <td className="W-15">
-                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
+                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ material.fotografia} alt="" />
             </td>
             <td>
-                {(nomesAdmin() || nomesEquipDocent()) && (
-                    <Link className="btn btn-secondary" to={`/home/user/show/${user._id}`}>Perfil</Link>  
-                )}
+                { material.codiSubCategoria.nom }
             </td>
-            {(nomesAdmin()) && (
-                <>
-                    <td>
-                        <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Editar</Link>
-                    </td>
-                    <td>
-                        <Link className="btn btn-danger" to={`/home/user/delete/${user._id}`}>Eliminar</Link>
-                    </td>
-                </>
-            )}
+            <td>
+                <Link className="btn btn-secondary" to={`/home/material/show/${material._id}`}>Perfil</Link>  
+            </td>        
+            <td>
+                <Link className="btn btn-secondary" to={`/home/material/update/${material._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/material/delete/${material._id}`}>Eliminar</Link>
+            </td> 
+        
         </tr>
     ));
 }
@@ -170,4 +169,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default UserList;
+export default MaterialList;
