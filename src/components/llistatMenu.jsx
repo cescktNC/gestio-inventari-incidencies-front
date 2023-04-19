@@ -317,7 +317,7 @@ function CreacioContingutReserves({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="cadira/list"
 						className="a"
 						role="button"
 					>
