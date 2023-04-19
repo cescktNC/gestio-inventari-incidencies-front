@@ -7,6 +7,7 @@ import CentreContainer from "../containers/centreContainer";
 import PlantaContainer from "../containers/plantaContainer";
 import LocalitzacioContainer from "../containers/localitzacioContainer";
 import ReservaContainer from "../containers/reservaContainer";
+import SessioContainer from "../containers/sessioContainer";
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/styleMenu.css";
@@ -48,6 +49,7 @@ export function Menu() {
 					<Route path="/planta/*" element={<PlantaContainer/>} />
 					<Route path="/localitzacio/*" element={<LocalitzacioContainer/>} />
 					<Route path="/reserva/*" element={<ReservaContainer/>} />
+					<Route path="/sessio/*" element={<SessioContainer/>} />
 
 				</Routes>
 				

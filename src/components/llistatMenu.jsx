@@ -304,7 +304,7 @@ function CreacioContingutReserves({carrec}) {
 			</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="sessio/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('sessio')}
