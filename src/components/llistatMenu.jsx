@@ -291,7 +291,7 @@ function CreacioContingutReserves({carrec}) {
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="reserva/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('reserva')}
