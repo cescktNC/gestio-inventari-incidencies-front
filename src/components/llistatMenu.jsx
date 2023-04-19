@@ -1,5 +1,6 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { nomesTreballadors, nomesEncaregatMaterial } from "../js/comprobacioCarrecs"
 
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
@@ -7,12 +8,12 @@ import "../css/styleImage.css";
 function LlistatMenu({user})  {
 
 	const carrec = window.localStorage.getItem('carrec');
-
+	const id = window.localStorage.getItem('id');
 	return (
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari carrec={carrec} />
+				<CreacioContingutUsuari carrec={carrec} id={id} />
 				<CreacioContingutInventari carrec={carrec} />
 				<CreacioContingutGeneral carrec={carrec} />
 				<CreacioContingutReserves carrec={carrec} />
@@ -23,7 +24,7 @@ function LlistatMenu({user})  {
 }
 
 function Profile({user}) {
-	const name = user.nom +" "+user.cognoms;
+	const name = user.nom + " " + user.cognoms;
 	const email = user.email;
 	const imageUrl = 'http://localhost:5000/'+user.profilePicture;
 
@@ -71,7 +72,7 @@ function SVGDown(){
 	)
 }
 
-function CreacioContingutUsuari({carrec}){
+function CreacioContingutUsuari({carrec, id}){
 	const [componentActual, setComponentActual] = useState(true);
 
 	function handleClick(){
@@ -91,7 +92,7 @@ function CreacioContingutUsuari({carrec}){
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-					to="user/show"
+					to={`user/show/${id}`}
 					className="a"
 					role="button"
 					onClick={handleClick}
@@ -105,7 +106,7 @@ function CreacioContingutUsuari({carrec}){
 
 				</li>
 
-				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} /> 
+				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} id={id} /> 
 				
 			</ul>
 			
@@ -136,11 +137,11 @@ function CreacioContingutInventari({carrec}) {
 				</div>
 			</li>
 			<ul className="ulSecundari">
-			{(carrec !== 'Alumne' || carrec !== 'Professor') && (
+			{nomesEncaregatMaterial() && (
 				<>
 					<li className="d-flex">
 						<Link
-							to="user/show"
+							to="material/list"
 							className="a"
 							role="button"
 						>
@@ -342,20 +343,21 @@ function LogoFinal() {
 	);
 }
 
-/**********************************************************
+/*
+ **********************************************************
  ************************ SubMenu *************************
- **********************************************************/
+ **********************************************************
+*/
 
-function CreacioSubMenuUsuari({componentActual, carrec}){
-
-	const navigate = useNavigate();
+function CreacioSubMenuUsuari({componentActual, carrec, id}){
+	const navigate = useNavigate()
 
 	function handleClick(e){
 		e.preventDefault();
 		window.localStorage.removeItem("id");
 		window.localStorage.removeItem("carrec");
-		navigate("/")
-
+		window.localStorage.removeItem("token");
+		navigate("/auth/login");
 	}
 
 	if(!componentActual){
@@ -364,12 +366,12 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 				<div className="divFlexSubMenu">
 					<div className="divSubMenu">
 						<Link
-						to="user/show"
+						to={`user/show/${id}`}
 						className="a"
 						role="button"
 						>
 							<div className="divEnllaç">
-								<span className="spanSub">Perfil</span>
+								<span className="spanSubMenu">Perfil</span>
 							</div>
 							
 						</Link>
@@ -382,19 +384,20 @@ function CreacioSubMenuUsuari({componentActual, carrec}){
 							role="button"
 							>
 								<div className="divEnllaç">
-									<span className="spanSub">Llistat</span>
+									<span className="spanSubMenu">Llistat</span>
 								</div>
 							</Link>
 						</div>
 					)}
 					<div className="divSubMenu">
 							<Link
-							className="a"
-							role="button"
-							onClick={(event)=>handleClick(event)}
+								className="a"
+								role="button"
+								to="/auth/login"
+								onClick={(event)=>handleClick(event)}
 							>
 								<div className="divEnllaç">
-									<span className="spanSub">LogOut</span>
+									<span className="spanSubMenu">LogOut</span>
 								</div>
 							</Link>
 						</div>
