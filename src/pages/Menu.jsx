@@ -1,6 +1,9 @@
 import MenuContainer from "../containers/menuContainer";
 import UserContainer from "../containers/userContainer";
 import MaterialContainer from "../containers/materialContainer";
+import CategoriaContainer from "../containers/categoriesContainer";
+import SubCategoriaContainer from "../containers/subcategoriesContainer";
+import CentreContainer from "../containers/centreContainer";
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/styleMenu.css";
@@ -35,6 +38,9 @@ export function Menu() {
 				<Routes>
 					<Route path="/user/*" element={<UserContainer user={user} />} />
 					<Route path="/material/*" element={<MaterialContainer user={user} />} />
+					<Route path="/categories/*" element={<CategoriaContainer />} />
+					<Route path="/subcategories/*" element={<SubCategoriaContainer />} />
+					<Route path="/centre/*" element={<CentreContainer/>} />
 
 				</Routes>
 				

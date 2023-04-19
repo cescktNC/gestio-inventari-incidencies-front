@@ -17,7 +17,7 @@ function UserList(){
             setTotalPages(json.totalPages);
         });
     }, [currentPage]);
-
+   
     return (
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
