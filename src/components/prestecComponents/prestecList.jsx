@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleUser.css'
+import '../../css/styleUser.css';
 
-import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs"
-
-function UserList(){
+function PrestecList(){
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
-        fetch("http://localhost:5000/usuaris/user?page=" + currentPage)
+        fetch("http://localhost:5000/prestec/APIlist?page=" + currentPage)
         .then(response => response.json())
         .then(json => {
+            console.log(json)
             setList(json.list);
             setCurrentPage(json.currentPage);
             setTotalPages(json.totalPages);
@@ -22,9 +21,9 @@ function UserList(){
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
                 <div className="card-body">
-                    <h5 className="card-title">Usuaris</h5>
+                    <h5 className="card-title">Exemplar</h5>
                     <div className="mx-auto">
-                        <UserTable list={list} />
+                        <PrestecTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                     </div>
                 </div>
@@ -33,68 +32,61 @@ function UserList(){
     )
 }
 
-function UserTable({list}){
+function PrestecTable({list}){
 
     return(
         <table className="table table-responsive table-striped table-hover ">
             <thead className="thead-green">
                 <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Cognoms</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Càrrec</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Imatge de perfil</th>
-                    <th scope="col" colSpan={2} className="W-15">
-                        <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
+                    <th scope="col">Codi</th>
+                    <th scope="col">Data d'inici</th>
+                    <th scope="col">Data Retorn</th>
+                    <th scope="col">Codi Exemplar</th>
+                    <th scope="col">DNI Usuari</th>
+                    <th scope="col">Estat</th>
+                    <th scope="col" colSpan={3} className="W-15">
+                        <Link to="/home/prestec/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <UserTbody list={list}></UserTbody>
+                <PrestecTbody list={list} />
             </tbody>
         </table>
     )
 
 }
 
-function UserTbody({list}){
+function PrestecTbody({list}){
 
-    return list.map((user, index) =>( 
+    return list.map((exemplar, index) =>( 
         <tr key={index}>
-            <td>
-                { user.nom }
+            <td className="align-middle">
+                { exemplar.codi }
             </td>
-            <td>
-                { user.cognoms }
+            <td className="align-middle">
+                { exemplar.dataInici.substring(0, 10).split("-").reverse().join("-") }
             </td>
-            <td>
-                { user.dni }
+            <td className="align-middle">
+                { exemplar.dataRetorn.substring(0, 10).split("-").reverse().join("-") }
             </td>
-            <td>
-                { user.carrec }
-            </td>
-            <td>
-                { user.email }
-            </td>
-            <td className="W-15">
-                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
-            </td>
-            <td>
-                {(nomesAdmin() || nomesEquipDocent()) && (
-                    <Link className="btn btn-secondary" to={`/home/user/show/${user._id}`}>Perfil</Link>  
+            <td className="align-middle">
+                {exemplar.codiExemplar &&(
+                    exemplar.codiExemplar.codi 
                 )}
             </td>
-            {(nomesAdmin()) && (
-                <>
-                    <td>
-                        <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Editar</Link>
-                    </td>
-                    <td>
-                        <Link className="btn btn-danger" to={`/home/user/delete/${user._id}`}>Eliminar</Link>
-                    </td>
-                </>
-            )}
+            <td className="align-middle">
+                { exemplar.dniUsuari.dni }
+            </td>
+            <td className="align-middle">
+                { exemplar.estat }
+            </td>
+            <td className="align-middle">
+                <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
+            </td>
+            <td className="align-middle">
+                <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
+            </td>
         </tr>
     ));
 }
@@ -170,4 +162,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default UserList;
+export default PrestecList;
