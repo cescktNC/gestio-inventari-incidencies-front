@@ -79,7 +79,7 @@ function MaterialTbody({list}){
                 { material.anyCompra.substring(0, 4) }
             </td>
             <td className="W-15">
-                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ material.fotografia} alt="" />
+                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/' + material.fotografia} alt="" />
             </td>
             <td>
                 { material.codiSubCategoria.nom }
@@ -139,8 +139,8 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                         onClick={() => setCurrentPage(currentPage - 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 

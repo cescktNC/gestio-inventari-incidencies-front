@@ -45,7 +45,7 @@ function UserTable({list}){
                     <th scope="col">Càrrec</th>
                     <th scope="col">Email</th>
                     <th scope="col">Imatge de perfil</th>
-                    <th scope="col" colSpan={2} className="W-15">
+                    <th scope="col" colSpan={3} className="W-15">
                         <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -60,7 +60,7 @@ function UserTable({list}){
 
 function UserTbody({list}){
 
-    return list.map((user, index) =>( 
+    return list.map((user, index) => ( 
         <tr key={index}>
             <td>
                 { user.nom }
@@ -137,11 +137,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 

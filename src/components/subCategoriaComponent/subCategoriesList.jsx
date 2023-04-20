@@ -36,7 +36,7 @@ function SubcategoryTable({ list }) {
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
                     <th scope="col">CodiCategoria</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/subcategories/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -60,10 +60,13 @@ function SubcategoryTbody({ list }) {
                 {subcategory.nom}
             </td>
             <td>
-                {subcategory.codicategoria}
+                {subcategory.codiCategoria.nom}
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/subcategories/update/${subcategory._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/subcategories/update/${subcategory._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));
@@ -86,12 +89,17 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
         <nav>
             <ul className="pagination">
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to="?page=1" aria-label="Anterior">
+                    <Link className="page-link" to="?page=1" aria-label="Anterior" onClick={() => setCurrentPage(1)}>
                         <span>Primer</span>
                     </Link>
                 </li>
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${currentPage - 1}`} aria-label="Anterior">
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${currentPage - 1}`} 
+                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        aria-label="Anterior"
+                    >
                         <span aria-hidden="true">&laquo;</span>
                         <span className="sr-only">Anterior</span>
                     </Link>
@@ -100,14 +108,19 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                 <PagesLinks startPage={startPage} endPage={endPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${parseInt(currentPage) + 1}`} aria-label="Siguiente">
-                        <span aria-hidden="true">&raquo;</span>
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${parseInt(currentPage) + 1}`} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
+                        aria-label="Siguiente"
+                    >
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${totalPages}`} aria-label="Siguiente">
+                    <Link className="page-link" to={`?page=${totalPages}`} onClick={() => setCurrentPage(totalPages)}  aria-label="Siguiente">
                         <span className="sr-only">Ultim</span>
                     </Link>
                 </li>    
@@ -116,17 +129,20 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
     )
 }
 
-function PagesLinks({ startPage, endPage, currentPage, setCurrentPage }) {
-    const pageLinks = [];
+function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
+
+    let pageLinks = [];
+
     for (let i = startPage; i <= endPage; i++) {
         pageLinks.push(
             <li className={`page-item ${i === parseInt(currentPage) ? 'active' : ''}`} key={i}>
-                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)}>{i}</Link>
+                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)} >{i}</Link>
             </li>
         )
     }
 
     return pageLinks;
 }
+
 
 export default SubCategoryList;

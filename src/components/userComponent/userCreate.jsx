@@ -41,7 +41,7 @@ function UserUpdate(){
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         fetch("http://localhost:5000/usuaris/carrecs", {
             headers: {
