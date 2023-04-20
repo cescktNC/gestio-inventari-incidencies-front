@@ -117,7 +117,7 @@ function DivMessage({message}){
 
 function SelectCategory({categoryData}){
   return categoryData.map((categoryData)=>(
-    <option key={categoryData._id} value={`id-${categoryData._id}`}> {categoryData.nom} </option>
+    <option key={categoryData._id} value={`${categoryData._id}`}> {categoryData.nom} </option>
   ));
 }
 

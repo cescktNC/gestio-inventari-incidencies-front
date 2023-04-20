@@ -127,4 +127,4 @@ function PagesLinks({ startPage, endPage, currentPage, setCurrentPage }) {
     return pageLinks;
 }
 
-export default CentreList;
+export default CadiraList;

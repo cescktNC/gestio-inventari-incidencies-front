@@ -51,7 +51,7 @@ function ReservaUpdate(props) {
             type="text"
             id="codi"
             name="codi"
-            value={RservaData.codi}
+            value={ReservaData.codi}
             onChange={handleChange}
             required
           />

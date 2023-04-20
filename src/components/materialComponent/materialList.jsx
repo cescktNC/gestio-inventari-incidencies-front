@@ -47,7 +47,7 @@ function MaterialTable({list}){
                         <Link to="/home/material/create" className="btn btn-primary">Nou</Link>
                     </th>
                     <th scope="col">
-                        <Link to="/materials/import" class="btn btn-primary">Importar</Link>
+                        <Link to="/materials/import" className="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>
@@ -83,10 +83,7 @@ function MaterialTbody({list}){
             </td>
             <td>
                 { material.codiSubCategoria.nom }
-            </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/material/show/${material._id}`}>Perfil</Link>  
-            </td>        
+            </td>     
             <td>
                 <Link className="btn btn-secondary" to={`/home/material/update/${material._id}`}>Editar</Link>
             </td>

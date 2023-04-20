@@ -1,9 +1,10 @@
-import { React, useState, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { ComprobacioName, ComprobacioCodi, ComprobacioDescripcio, ComprobacioAnyCompra, 
     ComprobacioFotografia, ComprobacioPreuCompra } from "../../js/comprobacioCampsMaterials";
 
-function MaterialCreate(){
+function MaterialUpdate() {
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [material, setMaterial]=useState({
@@ -39,23 +40,44 @@ function MaterialCreate(){
 
 	const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
+
+    useEffect(() => {
+        fetch("http://localhost:5000/materials/material/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => response.json())
+        .then(json => {
+            if(json.material) {
+                setMaterial({
+                    ...material, 
+                    ...json.material, 
+                    anyCompra: json.material.anyCompra.substring(0, 10), 
+                    codi: json.material.codi.slice(0, json.material.codi.indexOf('-')),
+                    codiSubCategoria: json.material.codiSubCategoria._id,
+                    fotografia: ''
+                })
+            }
+            if(json.error) setErrorBack(json.error)
+        });
+    }, []);
     
     useEffect(() => {
         fetch("http://localhost:5000/subcategories/APIAlllist", {
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
         })
         .then(response => response.json())
         .then(json => {
             if(json.list) {
                 setSubCategories(json.list);
-                setMaterial({...material, codiSubCategoria: json.list[0]._id})
             }
             if(json.error) setErrorBack(json.error)
         });
     
-    },[]);
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -65,12 +87,15 @@ function MaterialCreate(){
         formData.append('descripcio', material.descripcio);
         formData.append('preuCompra', material.preuCompra);
         formData.append('anyCompra', material.anyCompra);
-        formData.append('fotografia', material.fotografia);
+        if(material.fotografia !== '') {
+            formData.append('fotografia', material.fotografia);
+            setComprobacio({...comprobacio, comprobacioFotografia: true});
+        }
         formData.append('codiSubCategoria', material.codiSubCategoria);        
 
         if (!Object.values(comprobacio).includes(false)) {
-            fetch("http://localhost:5000/materials/material", {
-                method: "POST",
+            fetch("http://localhost:5000/materials/material/" + id, {
+                method: "PUT",
                 body: formData,
                 headers: {
                 }
@@ -110,7 +135,6 @@ function MaterialCreate(){
             [camp]: valor
         });
     };
-
 
     return (
         <main>
@@ -191,7 +215,6 @@ function MaterialCreate(){
 }
 
 function DivError({error}){
-    console.log(error)
     return(
         <div className="alert alert-danger">
             <p className="text-danger">{error}</p>
@@ -337,6 +360,7 @@ function InputSubCategoria({subCategoriaMaterial, subCategories, handleChange, h
                 id="codiSubCategoria"
                 value={subCategoriaMaterial}
                 onChange={handleChange} 
+                onBlur={(e) => ComprobacioFotografia(e.target.value, {handleComprobacio, handleErrors})}
                 className="form-control"
             >
                 {
@@ -350,4 +374,4 @@ function InputSubCategoria({subCategoriaMaterial, subCategories, handleChange, h
     )
 }
 
-export default MaterialCreate;
+export default MaterialUpdate;

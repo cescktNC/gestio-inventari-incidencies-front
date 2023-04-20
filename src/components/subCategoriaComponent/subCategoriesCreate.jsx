@@ -32,8 +32,6 @@ function SubCategoryCreate(props) {
     });
   }, []);
 
-  // if(list[0]) setsubCategoryData({...subcategoryData, codiCategoria: list[0]._id});
-
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("http://localhost:5000/subcategories/APIcreate", {
@@ -107,7 +105,7 @@ function SelectCategories({list, handleChange}) {
       className="form-control" 
       onChange={handleChange}
     >
-      {list.map((categoria, index) => <option key={index} value={`id-${categoria._id}`}>{categoria.nom}</option>)}
+      {list.map((categoria, index) => <option key={index} value={`${categoria._id}`}>{categoria.nom}</option>)}
     </select>
   )
   

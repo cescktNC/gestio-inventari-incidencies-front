@@ -37,7 +37,7 @@ function  ReservaDelete(props) {
       <div>
         <p>Estàs a punt d'eliminar la següent reserva:</p>
         <ul>
-          <li>Codi: {RservaData.codi}</li>
+          <li>Codi: {ReservaData.codi}</li>
           <li>Hora: {ReservaData.hora}</li>
           <li>Data: {ReservaData.data}</li>
           <li>Dni Usuari: {ReservaData.dniUsuari}</li>

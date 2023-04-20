@@ -1,23 +1,23 @@
 import { Route, Routes} from "react-router-dom";
 
 import MaterialList from "../components/materialComponent/materialList";
-// import UserCreate from "../components/userComponent/userCreate"
-// import UserUpdate from "../components/userComponent/userUpdate"
-// import UserDelete from '../components/userComponent/userDelete';
+import MaterialCreate from "../components/materialComponent/materialCreate";
+import MaterialUpdate from "../components/materialComponent/materialUpdate";
+import MaterialDelete from "../components/materialComponent/materialDelete";
 
-function InventoryContainer({user}){
+function MaterialContainer(){
 
     return(
         <Routes>
 
             <Route path="/list" element={<MaterialList />} />
-            {/* <Route path="/create" element={<UserCreate />} />
-            <Route path="/update/:id" element={<UserUpdate />} />
-            <Route path="/delete/:id" element={<UserDelete />} /> */}
+            <Route path="/create" element={<MaterialCreate />} />
+            <Route path="/update/:id" element={<MaterialUpdate />} />
+            <Route path="/delete/:id" element={<MaterialDelete />} />
 
         </Routes>
     )
 
 }
 
-export default InventoryContainer;
+export default MaterialContainer;

@@ -19,7 +19,7 @@ function ReservaCreate(props) {
     fetch("http://localhost:5000/reserva/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(ReservData),
+      body: JSON.stringify(ReservaData),
     })
       .then((response) => response.json())
       .then((json) => {
@@ -52,7 +52,7 @@ function ReservaCreate(props) {
             <input
               id="hora"
               name="hora"
-              value={Reserva.hora}
+              value={ReservaData.hora}
               onChange={handleChange}
               required
             />
