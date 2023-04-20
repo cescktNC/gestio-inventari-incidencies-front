@@ -291,7 +291,7 @@ function CreacioContingutReserves({carrec}) {
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="reserva/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('reserva')}
@@ -304,7 +304,7 @@ function CreacioContingutReserves({carrec}) {
 			</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="sessio/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('sessio')}
@@ -317,7 +317,7 @@ function CreacioContingutReserves({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="cadira/list"
 						className="a"
 						role="button"
 					>

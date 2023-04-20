@@ -56,7 +56,7 @@ function PlantaUpdate(props) {
           />
         </div>
         <div>
-          <label htmlFor="Nom">Nom:</label>
+          <label htmlFor="nom">Nom:</label>
           <input
             id="nom"
             name="nom"
@@ -70,7 +70,7 @@ function PlantaUpdate(props) {
           <input
             id="codicentre"
             name="codicentre"
-            value={PlantaData.coidcentre}
+            value={PlantaData.codicentre}
             onChange={handleChange}
             required
           />

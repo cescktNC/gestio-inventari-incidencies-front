@@ -34,14 +34,14 @@ function LocalitzacioDelete(props) {
 
   return (
     <div>
-      <h1>Eliminar centre {id}</h1>
+      <h1>Eliminar localitzacio {id}</h1>
       <div>
         <p>Estàs a punt d'eliminar el següent centre:</p>
         <ul>
           <li>Nom: {LocalitzacioData.nom}</li>
           <li>Codi: {LocalitzacioData.codi}</li>
-          <li>Codi: {LocalitzacioData.codiPlanta}</li>
-          <li>Codi: {LocalitzacioData.especial}</li>
+          <li>CodiPlanta: {LocalitzacioData.codiPlanta}</li>
+          <li>Especial: {LocalitzacioData.especial}</li>
         </ul>
         <p>Estàs segur d'eliminar-la?</p>
         <button onClick={handleDelete}>Eliminar</button>
