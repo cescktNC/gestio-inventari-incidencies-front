@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function CentreUpdate(props) {
   const { id } = useParams();
   
+  const navigate = useNavigate();
 
   const [centreData, setCentreData] = useState({
     nom: "",
@@ -11,9 +12,9 @@ function CentreUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/centre/update/${id}`)
+    fetch(`http://localhost:5000/centre/APIshow/${id}`)
       .then((response) => response.json())
-      .then((json) => setCentreData(json));
+      .then((json) => setCentreData(json.centre));
   }, [id]);
 
   const handleChange = (e) => {
@@ -23,15 +24,15 @@ function CentreUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/centre/update/${id}`, {
+    fetch(`http://localhost:5000/centre/APIupdate/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(centreData),
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          props.history.push("/home/centre");
+        if (json.ok) {
+          navigate("/home/centre/list");
         } else {
           alert("Error al actualizar el centre");
         }
@@ -40,7 +41,7 @@ function CentreUpdate(props) {
 
   return (
     <div>
-      <h1>Actualitzant centre {id}</h1>
+      <h1>Actualitzant centre {centreData.nom}</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="codi">Codi:</label>

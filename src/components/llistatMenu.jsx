@@ -152,7 +152,7 @@ function CreacioContingutInventari({carrec}) {
 					</li>
 					<li className="d-flex">
 						<Link
-							to="user/show"
+							to="exemplar/list"
 							className="a"
 							role="button"
 
@@ -166,7 +166,7 @@ function CreacioContingutInventari({carrec}) {
 			)}
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="prestec/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('prestec')}
@@ -179,7 +179,7 @@ function CreacioContingutInventari({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="incidencia/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('incidencia')}
@@ -241,7 +241,7 @@ function CreacioContingutGeneral({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="planta/list"
 						className="a"
 						role="button"
 					>
@@ -252,7 +252,7 @@ function CreacioContingutGeneral({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="localitzacio/list"
 						className="a"
 						role="button"
 					>
@@ -291,7 +291,7 @@ function CreacioContingutReserves({carrec}) {
 			<ul className="ulSecundari">
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="reserva/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('reserva')}
@@ -304,7 +304,7 @@ function CreacioContingutReserves({carrec}) {
 			</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="sessio/list"
 						className="a"
 						role="button"
 						onClick={()=>handleSubMenuClick('sessio')}
@@ -317,7 +317,7 @@ function CreacioContingutReserves({carrec}) {
 				</li>
 				<li className="d-flex">
 					<Link
-						to="user/show"
+						to="cadira/list"
 						className="a"
 						role="button"
 					>

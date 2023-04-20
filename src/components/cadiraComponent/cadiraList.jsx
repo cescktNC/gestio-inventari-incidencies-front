@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../../css/styleCategories.css'
 
-function CentreList() {
+function CadiraList() {
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/centre/APIlist?page=" + currentPage)
+        fetch("http://localhost:5000/cadira/APIlist?page=" + currentPage)
             .then(response => response.json())
             .then(json => {
+                console.log(json)
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -20,50 +21,47 @@ function CentreList() {
     return (
         <div className="d-flex align-items-center ">
             <div className="mx-auto">
-                <CentreTable list={list} />
+                <CadiraTable list={list} />
                 <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )
 }
 
-function CentreTable({ list }) {
+function CadiraTable({ list }) {
 
     return (
         <table className="table table-responsive table-striped table-hover ">
             <thead>
                 <tr>
-                    <th scope="col">Codi</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col" colSpan={2}>
-                        <Link to="/home/centre/create" className="btn btn-primary">Nou</Link>
+                    <th scope="col">Fila</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">
+                        <Link to="/home/cadira/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <CentreTbody list={list}></CentreTbody>
+                <CadiraTbody list={list}></CadiraTbody>
             </tbody>
         </table>
     )
 
 }
 
-function CentreTbody({ list }) {
+function CadiraTbody({ list }) {
 
-    return list.map((centre, index) => (
+    return list.map((cadira, index) => (
         <tr key={index}>
             <td>
-                {centre.codi}
+                {cadira.fila}
             </td>
             <td>
-                {centre.nom}
+                {cadira.numero}
             </td>
 
             <td>
-                <Link className="btn btn-secondary" to={`/home/centre/update/${centre._id}`}>Editar</Link>
-            </td>
-            <td>
-                <Link className="btn btn-danger" to={`/home/centre/delete/${centre._id}`}>Eliminar</Link>
+                <Link className="btn btn-secondary" to={`/home/cadira/update/${cadira._id}`}>Edit</Link>
             </td>
         </tr>
     ));

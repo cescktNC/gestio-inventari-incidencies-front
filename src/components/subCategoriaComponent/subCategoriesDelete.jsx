@@ -12,7 +12,7 @@ function SubCategoryDelete(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/subcategories/${id}`)
+    fetch(`http://localhost:5000/subcategories${id}`)
       .then((response) => response.json())
       .then((json) => setsubCategoryData(json));
   }, [id]);

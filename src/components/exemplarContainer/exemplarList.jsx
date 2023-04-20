@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleUser.css'
+import '../../css/styleUser.css';
+import '../../css/styleExemplar.css';
 
 import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs"
 
-function UserList(){
+function ExemplarList(){
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
-        fetch("http://localhost:5000/usuaris/user?page=" + currentPage)
+        fetch("http://localhost:5000/exemplar/APIlist?page=" + currentPage)
         .then(response => response.json())
         .then(json => {
             setList(json.list);
@@ -22,9 +23,9 @@ function UserList(){
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
                 <div className="card-body">
-                    <h5 className="card-title">Usuaris</h5>
+                    <h5 className="card-title">Exemplar</h5>
                     <div className="mx-auto">
-                        <UserTable list={list} />
+                        <ExemplarTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                     </div>
                 </div>
@@ -33,65 +34,60 @@ function UserList(){
     )
 }
 
-function UserTable({list}){
+function ExemplarTable({list}){
 
     return(
         <table className="table table-responsive table-striped table-hover ">
             <thead className="thead-green">
                 <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Cognoms</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Càrrec</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Imatge de perfil</th>
+                    <th scope="col">Codi</th>
+                    <th scope="col">Estat</th>
+                    <th scope="col">QR</th>
+                    <th scope="col">Nom del material</th>
+                    <th scope="col">Nom de la localitzacio</th>
                     <th scope="col" colSpan={3} className="W-15">
-                        <Link to="/home/user/create" className="btn btn-primary">Nou</Link>
+                        <Link to="/home/exemplar/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <UserTbody list={list}></UserTbody>
+                <ExemplarTbody list={list} />
             </tbody>
         </table>
     )
 
 }
 
-function UserTbody({list}){
+function ExemplarTbody({list}){
 
-    return list.map((user, index) => ( 
+    return list.map((exemplar, index) =>( 
         <tr key={index}>
-            <td>
-                { user.nom }
+            <td className="align-middle">
+                { exemplar.codi }
             </td>
-            <td>
-                { user.cognoms }
+            <td className="align-middle">
+                { exemplar.demarca ? 'Baixa' : 'Alta' }
             </td>
-            <td>
-                { user.dni }
+            <td className="align-middle SVGcontainer" dangerouslySetInnerHTML={{ __html: exemplar.qr }}>
             </td>
-            <td>
-                { user.carrec }
+            <td className="align-middle">
+                { exemplar.codiMaterial.nom }
             </td>
-            <td>
-                { user.email }
+            <td className="align-middle">
+                { exemplar.codiLocalitzacio.nom }
             </td>
-            <td className="W-15">
-                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ user.profilePicture} alt="" />
-            </td>
-            <td>
+            <td className="align-middle">
                 {(nomesAdmin() || nomesEquipDocent()) && (
-                    <Link className="btn btn-secondary" to={`/home/user/show/${user._id}`}>Perfil</Link>  
+                    <Link className="btn btn-secondary" to={`/home/exemplar/show/${exemplar._id}`}>Perfil</Link>  
                 )}
             </td>
             {(nomesAdmin()) && (
                 <>
-                    <td>
-                        <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Editar</Link>
+                    <td className="align-middle">
+                        <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
                     </td>
-                    <td>
-                        <Link className="btn btn-danger" to={`/home/user/delete/${user._id}`}>Eliminar</Link>
+                    <td className="align-middle">
+                        <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
                     </td>
                 </>
             )}
@@ -137,11 +133,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
+                        onClick={() => setCurrentPage(currentPage - 1)} 
                         aria-label="Siguiente"
                     >
-                        <span className="sr-only">Següent</span>
                         <span aria-hidden="true">&raquo;</span>
+                        <span className="sr-only">Següent</span>
                     </Link>
                 </li>
                 
@@ -170,4 +166,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default UserList;
+export default ExemplarList;

@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../../css/styleCategories.css'
 
-function CentreList() {
+function SessioList() {
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/centre/APIlist?page=" + currentPage)
+        fetch("http://localhost:5000/sessio/APIlist?page=" + currentPage)
             .then(response => response.json())
-            .then(json => {
+            .then(json => {               
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -20,14 +20,14 @@ function CentreList() {
     return (
         <div className="d-flex align-items-center ">
             <div className="mx-auto">
-                <CentreTable list={list} />
+                <SessioTable list={list} />
                 <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )
 }
 
-function CentreTable({ list }) {
+function SessioTable({ list }) {
 
     return (
         <table className="table table-responsive table-striped table-hover ">
@@ -35,35 +35,35 @@ function CentreTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col" colSpan={2}>
-                        <Link to="/home/centre/create" className="btn btn-primary">Nou</Link>
+                    <th scope="col">CodiReserva</th>
+                    <th scope="col">
+                        <Link to="/home/sessio/create" className="btn btn-primary">Nova</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <CentreTbody list={list}></CentreTbody>
+                <SessioTbody list={list}></SessioTbody>
             </tbody>
         </table>
     )
 
 }
 
-function CentreTbody({ list }) {
+function SessioTbody({ list }) {
 
-    return list.map((centre, index) => (
+    return list.map((sessio, index) => (
         <tr key={index}>
             <td>
-                {centre.codi}
+                {sessio.codi}
             </td>
             <td>
-                {centre.nom}
-            </td>
-
-            <td>
-                <Link className="btn btn-secondary" to={`/home/centre/update/${centre._id}`}>Editar</Link>
+                {sessio.nom}
             </td>
             <td>
-                <Link className="btn btn-danger" to={`/home/centre/delete/${centre._id}`}>Eliminar</Link>
+                {sessio.codiReserva}
+            </td>
+            <td>
+                <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
             </td>
         </tr>
     ));
@@ -71,17 +71,17 @@ function CentreTbody({ list }) {
 
 
 
-function Paginate({ currentPage, totalPages, setCurrentPage }) {
+function Paginate({currentPage, totalPages, setCurrentPage}){
 
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(totalPages, startPage + 4);
 
     if (endPage - startPage < 4) {
-        startPage = Math.max(1, endPage - 4);
+        startPage=Math.max(1, endPage - 4);
     }
 
 
-    return (
+    return(
 
         <nav>
             <ul className="pagination">
@@ -105,19 +105,21 @@ function Paginate({ currentPage, totalPages, setCurrentPage }) {
                         <span className="sr-only">Següent</span>
                     </Link>
                 </li>
-
+                
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
                     <Link className="page-link" to={`?page=${totalPages}`} aria-label="Siguiente">
                         <span className="sr-only">Ultim</span>
                     </Link>
-                </li>
+                </li>    
             </ul>
         </nav>
     )
 }
 
-function PagesLinks({ startPage, endPage, currentPage, setCurrentPage }) {
-    const pageLinks = [];
+function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
+
+    let pageLinks = [];
+
     for (let i = startPage; i <= endPage; i++) {
         pageLinks.push(
             <li className={`page-item ${i === parseInt(currentPage) ? 'active' : ''}`} key={i}>
@@ -129,4 +131,4 @@ function PagesLinks({ startPage, endPage, currentPage, setCurrentPage }) {
     return pageLinks;
 }
 
-export default CentreList;
+export default SessioList;
