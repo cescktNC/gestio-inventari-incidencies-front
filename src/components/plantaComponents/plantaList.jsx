@@ -10,7 +10,8 @@ function PlantaList() {
     useEffect(() => {
         fetch("http://localhost:5000/planta/APIlist?page=" + currentPage)
             .then(response => response.json())
-            .then(json => {               
+            .then(json => {    
+                console.log(json)           
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -37,7 +38,7 @@ function PlantaTable({ list }) {
                     <th scope="col">Nom</th>
                     <th scope="col">CodiCentre</th>
                     <th scope="col">Planol</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/planta/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -67,7 +68,10 @@ function PlantaTbody({ list }) {
                 <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ planta.planol} alt="" />
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/planta/update/${planta._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/planta/update/${planta._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/planta/delete/${planta._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));

@@ -100,8 +100,6 @@ function UserUpdate(){
         });
     };
 
-    console.log(comprobacio)
-
     return (
         <main>
             <div className="card mt-4">
