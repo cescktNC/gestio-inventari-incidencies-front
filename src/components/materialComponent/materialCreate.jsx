@@ -43,7 +43,7 @@ function MaterialCreate(){
     useEffect(() => {
         fetch("http://localhost:5000/subcategories/APIAlllist", {
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
         })
         .then(response => response.json())
@@ -165,7 +165,6 @@ function MaterialCreate(){
                         {errorsForm.errorAnyCompra && (<p className="error-message" >{errorsForm.errorAnyCompra}</p>)}
 
                         <InputFotografia 
-                            fotografiaMaterial={material.fotografia} 
                             handleChange={handleChange}  
                             handleComprobacio={handleComprobacio} 
                             handleErrors={handleErrors}
@@ -176,8 +175,6 @@ function MaterialCreate(){
                             subCategoriaMaterial={material.codiSubCategoria} 
                             subCategories={subCategories}
                             handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
                         />
                         {errorsForm.errorCodiSubcategoria && (<p className="error-message">{errorsForm.errorCodiSubcategoria}</p>)}
 
@@ -307,7 +304,7 @@ function InputAnyCompra({anyCompraMaterial, handleChange, handleComprobacio, han
     )
 }
 
-function InputFotografia({fotografiaMaterial, handleChange, handleComprobacio, handleErrors}){
+function InputFotografia({ handleChange, handleComprobacio, handleErrors}){
 
     return(
         <div className="form-group">
@@ -325,7 +322,7 @@ function InputFotografia({fotografiaMaterial, handleChange, handleComprobacio, h
     )
 }
 
-function InputSubCategoria({subCategoriaMaterial, subCategories, handleChange, handleComprobacio, handleErrors}){
+function InputSubCategoria({subCategoriaMaterial, subCategories, handleChange}){
 
     return(
 

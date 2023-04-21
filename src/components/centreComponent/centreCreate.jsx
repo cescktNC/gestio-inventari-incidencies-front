@@ -23,7 +23,7 @@ function CentreCreate(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/centre");
+          navigate("/home/centre/list");
         } else {
           alert("Error al crear el centre");
         }

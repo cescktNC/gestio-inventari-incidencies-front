@@ -7,7 +7,7 @@ function MaterialUpdate() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [material, setMaterial]=useState({
+    const [material, setMaterial] = useState({
         codi: '',
         nom: '',
         descripcio: '',

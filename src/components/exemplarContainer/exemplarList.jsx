@@ -78,19 +78,23 @@ function ExemplarTbody({list}){
             </td>
             <td className="align-middle">
                 {(nomesAdmin() || nomesEquipDocent()) && (
-                    <Link className="btn btn-secondary" to={`/home/exemplar/show/${exemplar._id}`}>Perfil</Link>  
+                    !exemplar.demarca &&(
+                        <Link className="btn btn-secondary" to={`/home/exemplar/show/${exemplar._id}`}>Mostrar</Link>  
+                    )
                 )}
             </td>
-            {(nomesAdmin()) && (
-                <>
-                    <td className="align-middle">
-                        <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
-                    </td>
-                    <td className="align-middle">
-                        <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
-                    </td>
-                </>
-            )}
+
+            <td className="align-middle">
+                {(nomesAdmin() && !exemplar.demarca) && (
+                    <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
+                )}
+            </td>
+            <td className="align-middle">
+                {(nomesAdmin() && !exemplar.demarca) && (
+                    <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
+                )}
+            </td>
+
         </tr>
     ));
 }
