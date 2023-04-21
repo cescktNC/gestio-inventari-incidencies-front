@@ -36,7 +36,7 @@ function CadiraTable({ list }) {
                 <tr>
                     <th scope="col">Fila</th>
                     <th scope="col">Numero</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/cadira/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -63,6 +63,10 @@ function CadiraTbody({ list }) {
             <td>
                 <Link className="btn btn-secondary" to={`/home/cadira/update/${cadira._id}`}>Edit</Link>
             </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/cadira/delete/${cadira._id}`}>Eliminar</Link>
+            </td>
+
         </tr>
     ));
 }

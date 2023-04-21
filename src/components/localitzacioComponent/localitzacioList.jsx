@@ -37,7 +37,7 @@ function LocalitzacioTable({ list }) {
                     <th scope="col">Nom</th>
                     <th scope="col">codiPlanta</th>
                     <th scope="col">Especial</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/localitzacio/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -68,6 +68,9 @@ function LocalitzacioTbody({ list }) {
             </td>
             <td>
                 <Link className="btn btn-secondary" to={`/home/localitzacio/update/${localitzacio._id}`}>Edit</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/localitzacio/delete/${localitzacio._id}`}>Elimnar</Link>
             </td>
         </tr>
     ));

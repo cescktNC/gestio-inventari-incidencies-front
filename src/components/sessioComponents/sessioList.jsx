@@ -36,7 +36,7 @@ function SessioTable({ list }) {
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
                     <th scope="col">CodiReserva</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/sessio/create" className="btn btn-primary">Nova</Link>
                     </th>
                 </tr>
@@ -64,6 +64,9 @@ function SessioTbody({ list }) {
             </td>
             <td>
                 <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
+            </td>
+            <td>
+                <Link className="btn btn-secondary" to={`/home/sessio/delete/${sessio._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));

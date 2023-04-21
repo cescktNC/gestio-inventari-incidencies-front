@@ -36,7 +36,7 @@ function SubcategoryTable({ list }) {
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
                     <th scope="col">CodiCategoria</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/subcategories/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -64,6 +64,9 @@ function SubcategoryTbody({ list }) {
             </td>
             <td>
                 <Link className="btn btn-secondary" to={`/home/subcategories/update/${subcategory._id}`}>Edit</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));

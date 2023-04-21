@@ -35,7 +35,7 @@ function CategoryTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/categories/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -60,6 +60,9 @@ function CategoryTbody({ list }) {
             </td>
             <td>
                 <Link className="btn btn-secondary" to={`/home/categories/update/${category._id}`}>Edit</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/cadira/delete/${cadira._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));
