@@ -12,7 +12,7 @@ function SubCategoryUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/categories/${id}`)
+    fetch(`http://localhost:5000/subcategories/${id}`)
       .then((response) => response.json())
       .then((json) => setsubCategoryData(json));
   }, [id]);
@@ -24,7 +24,7 @@ function SubCategoryUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/categories/update/${id}`, {
+    fetch(`http://localhost:5000/subcategories/update/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(subcategoryData),

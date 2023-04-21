@@ -51,7 +51,7 @@ function ReservaUpdate(props) {
             type="text"
             id="codi"
             name="codi"
-            value={RservaData.codi}
+            value={ReservaData.codi}
             onChange={handleChange}
             required
           />
@@ -77,11 +77,11 @@ function ReservaUpdate(props) {
           />
         </div>
         <div>
-          <label htmlFor="dniusuari">Dni Usuari:</label>
+          <label htmlFor="dniUsuari">Dni Usuari:</label>
           <input
-            id="dniusuari"
-            name="dniusuari"
-            value={ReservaData.dniusuari}
+            id="dniUsuari"
+            name="dniUsuari"
+            value={ReservaData.dniUsuari}
             onChange={handleChange}
             required
           />

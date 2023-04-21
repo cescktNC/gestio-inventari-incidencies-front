@@ -71,7 +71,7 @@ function ReservaTbody({ list }) {
                 {reserva.codiLocalitzacio}
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/planta/update/${planta._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/reserva/update/${reserva._id}`}>Edit</Link>
             </td>
         </tr>
     ));
