@@ -36,3 +36,27 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
+a {
+    color: #536391;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #818cf8;
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
