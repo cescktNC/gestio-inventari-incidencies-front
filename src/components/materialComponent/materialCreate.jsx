@@ -191,7 +191,6 @@ function MaterialCreate(){
 }
 
 function DivError({error}){
-    console.log(error)
     return(
         <div className="alert alert-danger">
             <p className="text-danger">{error}</p>

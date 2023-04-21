@@ -71,6 +71,20 @@ export function ComprobacioFotografia(fotografia, { handleComprobacio, handleErr
     handleErrors('errorFotografia', errorFotografia);
 }
 
+export function ComprobacioFitxer(fitxer, { handleComprobacio, handleErrors }) {
+    let errorFitxer = '';
+    if (fitxer === '') {
+        errorFitxer = 'El camp Fitxer es obligatori';
+        handleComprobacio('comprobacioFitxer', false);
+    } else if(!['application/json', 'text/csv'].includes(fitxer.type)){
+        errorFitxer = "La fitxer ha de ser un fitxer 'png', 'jpeg', 'jpg'";
+        handleComprobacio('comprobacioFitxer', false);
+    }
+    else handleComprobacio('comprobacioFitxer', true);
+
+    handleErrors('errorFitxer', errorFitxer);
+}
+
 export function ComprobacioPreuCompra(preuCompra, { handleComprobacio, handleErrors }) {
     let patt = /^\d+(\.\d+)?$/;
     let errorPreuCompra = '';

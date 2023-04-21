@@ -47,7 +47,7 @@ function MaterialTable({list}){
                         <Link to="/home/material/create" className="btn btn-primary">Nou</Link>
                     </th>
                     <th scope="col">
-                        <Link to="/materials/import" className="btn btn-primary">Importar</Link>
+                        <Link to="/home/material/import" className="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>
