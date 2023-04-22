@@ -129,11 +129,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 

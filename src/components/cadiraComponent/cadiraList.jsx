@@ -69,27 +69,32 @@ function CadiraTbody({ list }) {
 
 
 
-function Paginate({ currentPage, totalPages, setCurrentPage }) {
+function Paginate({currentPage, totalPages, setCurrentPage}){
 
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(totalPages, startPage + 4);
 
     if (endPage - startPage < 4) {
-        startPage = Math.max(1, endPage - 4);
+        startPage=Math.max(1, endPage - 4);
     }
 
 
-    return (
+    return(
 
         <nav>
             <ul className="pagination">
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to="?page=1" aria-label="Anterior">
+                    <Link className="page-link" to="?page=1" aria-label="Anterior" onClick={() => setCurrentPage(1)}>
                         <span>Primer</span>
                     </Link>
                 </li>
                 <li className={`page-item ${parseInt(currentPage) === 1 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${currentPage - 1}`} aria-label="Anterior">
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${currentPage - 1}`} 
+                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        aria-label="Anterior"
+                    >
                         <span aria-hidden="true">&laquo;</span>
                         <span className="sr-only">Anterior</span>
                     </Link>
@@ -98,28 +103,35 @@ function Paginate({ currentPage, totalPages, setCurrentPage }) {
                 <PagesLinks startPage={startPage} endPage={endPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${parseInt(currentPage) + 1}`} aria-label="Siguiente">
-                        <span aria-hidden="true">&raquo;</span>
+                    <Link 
+                        className="page-link" 
+                        to={`?page=${parseInt(currentPage) + 1}`} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
+                        aria-label="Siguiente"
+                    >
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
-
+                
                 <li className={`page-item ${parseInt(currentPage) === totalPages || totalPages === 0 ? 'disabled' : ''}`}>
-                    <Link className="page-link" to={`?page=${totalPages}`} aria-label="Siguiente">
+                    <Link className="page-link" to={`?page=${totalPages}`} onClick={() => setCurrentPage(totalPages)}  aria-label="Siguiente">
                         <span className="sr-only">Ultim</span>
                     </Link>
-                </li>
+                </li>    
             </ul>
         </nav>
     )
 }
 
-function PagesLinks({ startPage, endPage, currentPage, setCurrentPage }) {
-    const pageLinks = [];
+function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
+
+    let pageLinks = [];
+
     for (let i = startPage; i <= endPage; i++) {
         pageLinks.push(
             <li className={`page-item ${i === parseInt(currentPage) ? 'active' : ''}`} key={i}>
-                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)}>{i}</Link>
+                <Link className="page-link" to={`?page=${i}`} onClick={() => setCurrentPage(i)} >{i}</Link>
             </li>
         )
     }

@@ -27,18 +27,23 @@ function ExemplarUpdate(){
     });
 
     useEffect(()=>{
-        fetch("http://localhost:5000/exemplar/APIshow/"+id,{
+        fetch("http://localhost:5000/exemplar/APIshow/" + id,{
             headers: {
                 "Content-Type": "application/json",
             },
         })
         .then(response => response.json())
         .then(json => {
-            if(json.exemplar) setExemplar(json.exemplar)
+            if(json.exemplar) setExemplar({
+                ...json.exemplar, 
+                codi: json.exemplar.codi.slice(0, exemplar.codi.indexOf('/')),
+                codiMaterial: json.exemplar.codiMaterial._id,
+                codiLocalitzacio: json.exemplar.codiLocalitzacio._id
+            })
             
             if(json.error) setErrorBack(json.error)
         });
-    })
+    }, []);
 
     useEffect(()=>{
         fetch("http://localhost:5000/materials/material/allList", {
@@ -48,9 +53,7 @@ function ExemplarUpdate(){
         })
         .then(response => response.json())
         .then(json => {
-            if(json.list) {
-                setMaterial(json.list);
-            }
+            if(json.list) setMaterial(json.list);
             
             if(json.error) setErrorBack(json.error)
         });
@@ -65,9 +68,7 @@ function ExemplarUpdate(){
         })
         .then(response => response.json())
         .then(json => {
-            if(json.list) {
-                setLocalitzacio(json.list);
-            }
+            if(json.list) setLocalitzacio(json.list);
             
             if(json.error) setErrorBack(json.error)
         });
@@ -76,24 +77,25 @@ function ExemplarUpdate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       
 
         if (!Object.values(comprobacio).includes(false)) {
-            fetch("http://localhost:5000/exemplar/APICreate", {
-                method: "POST",
-                body: JSON.stringify({exemplar}),
+            fetch("http://localhost:5000/exemplar/APIUpdate/" + id, {
+                method: "PUT",
+                body: JSON.stringify({ exemplar }),
                 headers: {
                     "Content-Type": "application/json",
                 }
             })
             .then((response) => response.json())
             .then((json) => {
+
+                console.log(json)
                 
                 if(json.error !== undefined) setErrorBack(json.error);
 				
 				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) navigate(`/home/material/list`);
+				if (json.ok) navigate(`/home/exemplar/list`);
 				
             });
         }
@@ -102,7 +104,13 @@ function ExemplarUpdate(){
     const handleChange = e => {
         const { name, value } = e.target;
 
-        setExemplar({ ...exemplar, [name]: value });
+        if(name === 'demarca') {
+            setExemplar(preState =>(
+                { ...preState, [name]: !exemplar[name]}
+            ));
+        }
+
+        else setExemplar({ ...exemplar, [name]: value });
         
     };
 
@@ -124,7 +132,7 @@ function ExemplarUpdate(){
         <main>
         <div className="card mt-4">
             <div className="card-header">
-                <h5 className="card-title">Nou Usuari</h5>
+                <h5 className="card-title">Actualitzar Exemplar</h5>
             </div>
             <div className="card-body">
                 <form onSubmit={handleSubmit} >
@@ -262,7 +270,7 @@ function InputDemarca({demarcaExemplar, handleChange}){
                 type="checkbox" 
                 name="demarca" 
                 id="demarca" 
-                value="true" 
+                value={demarcaExemplar} 
                 onChange={handleChange} 
                 checked={demarcaExemplar} 
             /> Baixa

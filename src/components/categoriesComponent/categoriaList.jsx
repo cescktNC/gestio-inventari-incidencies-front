@@ -73,8 +73,6 @@ function CategoryTbody({ list }) {
     ));
 }
 
-
-
 function Paginate({currentPage, totalPages, setCurrentPage}){
 
     let startPage = Math.max(1, currentPage - 2);
@@ -144,6 +142,5 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
 
     return pageLinks;
 }
-
 
 export default CategoryList;

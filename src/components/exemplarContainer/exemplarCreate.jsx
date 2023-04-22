@@ -34,7 +34,7 @@ function ExemplarCreate(){
             if(json.list) {
                 setMaterial(json.list);
                 setExemplar(preState =>(
-                  { ...preState, codiMaterial: json.list[0]._id}
+                    { ...preState, codiMaterial: json.list[0]._id}
                 ))
             }
             
@@ -55,7 +55,7 @@ function ExemplarCreate(){
                 setLocalitzacio(json.list);
                 setExemplar(preState =>(
                     { ...preState, codiLocalitzacio: json.list[0]._id}
-                  ))
+                ))
             }
             
             if(json.error) setErrorBack(json.error)
@@ -65,7 +65,6 @@ function ExemplarCreate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       
 
         if (!Object.values(comprobacio).includes(false)) {
             fetch("http://localhost:5000/exemplar/APICreate", {
@@ -82,7 +81,7 @@ function ExemplarCreate(){
 				
 				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) navigate(`/home/material/list`);
+				if (json.ok) navigate(`/home/exemplar/list`);
 				
             });
         }

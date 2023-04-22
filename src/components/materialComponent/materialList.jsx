@@ -105,7 +105,6 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
         startPage=Math.max(1, endPage - 4);
     }
 
-
     return(
 
         <nav>
@@ -133,7 +132,7 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
                         <span className="sr-only">Següent</span>
