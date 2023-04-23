@@ -1,22 +1,60 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { nomesTreballadors, nomesEncaregatMaterial } from "../js/comprobacioCarrecs"
+import { nomesTreballadors, nomesEncaregatMaterial, nomesDirector } from "../js/comprobacioCarrecs"
 
 import "../css/styleLlistatMenu.css";
 import "../css/styleImage.css";
 
-function LlistatMenu({user})  {
+function LlistatMenu()  {
 
-	const carrec = window.localStorage.getItem('carrec');
 	const id = window.localStorage.getItem('id');
+	const [user, setUser] = useState([]);
+	const [resultat, setResultat] = useState(0);
+
+	useEffect(() => {
+		if(nomesDirector()){
+				fetch(
+					"http://localhost:5000/prestec/APIPendent",
+					{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				)
+				.then(response => response.json())
+				.then(json => {
+					setResultat(json.prestecsPendents);
+				});
+			
+		}
+	}, []);
+
+	useEffect(() => {
+		fetch(
+			"http://localhost:5000/usuaris/user/" + window.localStorage.getItem("id"),
+			{
+				method: "GET",
+				headers: {
+					"Authorization": "Bearer " + window.localStorage.getItem("token"),
+					"Content-Type": "application/json",
+				},
+			}
+		)
+		.then(response => response.json())
+		.then(json => {
+			setUser(json.usuari);
+		});
+	}, []);
+
 	return (
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari carrec={carrec} id={id} />
-				<CreacioContingutInventari carrec={carrec} />
-				<CreacioContingutGeneral carrec={carrec} />
-				<CreacioContingutReserves carrec={carrec} />
+				<CreacioContingutUsuari resultat={resultat} id={id} />
+				<CreacioContingutInventari />
+				<CreacioContingutGeneral />
+				<CreacioContingutReserves />
 			</ul>
 			<LogoFinal />
 		</div>
@@ -72,7 +110,7 @@ function SVGDown(){
 	)
 }
 
-function CreacioContingutUsuari({carrec, id}){
+function CreacioContingutUsuari({id}){
 	const [componentActual, setComponentActual] = useState(true);
 
 	function handleClick(){
@@ -106,7 +144,7 @@ function CreacioContingutUsuari({carrec, id}){
 
 				</li>
 
-				<CreacioSubMenuUsuari carrec={carrec} componentActual={componentActual} id={id} /> 
+				<CreacioSubMenuUsuari componentActual={componentActual} id={id} /> 
 				
 			</ul>
 			
@@ -114,7 +152,7 @@ function CreacioContingutUsuari({carrec, id}){
 	);
 }
 
-function CreacioContingutInventari({carrec}) {
+function CreacioContingutInventari({resultat}) {
 
 	const [subMenuState, setSubMenuState] = useState({
 		prestec: true,
@@ -172,7 +210,12 @@ function CreacioContingutInventari({carrec}) {
 						onClick={()=>handleSubMenuClick('prestec')}
 					>
 						<div className="divEnllaç">
-							<span className="spanSub">Prestec</span>
+							<span className="spanSub position-relative">
+								Prestec
+							</span>
+							{resultat !== 0 && (
+								<span className="position-absolute top-0 left-40 badge fs-5 text-danger">●</span>
+							)}
 						</div>
 					</Link>
 					<ButtonSubMenu componentActual={subMenuState.prestec} handleClick={()=>handleSubMenuClick('prestec')} />
@@ -349,7 +392,7 @@ function LogoFinal() {
  **********************************************************
 */
 
-function CreacioSubMenuUsuari({componentActual, carrec, id}){
+function CreacioSubMenuUsuari({componentActual, id}){
 	const navigate = useNavigate()
 
 	function handleClick(e){
@@ -376,7 +419,7 @@ function CreacioSubMenuUsuari({componentActual, carrec, id}){
 							
 						</Link>
 					</div>
-					{carrec !== 'Alumne' && (
+					{nomesTreballadors() && (
 						<div className="divSubMenu">
 							<Link
 							to="user/list"

@@ -15,7 +15,7 @@ function Pages() {
     <Routes>
       {isLoggedIn ? (
         <>
-          <Route path="/" element={<Navigate to="/home/user/show" />} />
+          <Route path="/" element={<Navigate to={`/home/user/show/${window.localStorage.getItem('id')}`} />} />
           <Route path="/home/*" element={<Menu />} />
         </>
       ) : (

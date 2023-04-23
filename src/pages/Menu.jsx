@@ -12,39 +12,20 @@ import ReservaContainer from "../containers/reservaContainer";
 import SessioContainer from "../containers/sessioContainer";
 import CadiraContainer from "../containers/cadiraContainer";
 import { Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
 import "../css/styleMenu.css";
 
 
 export function Menu() {
-	const [user, setUser] = useState([]);
-	useEffect(() => {
-		fetch(
-			"http://localhost:5000/usuaris/user/" + window.localStorage.getItem("id"),
-			{
-				method: "GET",
-				headers: {
-					"Authorization": "Bearer " + window.localStorage.getItem("token"),
-					"Content-Type": "application/json",
-				},
-			}
-		)
-		.then(response => response.json())
-		.then(json => {
-			setUser(json.usuari);
-		});
-	}, []);
-
-
+	
 	return (
 
 		<div className="containerPrincipal">
 			<div className="divMenu BG-black">
-				<MenuContainer user={user} />
+				<MenuContainer />
 			</div>
 			<div className="container">
 				<Routes>
-					<Route path="/user/*" element={<UserContainer user={user} />} />
+					<Route path="/user/*" element={<UserContainer />} />
 					<Route path="/material/*" element={<MaterialContainer />} />
 					<Route path="/exemplar/*" element={<ExemplarContainer />} />
 					<Route path="/prestec/*" element={<PrestecContainer />} />
@@ -56,7 +37,6 @@ export function Menu() {
 					<Route path="/reserva/*" element={<ReservaContainer/>} />
 					<Route path="/sessio/*" element={<SessioContainer/>} />
 					<Route path="/cadira/*" element={<CadiraContainer/>} />
-
 				</Routes>
 				
 			</div>

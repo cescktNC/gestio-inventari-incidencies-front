@@ -29,3 +29,7 @@
 .BG-black {
     background-color: black;
 }
+
+.left-40{
+	left: 40% !important;
+}

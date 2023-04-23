@@ -1,14 +1,24 @@
-import { React, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { ComprobacioDNI } from "../../js/comprobacioCampsFormulariUser";
 import { ComprobacioDataInici, ComprobacioDataRetorn } from '../../js/comprobacioCampsPrestec'
 
-function PrestecCreate(){
-    const [prestec, setPrestec]= useState({
+function PrestecUpdate(){
+
+    const {id} = useParams();
+
+    const [prestec, setPrestec] = useState({
+        codi: '', 
         dni: '',
         dataInici: '',
-        dataRetorn: ''
+        dataRetorn: '',
+        estat: 'Pendent'
     });
+
+    const [estats, setEstats] = useState([]);
+
+    const [errorsBack, setErrorsBack] = useState([]);
+	const [errorBack, setErrorBack] = useState('');
 
     const [comprobacio, setComprobacio] = useState({
         comprobacioDNI: false,
@@ -22,21 +32,50 @@ function PrestecCreate(){
         errorDataRetorn: ''
     });
 
-	const [errorsBack, setErrorsBack] = useState([]);
-	const [errorBack, setErrorBack] = useState('');
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/prestec/APIShow/` + id,{
+            headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json)
+            if(json.error) setErrorBack(json.error);
+
+            if(json.errors) setErrorsBack(json.errors);
+
+            if (json.prestec) setPrestec(json.prestec);
+            
+        });
+    },[]);
+
+    console.log(prestec)
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/prestec/APIEstats`,{
+            headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            
+            if(json.error) setErrorBack(json.error);
+
+            if(json.errors) setErrorsBack(json.errors);
+
+            if (json.estats) setEstats(json.estats);
+            
+        });
+    },[])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        fetch("http://localhost:5000/prestec/APIcreate", {
-            method: "POST",
+
+        fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
+            method: "PUT",
             body: JSON.stringify({ prestec }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
+            headers: { "Content-Type": "application/json" },
+        }) 
         .then((response) => response.json())
         .then((json) => {
             
@@ -47,8 +86,7 @@ function PrestecCreate(){
             if (json.ok) navigate(`/home/prestec/list`)
             
         });
-
-    }
+    };
 
     const handleChange = input => {
         setPrestec({ ...prestec, [input.name]: input.value });
@@ -68,7 +106,7 @@ function PrestecCreate(){
         });
     };
 
-    return (
+    return(
         <main>
             <div className="card mt-4">
                 <div className="card-header">
@@ -105,12 +143,15 @@ function PrestecCreate(){
                         />
                         {errorsForm.errorDataRetorn && (<p className="error-message" >{errorsForm.errorDataRetorn}</p>)}
 
+                        <InputEstat estats={estats} estatPrestec={prestec.estat} handleChange={handleChange} />
+
+
                         <button type="submit" className="btn btn-primary">Crea</button>
                     </form>
                 </div>
             </div>
         </main>
-    );
+    )
 }
 
 function DivMessage({message}){
@@ -133,7 +174,7 @@ function DivArrayErrors({errors}){
 function InputDNI({DNI, handleChange, handleComprobacio, handleErrors}){
     return(
         <div className="form-group">
-            <label form="dni">DNI</label>
+            <label htmlFor="dni">DNI</label>
             <input
                 type="text"
                 name="dni"
@@ -157,7 +198,7 @@ function InputDataInici({dataInici, handleChange, handleComprobacio, handleError
     let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
     return(
         <div className="form-group">
-            <label form="dataInici">Data d'inici</label>
+            <label htmlFor="dataInici">Data d'inici</label>
             <input 
                 type="date" 
                 name="dataInici" 
@@ -175,7 +216,7 @@ function InputDataInici({dataInici, handleChange, handleComprobacio, handleError
 function InputDataRetorn({dataInici, dataRetorn, handleChange, handleComprobacio, handleErrors}){
     return(
         <div className="form-group">
-            <label form="dataRetorn">Data detorn</label>
+            <label htmlFor="dataRetorn">Data detorn</label>
             <input 
                 type="date" 
                 name="dataRetorn" 
@@ -191,4 +232,17 @@ function InputDataRetorn({dataInici, dataRetorn, handleChange, handleComprobacio
     )
 }
 
-export default PrestecCreate;
+function InputEstat({estats, prestecEstats, handleChange}){
+    return(
+        <div className="form-group">
+            <label htmlFor="estat">Estat</label><br />
+            <select className="form-control" name="estat" value={prestecEstats} onChange={(e) => handleChange(e.target)}>
+                {estats.map((estat, index) => (
+                <option key={index} >{estat}</option>
+                ))}
+            </select>
+        </div>
+    )
+}
+
+export default PrestecUpdate;

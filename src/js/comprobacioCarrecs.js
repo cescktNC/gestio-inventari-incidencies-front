@@ -1,21 +1,23 @@
 const carrec = window.localStorage.getItem('carrec');
+console.log(carrec)
 
 export function nomesAdmin(){
-    if(carrec === 'Administrador') return true;
-    else return false;
+    return (carrec === 'Administrador');
+
+}
+
+export function nomesDirector(){
+    return (carrec === 'Director');
 }
 
 export function nomesEquipDocent(){
-    if(!['Alumne','Conserge','Manteniment'].includes(carrec)) return true;
-    else return false;
+    return(!['Alumne', 'Conserge', 'Director'].includes(carrec));
 }
 
 export function nomesTreballadors(){
-    if(carrec !== 'Alumne') return true;
-    else return false;
+    return(carrec !== 'Alumne');
 }
 
 export function nomesEncaregatMaterial(){
-    if(['Administrador', 'Encarregat Inventari'].includes(carrec)) return true;
-    else return false;
+    return(['Administrador', 'Encarregat Inventari'].includes(carrec));
 }
