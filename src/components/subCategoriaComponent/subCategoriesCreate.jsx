@@ -8,8 +8,6 @@ function SubCategoryCreate(props) {
     codiCategoria:""
   });
 
-  console.log(subcategoryData)
-
   const navigate = useNavigate();
 
   const [list, setList] = useState([]);
@@ -51,18 +49,6 @@ function SubCategoryCreate(props) {
       <h1>Crear nova subcategoria</h1>
       <form onSubmit={handleSubmit}>
       {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
-        <div>
-          <label htmlFor="nom">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            className="form-control"
-            value={subcategoryData.codi}
-            onChange={handleChange}
-            required
-          />
-        </div>
         <div>
           <div>
             <label htmlFor="nom">Nom:</label>

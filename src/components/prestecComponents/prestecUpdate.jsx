@@ -8,7 +8,6 @@ function PrestecUpdate(){
     const {id} = useParams();
 
     const [prestec, setPrestec] = useState({
-        codi: '', 
         dni: '',
         dataInici: '',
         dataRetorn: '',
@@ -21,9 +20,9 @@ function PrestecUpdate(){
 	const [errorBack, setErrorBack] = useState('');
 
     const [comprobacio, setComprobacio] = useState({
-        comprobacioDNI: false,
-        comprobacioDataInici: false,
-        comprobacioDataRetorn: false
+        comprobacioDNI: true,
+        comprobacioDataInici: true,
+        comprobacioDataRetorn: true
     });
 
     const [errorsForm, setErrorsForm] = useState({
@@ -45,12 +44,16 @@ function PrestecUpdate(){
 
             if(json.errors) setErrorsBack(json.errors);
 
-            if (json.prestec) setPrestec(json.prestec);
+            if (json.prestec) setPrestec({
+                ...prestec, 
+                dni: json.prestec.dniUsuari.dni,
+                dataInici: json.prestec.dataInici.substring(0, 10),
+                dataRetorn: json.prestec.dataRetorn.substring(0, 10),
+                estat: json.prestec.estat
+            });
             
         });
-    },[]);
-
-    console.log(prestec)
+    }, []);
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIEstats`,{
@@ -66,11 +69,11 @@ function PrestecUpdate(){
             if (json.estats) setEstats(json.estats);
             
         });
-    },[])
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        console.log('a')
         fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
             method: "PUT",
             body: JSON.stringify({ prestec }),
@@ -78,7 +81,7 @@ function PrestecUpdate(){
         }) 
         .then((response) => response.json())
         .then((json) => {
-            
+            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);
@@ -119,7 +122,7 @@ function PrestecUpdate(){
                         {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
 
                         <InputDNI 
-                            DNI={prestec.DNI} 
+                            DNI={prestec.dni} 
                             handleChange={handleChange} 
                             handleComprobacio={handleComprobacio} 
                             handleErrors={handleErrors}

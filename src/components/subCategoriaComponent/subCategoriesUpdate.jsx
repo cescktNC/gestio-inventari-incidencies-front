@@ -57,26 +57,11 @@ function SubCategoryUpdate(props) {
       });
   };
 
-  console.log(subcategoryData)
-
   return (
     <div>
       <h1>Actualitzant subcategoria {subcategoryData.nom}</h1>
       <form onSubmit={handleSubmit}>
       {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
-
-        <div>
-          <label htmlFor="codi">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            className="form-control"
-            value={subcategoryData.codi}
-            onChange={handleChange}
-            required
-          />
-        </div>
         <div>
           <label htmlFor="Nom">Nom:</label>
           <input
