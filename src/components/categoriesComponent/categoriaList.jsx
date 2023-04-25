@@ -68,6 +68,7 @@ function CategoryTbody({ list }) {
             </td>
             <td>
                 <Link className="btn btn-danger" to={`/home/categories/delete/${category._id}`}>Eliminar</Link>
+
             </td>
         </tr>
     ));

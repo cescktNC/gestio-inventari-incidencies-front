@@ -38,7 +38,7 @@ function ReservaTable({ list }) {
                     <th scope="col">Data</th>
                     <th scope="col">DniUsuari</th>
                     <th scope="col">Codi Localitzacio</th>
-                    <th scope="col">
+                    <th scope="col" colSpan={2}>
                         <Link to="/home/reserva/create" className="btn btn-primary">Nova</Link>
                     </th>
                 </tr>
@@ -71,7 +71,10 @@ function ReservaTbody({ list }) {
                 {reserva.codiLocalitzacio}
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/planta/update/${reserva._id}`}>Edit</Link>
+                <Link className="btn btn-secondary" to={`/home/reserva/update/${reserva._id}`}>Edit</Link>
+            </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/reserva/delete/${reserva._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));

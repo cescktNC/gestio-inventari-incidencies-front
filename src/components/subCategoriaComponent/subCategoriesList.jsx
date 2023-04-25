@@ -68,6 +68,9 @@ function SubcategoryTbody({ list }) {
             <td>
                 <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
             </td>
+            <td>
+                <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
+            </td>
         </tr>
     ));
 }

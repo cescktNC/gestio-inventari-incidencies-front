@@ -16,6 +16,7 @@ function SubCategoryUpdate(props) {
   });
 
   useEffect(() => {
+
     fetch(`http://localhost:5000/categories/APIAlllist`)
     .then((response) => response.json())
     .then((json) => {
@@ -27,6 +28,7 @@ function SubCategoryUpdate(props) {
 
   useEffect(() => {
     fetch(`http://localhost:5000/subCategories/APIshow/` + id)
+
       .then((response) => response.json())
       .then((json) => setsubCategoryData(prevState => ({
           ...prevState,

@@ -72,10 +72,10 @@ function ReservaCreate(props) {
         </div>
         <div>
           <div>
-            <label htmlFor="dniusuri">Dni Usuari:</label>
+            <label htmlFor="dniUsuari">Dni Usuari:</label>
             <input
-              id="dniusuari"
-              name="dniusuari"
+              id="dniUsuari"
+              name="dniUsuari"
               value={ReservaData.dniUsuari}
               onChange={handleChange}
               required
@@ -84,11 +84,11 @@ function ReservaCreate(props) {
         </div>
         <div>
           <div>
-            <label htmlFor="codilocalitzacio">Codi Localitzacio:</label>
+            <label htmlFor="codiLocalitzacio">Codi Localitzacio:</label>
             <input
-              id="codilocalitzacio"
-              name="codilocalitzacio"
-              value={ReservaData.codilocalitzacio}
+              id="codiLocalitzacio"
+              name="codiLocalitzacio"
+              value={ReservaData.codiLocalitzacio}
               onChange={handleChange}
               required
             />

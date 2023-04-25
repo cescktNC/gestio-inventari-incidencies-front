@@ -8,14 +8,9 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo_vidal_i_barraquer.jpg",
-      "type": "image/jpg",
+      "src": "logo_vidal_i_barraquer.png",
+      "type": "image/png",
       "sizes": "192x192"
-    },
-    {
-      "src": "padregato.jpg",
-      "type": "image/jpg",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",
