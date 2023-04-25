@@ -52,7 +52,7 @@ function ReservaCreate(props) {
             <input
               id="hora"
               name="hora"
-              value={Reserva.hora}
+              value={ReservaData.hora}
               onChange={handleChange}
               required
             />

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function CategoryDelete(props) {
   const { id } = useParams();
+
+  const navigate = useNavigate();
   
 
   const [categoryData, setCategoryData] = useState({
@@ -10,30 +12,34 @@ function CategoryDelete(props) {
     codi: "",
   });
 
+	const [errorBack, setErrorBack] = useState('');
+
   useEffect(() => {
-    fetch(`http://localhost:5000/categories/${id}`)
+    fetch(`http://localhost:5000/categories/APIshow/${id}`)
       .then((response) => response.json())
-      .then((json) => setCategoryData(json));
+      .then((json) => {
+        setCategoryData(json.categoria)
+      });
   }, [id]);
 
   const handleDelete = () => {
-    fetch(`http://localhost:5000/categories/delete/${id}`, {
+    fetch(`http://localhost:5000/categories/APIdelete/${id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          props.history.push("/home/categories");
-        } else {
-          alert("Error al eliminar la categoría");
-        }
+        if (json.ok) navigate("/home/categories/list");
+
+        if(json.error) setErrorBack(json.error);
+        
       });
   };
 
   return (
     <div>
-      <h1>Eliminar categoría {id}</h1>
+      <h1>Eliminar categoría {categoryData.nom}</h1>
       <div>
+        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
         <p>Estàs a punt d'eliminar la seguent categoria:</p>
         <ul>
           <li>Nom: {categoryData.nom}</li>
@@ -44,6 +50,14 @@ function CategoryDelete(props) {
       </div>
     </div>
   );
+}
+
+function DivMessage({message}){
+  return(
+      <div className="alert alert-danger">
+          <p className="text-danger">{message}</p>
+      </div>
+  )
 }
 
 export default CategoryDelete;

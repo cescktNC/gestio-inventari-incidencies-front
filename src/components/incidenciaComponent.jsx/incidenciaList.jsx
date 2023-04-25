@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import '../../css/styleCategories.css'
+import { useState, useEffect } from "react"
+import { Link } from 'react-router-dom';
 
-function SessioList() {
+function IncidenciaList(){
+
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/sessio/APIlist?page=" + currentPage)
+        fetch("http://localhost:5000/incidencies/APIList?page=" + currentPage)
             .then(response => response.json())
-            .then(json => {               
+            .then(json => {          
+                console.log(json)     
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -20,59 +21,77 @@ function SessioList() {
     return (
         <div className="d-flex align-items-center ">
             <div className="mx-auto">
-                <SessioTable list={list} />
+                <IncidenciaTable list={list} />
                 <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )
 }
 
-function SessioTable({ list }) {
+function IncidenciaTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">CodiReserva</th>
-                    <th scope="col" colSpan={2}>
-                        <Link to="/home/sessio/create" className="btn btn-primary">Nova</Link>
+                    <th scope="col">Estat</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Tipologia</th>
+                    <th scope="col">Descripció</th>
+                    <th scope="col">Ubicació</th>
+                    <th scope="col">Material</th>
+                    <th scope="col">Localització</th>
+                    <th scope="col" colSpan={3}>
+                        <Link to="/home/incidencia/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <SessioTbody list={list}></SessioTbody>
+                <IncidenciaTbody list={list}></IncidenciaTbody>
             </tbody>
         </table>
     )
 
 }
 
-function SessioTbody({ list }) {
+function IncidenciaTbody({ list }) {
 
-    return list.map((sessio, index) => (
+    return list.map((incidencia, index) => (
         <tr key={index}>
             <td>
-                {sessio.codi}
+                {incidencia.codi}
             </td>
             <td>
-                {sessio.nom}
+                {incidencia.estat}
             </td>
             <td>
-                {sessio.codiReserva}
+                {incidencia.data.substring(0, 10)}
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
+                {incidencia.tipologia}
             </td>
             <td>
-                <Link className="btn btn-secondary" to={`/home/sessio/delete/${sessio._id}`}>Eliminar</Link>
+                {incidencia.descripcio}
+            </td>
+            <td>
+                {incidencia.ubicacio}
+            </td>
+            <td>
+                {incidencia.codiExemplar !== undefined ? incidencia.codiExemplar.codiMaterial.nom : 'Element no inventariable'}
+            </td>
+            <td>
+                {incidencia.codiLocalitzacio !== undefined ? incidencia.codiLocalitzacio.nom : 'Ubicació no resgistrada'}
+            </td>
+            <td>
+                <Link className="btn btn-secondary" to={`/home/incidencia/update/${incidencia._id}`}>Editar</Link>
+            </td>
+            <td>
+                <Link className="btn btn-secondary" to={`/home/incidencia/update/${incidencia._id}`}>Comentar</Link>
             </td>
         </tr>
     ));
 }
-
-
 
 function Paginate({currentPage, totalPages, setCurrentPage}){
 
@@ -144,4 +163,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default SessioList;
+export default IncidenciaList;

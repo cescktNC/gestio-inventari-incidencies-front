@@ -1,13 +1,32 @@
 import React from 'react';
-
 import Logo from '../components/logo';
-import LlistatMenu from '../components/llistatMenu';
+import ProfileMenu from '../components/menuComponents/profileMenu';
+import UserMenu from '../components/menuComponents/usuariMenu';
+import InventariMenu from '../components/menuComponents/inventariMenu';
+import GeneralMenu from '../components/menuComponents/generalMenu';
+import ReservesMenu from '../components/menuComponents/reservesMenu';
 
-function menuContainer({user}) {
+
+import "../css/styleImage.css";
+import "../css/styleLlistatMenu.css";
+
+
+// import LlistatMenu from '../components/llistatMenu';
+
+function menuContainer() {
   return (
     <div>
-        <Logo />
-        <LlistatMenu user={user} />
+      <Logo />
+      <div className="containerMenu">
+        <ProfileMenu />
+        <ul className="menu">
+          <UserMenu />
+          <InventariMenu />
+          <GeneralMenu />
+          <ReservesMenu />
+        </ul>
+      </div>
+
     </div>
   )
 }

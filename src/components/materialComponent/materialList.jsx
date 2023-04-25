@@ -47,7 +47,7 @@ function MaterialTable({list}){
                         <Link to="/home/material/create" className="btn btn-primary">Nou</Link>
                     </th>
                     <th scope="col">
-                        <Link to="/materials/import" class="btn btn-primary">Importar</Link>
+                        <Link to="/home/material/import" className="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>
@@ -79,14 +79,11 @@ function MaterialTbody({list}){
                 { material.anyCompra.substring(0, 4) }
             </td>
             <td className="W-15">
-                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ material.fotografia} alt="" />
+                <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/' + material.fotografia} alt="" />
             </td>
             <td>
                 { material.codiSubCategoria.nom }
-            </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/material/show/${material._id}`}>Perfil</Link>  
-            </td>        
+            </td>     
             <td>
                 <Link className="btn btn-secondary" to={`/home/material/update/${material._id}`}>Editar</Link>
             </td>
@@ -107,7 +104,6 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
     if (endPage - startPage < 4) {
         startPage=Math.max(1, endPage - 4);
     }
-
 
     return(
 
@@ -136,11 +132,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 

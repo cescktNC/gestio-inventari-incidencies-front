@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import '../../css/styleUser.css';
 import '../../css/styleExemplar.css';
 
-import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs"
+import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs";
 
 function ExemplarList(){
     const [list, setList] = useState([]);
@@ -45,7 +45,7 @@ function ExemplarTable({list}){
                     <th scope="col">QR</th>
                     <th scope="col">Nom del material</th>
                     <th scope="col">Nom de la localitzacio</th>
-                    <th scope="col" colSpan={3} className="W-15">
+                    <th scope="col" colSpan={2} className="W-15">
                         <Link to="/home/exemplar/create" className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
@@ -78,19 +78,18 @@ function ExemplarTbody({list}){
             </td>
             <td className="align-middle">
                 {(nomesAdmin() || nomesEquipDocent()) && (
-                    <Link className="btn btn-secondary" to={`/home/exemplar/show/${exemplar._id}`}>Perfil</Link>  
+                    !exemplar.demarca &&(
+                        <Link className="btn btn-secondary" to={`/home/exemplar/show/${exemplar._id}`}>Mostrar</Link>  
+                    )
                 )}
             </td>
-            {(nomesAdmin()) && (
-                <>
-                    <td className="align-middle">
-                        <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
-                    </td>
-                    <td className="align-middle">
-                        <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
-                    </td>
-                </>
-            )}
+
+            <td className="align-middle">
+                {(nomesAdmin() && !exemplar.demarca) && (
+                    <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
+                )}
+            </td>
+
         </tr>
     ));
 }
@@ -133,11 +132,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 

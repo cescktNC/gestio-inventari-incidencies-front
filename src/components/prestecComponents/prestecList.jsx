@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../../css/styleUser.css';
+import '../../css/styleExemplar.css';
+
 
 function PrestecList(){
     const [list, setList] = useState([]);
@@ -21,7 +23,7 @@ function PrestecList(){
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
                 <div className="card-body">
-                    <h5 className="card-title">Exemplar</h5>
+                    <h5 className="card-title">Prestec</h5>
                     <div className="mx-auto">
                         <PrestecTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
@@ -29,7 +31,7 @@ function PrestecList(){
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 function PrestecTable({list}){
@@ -42,6 +44,7 @@ function PrestecTable({list}){
                     <th scope="col">Data d'inici</th>
                     <th scope="col">Data Retorn</th>
                     <th scope="col">Codi Exemplar</th>
+                    <th scope="col">QR Exemplar</th>
                     <th scope="col">DNI Usuari</th>
                     <th scope="col">Estat</th>
                     <th scope="col" colSpan={3} className="W-15">
@@ -59,33 +62,36 @@ function PrestecTable({list}){
 
 function PrestecTbody({list}){
 
-    return list.map((exemplar, index) =>( 
+    return list.map((prestec, index) =>( 
         <tr key={index}>
+
             <td className="align-middle">
-                { exemplar.codi }
+                { prestec.codi }
             </td>
             <td className="align-middle">
-                { exemplar.dataInici.substring(0, 10).split("-").reverse().join("-") }
+                { prestec.dataInici.substring(0, 10).split("-").reverse().join("-") }
             </td>
             <td className="align-middle">
-                { exemplar.dataRetorn.substring(0, 10).split("-").reverse().join("-") }
+                { prestec.dataRetorn.substring(0, 10).split("-").reverse().join("-") }
             </td>
             <td className="align-middle">
-                {exemplar.codiExemplar &&(
-                    exemplar.codiExemplar.codi 
+                {prestec.codiExemplar && (
+                    prestec.codiExemplar.codi 
                 )}
             </td>
-            <td className="align-middle">
-                { exemplar.dniUsuari.dni }
+            <td className="align-middle SVGcontainer" dangerouslySetInnerHTML={{ __html: (prestec.codiExemplar && (prestec.codiExemplar.qr)) }}>
             </td>
             <td className="align-middle">
-                { exemplar.estat }
+                { prestec.dniUsuari.dni }
             </td>
             <td className="align-middle">
-                <Link className="btn btn-secondary" to={`/home/exemplar/update/${exemplar._id}`}>Editar</Link>
+                { prestec.estat }
             </td>
             <td className="align-middle">
-                <Link className="btn btn-danger" to={`/home/exemplar/delete/${exemplar._id}`}>Eliminar</Link>
+                <Link className="btn btn-secondary" to={`/home/prestec/update/${prestec._id}`}>Editar</Link>
+            </td>
+            <td className="align-middle">
+                <Link className="btn btn-danger" to={`/home/prestec/delete/${prestec._id}`}>Eliminar</Link>
             </td>
         </tr>
     ));
@@ -129,11 +135,11 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
                     <Link 
                         className="page-link" 
                         to={`?page=${parseInt(currentPage) + 1}`} 
-                        onClick={() => setCurrentPage(currentPage - 1)} 
+                        onClick={() => setCurrentPage(parseInt(currentPage) + 1)} 
                         aria-label="Siguiente"
                     >
-                        <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Següent</span>
+                        <span aria-hidden="true">&raquo;</span>
                     </Link>
                 </li>
                 
