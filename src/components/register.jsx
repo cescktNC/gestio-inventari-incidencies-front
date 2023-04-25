@@ -127,9 +127,9 @@ function Register() {
                     />
                     {errors.errorConfPass && (<pre className="error-message" >{errors.errorConfPass}</pre>)}
 
-                    <button type="submit">Registra't</button>
+                    <button type="submit" className="buttonLR">Registra't</button>
                 </form>
-                <button className="link-btn" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
+                <button className="link-btn buttonLR" onClick={handleLoginFormSwitch}>Tens un compte? Inicia sessió aquí!</button>
             </div>
         </div>
     )

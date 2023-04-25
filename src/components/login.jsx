@@ -75,9 +75,9 @@ function Login() {
 
 					<InputPassword setPass={setPass} setComprobacioPass={setComprobacioPass} />
 					<p id="errorPassword" className="error-message"></p>
-					<button type="submit">Inicia Sessió</button>
+					<button type="submit" className="buttonLR">Inicia Sessió</button>
 				</form>
-				<button className="link-btn" onClick={handleRegisterFormSwitch}>
+				<button className="link-btn buttonLR" onClick={handleRegisterFormSwitch}>
 					No tens compte? Registra't aquí!
 				</button>
 			</div>

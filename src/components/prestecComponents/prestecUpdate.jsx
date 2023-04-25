@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ComprobacioDNI } from "../../js/comprobacioCampsFormulariUser";
-import { ComprobacioDataInici, ComprobacioDataRetorn } from '../../js/comprobacioCampsPrestec'
+import { ComprobacioDataRetorn } from '../../js/comprobacioCampsPrestec'
 
 function PrestecUpdate(){
 
@@ -121,22 +120,6 @@ function PrestecUpdate(){
 
                         {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
 
-                        <InputDNI 
-                            DNI={prestec.dni} 
-                            handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
-                        />
-                        {errorsForm.errorDNI && (<p className="error-message">{errorsForm.errorDNI}</p>)}
-
-                        <InputDataInici 
-                            dataInici={prestec.dataInici} 
-                            handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
-                        />
-                        {errorsForm.errorDataInici && (<p className="error-message">{errorsForm.errorDataInici}</p>)}
-
                         <InputDataRetorn 
                             dataInici={prestec.dataInici} 
                             dataRetorn={prestec.dataRetorn} 
@@ -174,24 +157,9 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputDNI({DNI, handleChange, handleComprobacio, handleErrors}){
-    return(
-        <div className="form-group">
-            <label htmlFor="dni">DNI</label>
-            <input
-                type="text"
-                name="dni"
-                className="form-control"
-                value={DNI}
-                onChange={(e) => handleChange(e.target)}
-                onBlur={(e) => ComprobacioDNI(e.target.value, {handleComprobacio, handleErrors})}
-                required
-            />
-        </div>
-    )
-}
 
-function InputDataInici({dataInici, handleChange, handleComprobacio, handleErrors}){
+function InputDataRetorn({dataInici, dataRetorn, handleChange, handleComprobacio, handleErrors}){
+
     let data = new Date();
     let dia = data.getDate();
     if (dia < 0) dia = '0' + dia;
@@ -199,24 +167,6 @@ function InputDataInici({dataInici, handleChange, handleComprobacio, handleError
     if (mes < 10) mes = '0' + mes
 
     let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
-    return(
-        <div className="form-group">
-            <label htmlFor="dataInici">Data d'inici</label>
-            <input 
-                type="date" 
-                name="dataInici" 
-                id="dataInici" 
-                className="form-control"
-                value={dataInici}
-                onChange={(e) => handleChange(e.target)}
-                onBlur={(e) => ComprobacioDataInici(e.target.value, {handleComprobacio, handleErrors})}
-                min={dataActual}
-            />
-        </div>
-    )
-}
-
-function InputDataRetorn({dataInici, dataRetorn, handleChange, handleComprobacio, handleErrors}){
     return(
         <div className="form-group">
             <label htmlFor="dataRetorn">Data detorn</label>
@@ -228,8 +178,7 @@ function InputDataRetorn({dataInici, dataRetorn, handleChange, handleComprobacio
                 value={dataRetorn}
                 onChange={(e) => handleChange(e.target)}
                 onBlur={(e) => ComprobacioDataRetorn(e.target.value, {dataInici, handleComprobacio, handleErrors})}
-                disabled={dataInici === ''}
-                min={dataInici}
+                min={dataActual}
             />
         </div>
     )

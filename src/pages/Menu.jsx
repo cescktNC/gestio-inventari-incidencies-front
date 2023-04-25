@@ -11,6 +11,7 @@ import PrestecContainer from "../containers/prestecContainer";
 import ReservaContainer from "../containers/reservaContainer";
 import SessioContainer from "../containers/sessioContainer";
 import CadiraContainer from "../containers/cadiraContainer";
+import IncidenciaContainer from "../containers/incidenciaContainer";
 import { Route, Routes } from "react-router-dom";
 import "../css/styleMenu.css";
 
@@ -37,6 +38,7 @@ export function Menu() {
 					<Route path="/reserva/*" element={<ReservaContainer/>} />
 					<Route path="/sessio/*" element={<SessioContainer/>} />
 					<Route path="/cadira/*" element={<CadiraContainer/>} />
+					<Route path="/incidencia/*" element={<IncidenciaContainer/>} />
 				</Routes>
 				
 			</div>

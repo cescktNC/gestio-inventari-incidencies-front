@@ -13,19 +13,19 @@ function LlistatMenu()  {
 
 	useEffect(() => {
 		if(nomesDirector()){
-				fetch(
-					"http://localhost:5000/prestec/APIPendent",
-					{
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				)
-				.then(response => response.json())
-				.then(json => {
-					setResultat(json.prestecsPendents);
-				});
+			fetch(
+				"http://localhost:5000/prestec/APIPendent",
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then(response => response.json())
+			.then(json => {
+				setResultat(json.prestecsPendents);
+			});
 			
 		}
 	}, []);
@@ -51,8 +51,8 @@ function LlistatMenu()  {
 		<div className="containerMenu">
 			<Profile user={user}/>
 			<ul className="menu">
-				<CreacioContingutUsuari resultat={resultat} id={id} />
-				<CreacioContingutInventari />
+				<CreacioContingutUsuari id={id} />
+				<CreacioContingutInventari resultat={resultat} />
 				<CreacioContingutGeneral />
 				<CreacioContingutReserves />
 			</ul>
@@ -154,6 +154,7 @@ function CreacioContingutUsuari({id}){
 
 function CreacioContingutInventari({resultat}) {
 
+
 	const [subMenuState, setSubMenuState] = useState({
 		prestec: true,
 		incidencia: true
@@ -238,7 +239,7 @@ function CreacioContingutInventari({resultat}) {
 	);
 }
 
-function CreacioContingutGeneral({carrec}) {
+function CreacioContingutGeneral() {
 
 	return (
 		<>
@@ -309,7 +310,7 @@ function CreacioContingutGeneral({carrec}) {
 	);
 }
 
-function CreacioContingutReserves({carrec}) {
+function CreacioContingutReserves() {
 
 	const [subMenuState, setSubMenuState] = useState({
 		reserva: true,

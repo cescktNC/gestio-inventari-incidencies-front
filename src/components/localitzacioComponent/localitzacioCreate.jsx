@@ -20,14 +20,14 @@ function LocalitzacioCreate(props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(LocalitzacioData),
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/localitzacio");
-        } else {
-          alert("Error al crear la localitzacio");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.success) {
+        props.history.push("/home/localitzacio");
+      } else {
+        alert("Error al crear la localitzacio");
+      }
+    });
   };
 
   return (

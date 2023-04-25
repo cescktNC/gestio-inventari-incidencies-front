@@ -37,9 +37,7 @@ function UserUpdate(){
 	const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
 
-    const navigate = useNavigate()
-
-
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -53,7 +51,7 @@ function UserUpdate(){
             setCarrecs(json.carrecs)
         });
     
-    },[])
+    },[]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -306,21 +304,5 @@ function InputConfirmPassword({userPass, userConfirmPass, setUserConfirmPass, ha
         </>
     )
 }
-
-// function InputprofilePicture({handleChangeFile}){
-//   return(
-//     <div className="form-group">
-//       <label form="profilePicture">Imatge de perfil</label>
-//       <input 
-//         type="file" 
-//         name="profilePicture" 
-//         accept="image/png, .jpeg, .jpg" 
-//         className="form-control" 
-//         onChange={(e) => handleChangeFile(e.target)}
-//       />
-//     </div>
-//   )
-// }
-
 
 export default UserUpdate;

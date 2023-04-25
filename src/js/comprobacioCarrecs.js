@@ -1,5 +1,4 @@
-const carrec = window.localStorage.getItem('carrec');
-console.log(carrec)
+let carrec = window.localStorage.getItem('carrec');
 
 export function nomesAdmin(){
     return (carrec === 'Administrador');
