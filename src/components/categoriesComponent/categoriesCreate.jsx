@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 function CategoryCreate(props) {
   const [categoryData, setCategoryData] = useState({
     nom: "",
-    codi: "",
   });
 
 	const [errorBack, setErrorBack] = useState('');
@@ -34,39 +33,31 @@ function CategoryCreate(props) {
   };
 
   return (
-    <div>
-      <h1>Crear nueva categoría</h1>
-      <form onSubmit={handleSubmit}>
-      {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
-
-        <div>
-          <label htmlFor="nom">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            className="form-control"
-            value={categoryData.codi}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
+    <div className="card mt-4">
+      <div className="card-header">
+        <h5 className="card-title">Nova Categoria</h5>
+      </div>
+      <div className="card-body">
+        <form onSubmit={handleSubmit}>
+        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
           <div>
-            <label htmlFor="nom">Nom:</label>
-            <input
-              id="nom"
-              name="nom"
-              className="form-control"
-              value={categoryData.nom}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label htmlFor="nom">Nom:</label>
+              <input
+                id="nom"
+                name="nom"
+                className="form-control"
+                value={categoryData.nom}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-        </div>
-        <button type="submit">Crear</button>
-      </form>
+          <button type="submit" className="btn btn-primary">Crear</button>
+        </form>
+      </div>
     </div>
+
   );
 }
 
