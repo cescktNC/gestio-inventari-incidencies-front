@@ -12,6 +12,7 @@ import ReservaContainer from "../containers/reservaContainer";
 import SessioContainer from "../containers/sessioContainer";
 import CadiraContainer from "../containers/cadiraContainer";
 import IncidenciaContainer from "../containers/incidenciaContainer";
+import ComentariContainer from "../containers/comentariContainer";
 import { Route, Routes } from "react-router-dom";
 import "../css/styleMenu.css";
 
@@ -39,6 +40,7 @@ export function Menu() {
 					<Route path="/sessio/*" element={<SessioContainer/>} />
 					<Route path="/cadira/*" element={<CadiraContainer/>} />
 					<Route path="/incidencia/*" element={<IncidenciaContainer/>} />
+					<Route path="/comentari/*" element={<ComentariContainer/>} />
 				</Routes>
 				
 			</div>
