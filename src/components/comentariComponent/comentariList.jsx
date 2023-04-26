@@ -1,97 +1,81 @@
-import { useState, useEffect } from "react"
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
-function IncidenciaList(){
-
+function ComentariList(){
+    const { id } = useParams();
     const [list, setList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-
+    
     useEffect(() => {
-        fetch("http://localhost:5000/incidencies/APIList?page=" + currentPage)
-            .then(response => response.json())
-            .then(json => {          
-                console.log(json)     
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            });
+        fetch("http://localhost:5000/comentari/comment/list/" + id + "?page="+currentPage,).then(response => response.json())
+        .then(json => {
+            console.log(json)
+            setList(json.list);
+            setCurrentPage(json.currentPage);
+            setTotalPages(json.totalPages);
+        });
     }, [currentPage]);
 
-    return (
+    return(
         <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <IncidenciaTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div className="card mt-2">
+            <div className="card-body">
+                <h5 className="card-title">Comentaris</h5>
+                <div className="mx-auto">
+                    <ComentariTable list={list} id={id} />
+                    <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                </div>
             </div>
         </div>
+    </div>
     )
 }
 
-function IncidenciaTable({ list }) {
+function ComentariTable({list, id}){
 
-    return (
-        <table className="table table-responsive table-hover ">
-            <thead>
+    return(
+        <table className="table table-responsive table-striped table-hover ">
+            <thead className="thead-green">
                 <tr>
-                    <th scope="col">Codi</th>
-                    <th scope="col">Estat</th>
+                    <th scope="col">Codi incidencia</th>
+                    <th scope="col">Nom d'usuari</th>
                     <th scope="col">Data</th>
-                    <th scope="col">Tipologia</th>
-                    <th scope="col">Descripció</th>
-                    <th scope="col">Ubicació</th>
-                    <th scope="col">Material</th>
-                    <th scope="col">Localització</th>
-                    <th scope="col" colSpan={3}>
-                        <Link to="/home/incidencia/create" className="btn btn-primary">Nou</Link>
+                    <th scope="col">Descripcio</th>
+                    <th scope="col">
+                        <Link to={"/home/comentari/create/" + id} className="btn btn-primary">Nou</Link>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <IncidenciaTbody list={list}></IncidenciaTbody>
+                <ComentariTbody list={list}></ComentariTbody>
             </tbody>
         </table>
     )
 
 }
 
-function IncidenciaTbody({ list }) {
+function ComentariTbody({list}){
 
-    return list.map((incidencia, index) => (
+    return list.map((comentari, index) =>( 
         <tr key={index}>
             <td>
-                {incidencia.codi}
+                { comentari.codiIncidencia.codi }
             </td>
             <td>
-                {incidencia.estat}
+                { comentari.codiUsuari.nom }
             </td>
             <td>
-                {incidencia.data.substring(0, 10)}
+                { comentari.data.substring(0, 10) }
             </td>
             <td>
-                {incidencia.tipologia}
-            </td>
-            <td>
-                {incidencia.descripcio}
-            </td>
-            <td>
-                {incidencia.ubicacio}
-            </td>
-            <td>
-                {incidencia.codiExemplar !== undefined ? incidencia.codiExemplar.codiMaterial.nom : 'Element no inventariable'}
-            </td>
-            <td>
-                {incidencia.codiLocalitzacio !== undefined ? incidencia.codiLocalitzacio.nom : 'Ubicació no resgistrada'}
-            </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/incidencia/update/${incidencia._id}`}>Editar</Link>
-            </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/comentari/list/${incidencia._id}`}>Comentar</Link>
-            </td>
+                { comentari.descripcio }
+            </td>   
+            <td></td> 
         </tr>
     ));
 }
+
 
 function Paginate({currentPage, totalPages, setCurrentPage}){
 
@@ -101,7 +85,6 @@ function Paginate({currentPage, totalPages, setCurrentPage}){
     if (endPage - startPage < 4) {
         startPage=Math.max(1, endPage - 4);
     }
-
 
     return(
 
@@ -163,4 +146,4 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     return pageLinks;
 }
 
-export default IncidenciaList;
+export default ComentariList;
