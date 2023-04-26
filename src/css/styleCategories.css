@@ -1,6 +1,20 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    color: #536391;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+    color: #818cf8;
+    text-decoration: underline;
 }
 
 /* Estilos de la tabla */
@@ -13,7 +27,6 @@ body {
 .table thead {
     background-color: #818cf8;
     color: white;
-    
 }
 
 .table thead th {
@@ -28,6 +41,7 @@ body {
 
 .table tbody tr:hover {
     background-color: #f5f5f5;
+    transition: background-color 0.3s ease;
 }
 
 .table tbody td {
@@ -57,6 +71,7 @@ body {
     background-color: #fff;
     border: 1px solid #dee2e6;
     text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .page-link:hover {
@@ -81,17 +96,6 @@ body {
     border-color: #dee2e6;
 }
 
-a {
-    color: #536391;
-    text-decoration: none;
-}
-
-a:hover,
-a:focus {
-    color: #818cf8;
-    text-decoration: underline;
-}
-
 @media screen and (max-width: 768px) {
     .table {
         display: block;
@@ -99,10 +103,3 @@ a:focus {
         white-space: nowrap;
     }
 }
-
-body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
