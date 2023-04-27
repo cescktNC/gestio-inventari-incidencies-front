@@ -82,8 +82,10 @@ function ExemplarUpdate(){
             fetch("http://localhost:5000/exemplar/APIUpdate/" + id, {
                 method: "PUT",
                 body: JSON.stringify({ exemplar }),
-                headers: {
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
                     "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
                 }
             })
             .then((response) => response.json())

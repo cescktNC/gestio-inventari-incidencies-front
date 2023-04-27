@@ -8,7 +8,13 @@ function CadiraList() {
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/cadira/APIlist?page=" + currentPage)
+        fetch("http://localhost:5000/cadira/APIlist?page=" + currentPage,{
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
+        })
             .then(response => response.json())
             .then(json => {
                 console.log(json)

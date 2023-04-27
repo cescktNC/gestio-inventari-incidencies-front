@@ -24,8 +24,10 @@ function IncidenciaEdit(){
     useEffect(() => {
 
         fetch("http://localhost:5000/incidencies/APIShow/" + id, {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -41,8 +43,10 @@ function IncidenciaEdit(){
     useEffect(() => {
 
         fetch("http://localhost:5000/incidencies/APIEnum", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -58,8 +62,10 @@ function IncidenciaEdit(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/localitzacio/APIAllList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -82,8 +88,10 @@ function IncidenciaEdit(){
         fetch("http://localhost:5000/incidencies/APIUpdate/" + id, {
             method: "PUT",
             body: JSON.stringify({incidencia}),
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             }
         })
         .then((response) => response.json())

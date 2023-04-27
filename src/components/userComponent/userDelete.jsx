@@ -12,8 +12,10 @@ function UserDelete(){
     e.preventDefault();
         fetch("http://localhost:5000/usuaris/user/" + id, {
             method: "DELETE",
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then((response) => response.json())

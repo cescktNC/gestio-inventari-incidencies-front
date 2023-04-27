@@ -13,7 +13,13 @@ function PlantaUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/centre/update/${id}`)
+    fetch(`http://localhost:5000/centre/update/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    }
+    })
       .then((response) => response.json())
       .then((json) => setPlantaData(json));
   }, [id]);
@@ -27,7 +33,11 @@ function PlantaUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/planta/update/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    },
       body: JSON.stringify(PlantaData),
     })
       .then((response) => response.json())

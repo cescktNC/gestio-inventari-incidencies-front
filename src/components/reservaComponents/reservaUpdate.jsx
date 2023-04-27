@@ -14,9 +14,15 @@ function ReservaUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/reserva/update/${id}`)
-      .then((response) => response.json())
-      .then((json) => setReservaData(json));
+    fetch(`http://localhost:5000/reserva/update/${id}`,{
+      headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+      }
+    })
+    .then((response) => response.json())
+    .then((json) => setReservaData(json));
   }, [id]);
 
   const handleChange = (e) => {
@@ -28,7 +34,11 @@ function ReservaUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/reserva/update/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+      },
       body: JSON.stringify(ReservaData),
     })
       .then((response) => response.json())

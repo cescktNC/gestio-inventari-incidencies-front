@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-function CategoryDelete(props) {
+function CategoryDelete() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -15,16 +15,27 @@ function CategoryDelete(props) {
 	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/categories/APIshow/${id}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setCategoryData(json.categoria)
-      });
+    fetch(`http://localhost:5000/categories/APIshow/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      }
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      setCategoryData(json.categoria)
+    });
   }, [id]);
 
   const handleDelete = () => {
     fetch(`http://localhost:5000/categories/APIdelete/${id}`, {
       method: "DELETE",
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      }
     })
       .then((response) => response.json())
       .then((json) => {
@@ -46,7 +57,7 @@ function CategoryDelete(props) {
           <li>Codi: {categoryData.codi}</li>
         </ul>
         <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <button className="btn btn-primary" onClick={handleDelete}>Eliminar</button>
       </div>
     </div>
   );
