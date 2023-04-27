@@ -12,7 +12,13 @@ function SessioUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/sessio/update/${id}`)
+    fetch(`http://localhost:5000/sessio/update/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      }
+    })
       .then((response) => response.json())
       .then((json) => setSessioData(json));
   }, [id]);
@@ -26,7 +32,11 @@ function SessioUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/sessio/update/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify(SessioData),
     })
       .then((response) => response.json())

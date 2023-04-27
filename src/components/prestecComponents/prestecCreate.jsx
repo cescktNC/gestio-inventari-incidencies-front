@@ -33,8 +33,10 @@ function PrestecCreate(){
         fetch("http://localhost:5000/prestec/APIcreate", {
             method: "POST",
             body: JSON.stringify({ prestec }),
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then((response) => response.json())

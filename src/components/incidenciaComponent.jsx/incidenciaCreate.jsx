@@ -23,8 +23,10 @@ function IncidenciaCreate(){
     useEffect(() => {
 
         fetch("http://localhost:5000/incidencies/APIEnum", {
-            headers: {
-            "Content-Type": "application/json",
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())

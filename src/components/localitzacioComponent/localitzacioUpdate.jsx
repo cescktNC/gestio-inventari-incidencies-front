@@ -13,7 +13,13 @@ function LocalitzacioUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/localitzacio/update/${id}`)
+    fetch(`http://localhost:5000/localitzacio/update/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    }
+    })
       .then((response) => response.json())
       .then((json) => setLocalitzacioData(json));
   }, [id]);
@@ -27,7 +33,11 @@ function LocalitzacioUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/localitzacio/update/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    },
       body: JSON.stringify(LocalitzacioData),
     })
       .then((response) => response.json())

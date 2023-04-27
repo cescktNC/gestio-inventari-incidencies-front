@@ -21,8 +21,10 @@ function MaterialDelete(props) {
 
     useEffect(() => {
         fetch("http://localhost:5000/materials/material/" + id, {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -42,6 +44,11 @@ function MaterialDelete(props) {
     const handleDelete = () => {
         fetch(`http://localhost:5000/materials/material/${id}`, {
         method: "DELETE",
+        headers: { 
+            "Authorization": "Bearer " + window.localStorage.getItem("token"),
+            "Content-Type": "application/json",
+            "Accept-Type": "application/json"
+        }
         })
         .then((response) => response.json())
         .then((json) => {

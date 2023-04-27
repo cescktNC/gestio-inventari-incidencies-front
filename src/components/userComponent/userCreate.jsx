@@ -42,8 +42,10 @@ function UserUpdate(){
     useEffect(() => {
 
         fetch("http://localhost:5000/usuaris/carrecs", {
-            headers: {
-            "Content-Type": "application/json",
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -59,8 +61,10 @@ function UserUpdate(){
             fetch("http://localhost:5000/usuaris/user", {
                 method: "POST",
                 body: JSON.stringify({ user: user }),
-                headers: {
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
                     "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
                 },
             })
             .then((response) => response.json())

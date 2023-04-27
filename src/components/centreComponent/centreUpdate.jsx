@@ -12,7 +12,13 @@ function CentreUpdate(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/centre/APIshow/${id}`)
+    fetch(`http://localhost:5000/centre/APIshow/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      }
+    })
       .then((response) => response.json())
       .then((json) => setCentreData(json.centre));
   }, [id]);
@@ -26,7 +32,11 @@ function CentreUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/centre/APIupdate/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify(centreData),
     })
       .then((response) => response.json())

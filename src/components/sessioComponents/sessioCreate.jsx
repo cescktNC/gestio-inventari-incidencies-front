@@ -17,7 +17,11 @@ function SessioCreate(props) {
     e.preventDefault();
     fetch("http://localhost:5000/sessio/create", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    },
       body: JSON.stringify(SessioData),
     })
       .then((response) => response.json())

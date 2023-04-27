@@ -8,13 +8,19 @@ function SubCategoryList() {
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/subcategories/APIlist?page=" + currentPage)
-            .then(response => response.json())
-            .then(json => {               
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            });
+        fetch("http://localhost:5000/subcategories/APIlist?page=" + currentPage, {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(json => {               
+            setList(json.list);
+            setCurrentPage(json.currentPage);
+            setTotalPages(json.totalPages);
+        });
     }, [currentPage]);
 
     return (

@@ -17,7 +17,11 @@ function CentreCreate(props) {
     e.preventDefault();
     fetch("http://localhost:5000/centre/APIcreate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify(CentreData),
     })
       .then((response) => response.json())
