@@ -51,7 +51,6 @@ function CategoryCreate() {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.ok) navigate("/home/categories/list");
 
         if(json.error) setErrorBack(json.error);

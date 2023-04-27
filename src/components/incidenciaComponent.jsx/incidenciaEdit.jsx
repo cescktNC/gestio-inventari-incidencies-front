@@ -32,9 +32,16 @@ function IncidenciaEdit(){
         })
         .then(response => response.json())
         .then(json => {
+            console.log(json)
             if(json.error) setErrorBack(json.error);
             else{
-                setIncidencia(json.incidencia);
+                console.log(json)
+                setIncidencia(preState => (
+                    { 
+                        ...preState, 
+                        ...json.incidencia
+                    }
+                ));
             }
         });
     

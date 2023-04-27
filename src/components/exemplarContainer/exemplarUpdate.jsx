@@ -90,8 +90,6 @@ function ExemplarUpdate(){
             })
             .then((response) => response.json())
             .then((json) => {
-
-                console.log(json)
                 
                 if(json.error !== undefined) setErrorBack(json.error);
 				
