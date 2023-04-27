@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
+import '../../css/styleCategories.css'
 
 function IncidenciaList(){
 
@@ -25,10 +26,15 @@ function IncidenciaList(){
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <IncidenciaTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Incidencia</h5>
+                    <div className="mx-auto">
+                        <IncidenciaTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -89,12 +95,13 @@ function IncidenciaTbody({ list }) {
             <td>
                 {incidencia.codiLocalitzacio !== undefined ? incidencia.codiLocalitzacio.nom : 'Ubicació no resgistrada'}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/incidencia/update/${incidencia._id}`}>Editar</Link>
+                <Link className="btn btn-warning" to={`/home/comentari/list/${incidencia._id}`}>Comentar</Link>
             </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/comentari/list/${incidencia._id}`}>Comentar</Link>
-            </td>
+            
+                
+            
         </tr>
     ));
 }

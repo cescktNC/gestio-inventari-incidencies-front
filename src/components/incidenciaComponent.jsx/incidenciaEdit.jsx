@@ -8,7 +8,7 @@ function IncidenciaEdit(){
         ubicacio: '',
         codiLocalitzacio: '',
         tipologia: '',
-        descripcio: '',
+        descrcipcio: '',
         prioritat: ''
     });
 
@@ -167,7 +167,7 @@ function IncidenciaEdit(){
                             handleChange={handleChange}
                         />
 
-                        <button type="submit" className="btn btn-primary">Save</button>
+                        <button type="submit" className="btn btn-primary">Guardar</button>
                     </form>
                 </div>
             </div>
