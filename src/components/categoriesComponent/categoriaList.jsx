@@ -63,13 +63,11 @@ function CategoryTbody({ list }) {
             <td>
                 {category.nom}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/categories/update/${category._id}`}>Edit</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/categories/delete/${category._id}`}>Eliminar</Link>
-
             </td>
+                
         </tr>
     ));
 }

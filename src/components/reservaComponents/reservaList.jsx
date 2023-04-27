@@ -18,10 +18,15 @@ function ReservaList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <ReservaTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Reserva</h5>
+                    <div className="mx-auto">
+                        <ReservaTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -70,12 +75,12 @@ function ReservaTbody({ list }) {
             <td>
                 {reserva.codiLocalitzacio}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/reserva/update/${reserva._id}`}>Edit</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/reserva/delete/${reserva._id}`}>Eliminar</Link>
             </td>
+                
+            
         </tr>
     ));
 }

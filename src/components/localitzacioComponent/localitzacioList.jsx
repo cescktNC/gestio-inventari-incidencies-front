@@ -18,10 +18,15 @@ function LocalitzacioList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <LocalitzacioTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Localització</h5>
+                    <div className="mx-auto">
+                        <LocalitzacioTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -66,12 +71,11 @@ function LocalitzacioTbody({ list }) {
             <td>
                 {localitzacio.especial}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/localitzacio/update/${localitzacio._id}`}>Edit</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/localitzacio/delete/${localitzacio._id}`}>Elimnar</Link>
             </td>
+                
         </tr>
     ));
 }

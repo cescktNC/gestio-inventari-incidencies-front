@@ -18,10 +18,15 @@ function CentreList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <CentreTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Centre</h5>
+                    <div className="mx-auto">
+                        <CentreTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -59,12 +64,11 @@ function CentreTbody({ list }) {
                 {centre.nom}
             </td>
 
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/centre/update/${centre._id}`}>Editar</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/centre/delete/${centre._id}`}>Eliminar</Link>
             </td>
+            
         </tr>
     ));
 }

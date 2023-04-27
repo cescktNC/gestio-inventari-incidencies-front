@@ -52,6 +52,7 @@ function UserShow() {
 				headers: {
 					"Authorization": "Bearer " + window.localStorage.getItem("token"),
 					"Content-Type": "application/json",
+					"Accept-Type" : "application/json"
 				},
 			}
 		)

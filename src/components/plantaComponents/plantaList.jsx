@@ -19,10 +19,15 @@ function PlantaList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <PlantaTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Planta</h5>
+                    <div className="mx-auto">
+                        <PlantaTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -67,12 +72,12 @@ function PlantaTbody({ list }) {
             <td className="W-15">
                 <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ planta.planol} alt="" />
             </td>
-            <td>
+            <td className="edit-delete-cell"> 
                 <Link className="btn btn-secondary" to={`/home/planta/update/${planta._id}`}>Editar</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/planta/delete/${planta._id}`}>Eliminar</Link>
             </td>
+                
+            
         </tr>
     ));
 }
