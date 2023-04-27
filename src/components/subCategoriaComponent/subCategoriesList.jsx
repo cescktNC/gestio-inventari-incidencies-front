@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleCategories.css'
+import '../../css/styleSubcategories.css'
 
 function SubCategoryList() {
     const [list, setList] = useState([]);
@@ -22,12 +22,16 @@ function SubCategoryList() {
             setTotalPages(json.totalPages);
         });
     }, [currentPage]);
-
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <SubcategoryTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">SubCategories</h5>
+                    <div className="mx-auto">
+                        <SubcategoryTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -68,15 +72,11 @@ function SubcategoryTbody({ list }) {
             <td>
                 {subcategory.codiCategoria.nom}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/subcategories/update/${subcategory._id}`}>Editar</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
             </td>
-            <td>
-                <Link className="btn btn-danger" to={`/home/subcategories/delete/${subcategory._id}`}>Eliminar</Link>
-            </td>
+                
         </tr>
     ));
 }

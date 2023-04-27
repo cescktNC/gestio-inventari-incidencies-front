@@ -24,11 +24,11 @@ function CategoryList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center">
-            <div className="card mt-2 w-75">
+        <div>
+            <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h5 className="card-title">Categories</h5>
-                    <div className="mx-auto w-75">
+                    <div className="mx-auto">
                         <CategoryTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                     </div>
@@ -69,13 +69,11 @@ function CategoryTbody({ list }) {
             <td>
                 {category.nom}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/categories/update/${category._id}`}>Edit</Link>
-            </td>
-            <td>
                 <Link className="btn btn-danger" to={`/home/categories/delete/${category._id}`}>Eliminar</Link>
-
             </td>
+                
         </tr>
     ));
 }

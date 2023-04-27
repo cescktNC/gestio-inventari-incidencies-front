@@ -24,10 +24,15 @@ function SessioList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <SessioTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div>
+            <div className="card mt-2 w-100">
+                <div className="card-body">
+                    <h5 className="card-title">Sessió</h5>
+                    <div className="mx-auto">
+                        <SessioTable list={list} />
+                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -68,12 +73,11 @@ function SessioTbody({ list }) {
             <td>
                 {sessio.codiReserva}
             </td>
-            <td>
+            <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
+                <Link className="btn btn-danger" to={`/home/sessio/delete/${sessio._id}`}>Eliminar</Link>
             </td>
-            <td>
-                <Link className="btn btn-secondary" to={`/home/sessio/delete/${sessio._id}`}>Eliminar</Link>
-            </td>
+                
         </tr>
     ));
 }
