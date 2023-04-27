@@ -21,7 +21,11 @@ function SubCategoryCreate(props) {
 
   useEffect(() => {
     fetch("http://localhost:5000/categories/APIAlllist", {
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
     })
     .then((response) => response.json())
     .then((json) => {
@@ -34,7 +38,11 @@ function SubCategoryCreate(props) {
     e.preventDefault();
     fetch("http://localhost:5000/subcategories/APIcreate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify({subcategoryData}),
     })
     .then((response) => response.json())

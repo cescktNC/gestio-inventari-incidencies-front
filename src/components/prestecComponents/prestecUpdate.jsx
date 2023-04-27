@@ -56,7 +56,11 @@ function PrestecUpdate(){
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIEstats`,{
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
         })
         .then((response) => response.json())
         .then((json) => {
@@ -76,7 +80,11 @@ function PrestecUpdate(){
         fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
             method: "PUT",
             body: JSON.stringify({ prestec }),
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
         }) 
         .then((response) => response.json())
         .then((json) => {

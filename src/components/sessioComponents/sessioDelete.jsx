@@ -12,7 +12,13 @@ function SessioDelete(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/sessio/${id}`)
+    fetch(`http://localhost:5000/sessio/${id}`,{
+      headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+      }
+    })
       .then((response) => response.json())
       .then((json) => setSessioData(json));
   }, [id]);
@@ -20,6 +26,11 @@ function SessioDelete(props) {
   const handleDelete = () => {
     fetch(`http://localhost:5000/sessio/delete/${id}`, {
       method: "DELETE",
+      headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+      }
     })
       .then((response) => response.json())
       .then((json) => {

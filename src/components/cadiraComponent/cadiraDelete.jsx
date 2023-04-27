@@ -11,7 +11,13 @@ function CadiraDelete(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/cadira/${id}`)
+    fetch(`http://localhost:5000/cadira/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
+    })
       .then((response) => response.json())
       .then((json) => setCadiraData(json));
   }, [id]);
@@ -19,6 +25,11 @@ function CadiraDelete(props) {
   const handleDelete = () => {
     fetch(`http://localhost:5000/cadira/delete/${id}`, {
       method: "DELETE",
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
     })
       .then((response) => response.json())
       .then((json) => {

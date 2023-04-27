@@ -13,7 +13,13 @@ function LocalitzacioDelete(props) {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/localitzacio/${id}`)
+    fetch(`http://localhost:5000/localitzacio/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    }
+    })
       .then((response) => response.json())
       .then((json) => setLocalitzacioData(json));
   }, [id]);
@@ -21,6 +27,11 @@ function LocalitzacioDelete(props) {
   const handleDelete = () => {
     fetch(`http://localhost:5000/localitzacio/delete/${id}`, {
       method: "DELETE",
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    }
     })
       .then((response) => response.json())
       .then((json) => {

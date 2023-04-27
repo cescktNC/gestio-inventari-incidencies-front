@@ -18,7 +18,11 @@ function ReservaCreate(props) {
     e.preventDefault();
     fetch("http://localhost:5000/reserva/create", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+    },
       body: JSON.stringify(ReservaData),
     })
       .then((response) => response.json())

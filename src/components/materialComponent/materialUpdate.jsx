@@ -43,8 +43,10 @@ function MaterialUpdate() {
 
     useEffect(() => {
         fetch("http://localhost:5000/materials/material/" + id, {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -65,8 +67,10 @@ function MaterialUpdate() {
     
     useEffect(() => {
         fetch("http://localhost:5000/subcategories/APIAlllist", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -97,7 +101,10 @@ function MaterialUpdate() {
             fetch("http://localhost:5000/materials/material/" + id, {
                 method: "PUT",
                 body: formData,
-                headers: {
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
                 }
             })
             .then((response) => response.json())

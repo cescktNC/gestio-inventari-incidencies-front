@@ -45,8 +45,10 @@ function ExemplarCreate(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/localitzacio/APIAllList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
