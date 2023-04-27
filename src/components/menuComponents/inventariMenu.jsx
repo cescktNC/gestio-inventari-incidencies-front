@@ -15,8 +15,10 @@ function InventariMenu(){
 				"http://localhost:5000/prestec/APIPendent",
 				{
 					method: "GET",
-					headers: {
+					headers: { 
+						"Authorization": "Bearer " + window.localStorage.getItem("token"),
 						"Content-Type": "application/json",
+						"Accept-Type": "application/json"
 					},
 				}
 			)

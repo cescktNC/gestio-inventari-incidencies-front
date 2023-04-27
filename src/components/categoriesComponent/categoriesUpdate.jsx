@@ -1,20 +1,34 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ComprobacioName } from "../../js/comprobacioCampsMaterials";
 
-function CategoryUpdate(props) {
+function CategoryUpdate() {
   const { id } = useParams();
   
   const navigate = useNavigate();
 
   const [categoryData, setCategoryData] = useState({
-    codi: "",
     nom: "",
+  });
+
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioNom: false,
+  });
+
+  const [errorsForm, setErrorsForm] = useState({
+    errorNom: '',
   });
 
 	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/categories/APIshow/${id}`)
+    fetch(`http://localhost:5000/categories/APIshow/${id}`,{
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      }
+    })
       .then((response) => response.json())
       .then((json) => {
         setCategoryData(json.categoria)
@@ -30,12 +44,15 @@ function CategoryUpdate(props) {
     e.preventDefault();
     fetch(`http://localhost:5000/categories/APIupdate/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify({categoryData}),
     })
     .then((response) => response.json())
     .then((json) => {
-      console.log(json)
       if (json.ok) navigate("/home/categories/list");
 
       if(json.error) setErrorBack(json.error);
@@ -43,41 +60,55 @@ function CategoryUpdate(props) {
     });
   };
 
-  return (
-    <div>
-      <h1>Actualitzant categoria {categoryData.nom}</h1>
-      <form onSubmit={handleSubmit}>
-        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
+  };
 
-        <div>
-          <label htmlFor="codi">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            className="form-control"
-            value={categoryData.codi}
-            onChange={handleChange}
-            required
-          />
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
+  };
+
+  return (
+    <main>
+     <div className="card mt-4">
+        <div className="card-header">
+					<h5 className="card-title">Actualitzar categotia: {categoryData.nom}</h5>
+				</div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
+                {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+                <div>
+                  <label htmlFor="Nom">Nom:</label>
+                  <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    className="form-control"
+                    value={categoryData.nom}
+                    onChange={handleChange}
+                    onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
+                    required
+                  />
+                  {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+                </div>
+                <button type="submit" className="btn btn-primary">Actualitzar</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="Nom">Nom:</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            className="form-control"
-            value={categoryData.nom}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Actualitzar</button>
-      </form>
-    </div>
+      </div>
+    </main> 
   );
 }
+
 
 function DivMessage({message}){
   return(

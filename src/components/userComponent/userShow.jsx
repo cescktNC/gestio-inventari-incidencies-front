@@ -49,9 +49,10 @@ function UserShow() {
 			"http://localhost:5000/usuaris/user/" + id,
 			{
 				method: "GET",
-				headers: {
+				headers: { 
 					"Authorization": "Bearer " + window.localStorage.getItem("token"),
 					"Content-Type": "application/json",
+					"Accept-Type": "application/json"
 				},
 			}
 		)
@@ -59,7 +60,7 @@ function UserShow() {
 		.then(json => {
 			setUser(json.usuari);
 		});
-	}, [id]);
+	}, [])
 
 	let imgProfile = 'http://localhost:5000/'+ user.profilePicture;
 
@@ -71,8 +72,10 @@ function UserShow() {
 			fetch("http://localhost:5000/usuaris/user/password/" + id, {
 				method: "PUT",
 				body: JSON.stringify({ pass }),
-				headers: {
-				"Content-Type": "application/json",
+				headers: { 
+					"Authorization": "Bearer " + window.localStorage.getItem("token"),
+					"Content-Type": "application/json",
+					"Accept-Type": "application/json"
 				},
 			})
 			.then((response) => response.json())

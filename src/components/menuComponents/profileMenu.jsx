@@ -9,9 +9,10 @@ function ProfileMenu(){
 			"http://localhost:5000/usuaris/user/" + id,
 			{
 				method: "GET",
-				headers: {
+				headers: { 
 					"Authorization": "Bearer " + window.localStorage.getItem("token"),
 					"Content-Type": "application/json",
+					"Accept-Type": "application/json"
 				},
 			}
 		)

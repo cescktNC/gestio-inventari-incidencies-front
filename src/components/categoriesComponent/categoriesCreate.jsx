@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ComprobacioName } from "../../js/comprobacioCampsMaterials";
 
-function CategoryCreate(props) {
+function CategoryCreate() {
   const [categoryData, setCategoryData] = useState({
     nom: "",
+  });
+
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioNom: false,
+  });
+
+  const [errorsForm, setErrorsForm] = useState({
+    errorNom: '',
   });
 
 	const [errorBack, setErrorBack] = useState('');
@@ -15,11 +24,29 @@ function CategoryCreate(props) {
     setCategoryData({ ...categoryData, [name]: value });
   };
 
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
+  };
+
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("http://localhost:5000/categories/APIcreate", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+				"Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+      },
       body: JSON.stringify({categoryData: categoryData}),
     })
       .then((response) => response.json())
@@ -49,8 +76,10 @@ function CategoryCreate(props) {
                 className="form-control"
                 value={categoryData.nom}
                 onChange={handleChange}
+                onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
                 required
               />
+              {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
             </div>
           </div>
           <button type="submit" className="btn btn-primary">Crear</button>

@@ -15,7 +15,11 @@ function CadiraCreate(props) {
     e.preventDefault();
     fetch("http://localhost:5000/cadira/create", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
+      },
       body: JSON.stringify(CadiraData),
     })
       .then((response) => response.json())
