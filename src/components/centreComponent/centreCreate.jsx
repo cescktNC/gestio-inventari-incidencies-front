@@ -81,6 +81,7 @@ function CentreCreate(props) {
                 onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
                 required
               />
+              {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
             </div>
             <button type="submit" className="btn btn-primary">Crear</button>
           </form>

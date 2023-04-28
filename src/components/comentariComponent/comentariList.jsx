@@ -73,7 +73,7 @@ function ComentariTbody({list}){
                 { comentari.codiUsuari.nom }
             </td>
             <td>
-                { comentari.data.substring(0, 10) }
+                { comentari.data.substring(0, 10).split("-").reverse().join("-") }
             </td>
             <td>
                 { comentari.descripcio }

@@ -58,8 +58,6 @@ function CadiraUpdate(props) {
       });
   }, [id]);
 
-  console.log(CadiraData)
-
   const handleSubmit = (e) => {
     e.preventDefault();
     ComprobacioFila(CadiraData.fila, {handleComprobacio, handleErrors});
