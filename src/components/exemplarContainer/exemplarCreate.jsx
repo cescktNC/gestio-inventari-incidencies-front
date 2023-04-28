@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ComprobacioCodi } from "../../js/comprobacioCampsMaterials";
 
 function ExemplarCreate(){
     const navigate = useNavigate();
@@ -16,7 +15,7 @@ function ExemplarCreate(){
     });
     
     const [comprobacio, setComprobacio] = useState({
-        comprobacioCodi: false,
+        comprobacioCodi: true,
     });
 
     const [errorsForm, setErrorsForm] = useState({
@@ -25,8 +24,10 @@ function ExemplarCreate(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/materials/material/allList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -35,7 +36,7 @@ function ExemplarCreate(){
                 setMaterial(json.list);
                 setExemplar(preState =>(
                     { ...preState, codiMaterial: json.list[0]._id}
-                ))
+                ));
             }
             
             if(json.error) setErrorBack(json.error)
@@ -57,7 +58,7 @@ function ExemplarCreate(){
                 setLocalitzacio(json.list);
                 setExemplar(preState =>(
                     { ...preState, codiLocalitzacio: json.list[0]._id}
-                ))
+                ));
             }
             
             if(json.error) setErrorBack(json.error)
@@ -72,9 +73,11 @@ function ExemplarCreate(){
             fetch("http://localhost:5000/exemplar/APICreate", {
                 method: "POST",
                 body: JSON.stringify({exemplar}),
-                headers: {
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
                     "Content-Type": "application/json",
-                }
+                    "Accept-Type": "application/json"
+                },
             })
             .then((response) => response.json())
             .then((json) => {
@@ -122,14 +125,6 @@ function ExemplarCreate(){
 
                         {(errorBack !== '' && (<DivError error={errorBack}  />) )}
 
-                        <InputCodi 
-                            codiExemplar={exemplar.codi} 
-                            handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
-                        />
-                        {errorsForm.errorCodi && (<p className="error-message">{errorsForm.errorCodi}</p>)}
-
                         <InputSelectMaterial
                             codiMaterialExemplar={exemplar.codiMaterial} 
                             materials={material}
@@ -167,24 +162,6 @@ function DivArrayErrors({errors}){
         <ul className="alert alert-danger list-unstyled">
             {errors.map((error, index) => <li key={index}>{error}</li>)}
         </ul>
-    )
-}
-
-function InputCodi({codiExemplar, handleChange, handleComprobacio, handleErrors}){
-
-    return(
-        <div className="form-group">
-            <label form="codi">Codi</label>
-            <input
-                type="text"
-                name="codi"
-                value={codiExemplar}
-                onChange={handleChange}
-                onBlur={(e) => ComprobacioCodi(e.target.value, {handleComprobacio, handleErrors})}
-                className="form-control"
-                required
-            />
-        </div>
     )
 }
 

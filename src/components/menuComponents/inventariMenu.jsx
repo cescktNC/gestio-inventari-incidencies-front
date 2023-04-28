@@ -1,4 +1,4 @@
-import { nomesDirector, nomesEncaregatMaterial } from "../../js/comprobacioCarrecs";
+import { nomesDirector, nomesEncaregatMaterial, nomesAdmin } from "../../js/comprobacioCarrecs";
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ function InventariMenu(){
 				</div>
 			</li>
 			<ul className="ulSecundari">
-			{nomesEncaregatMaterial() && (
+			{(nomesEncaregatMaterial() || nomesAdmin()) && (
 				<>
 					<li className="d-flex">
 						<Link
