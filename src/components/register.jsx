@@ -46,6 +46,13 @@ function Register() {
 
         const { nom, cognoms, dni, email, password, confirm_password } = {...user};
 
+        ComprobacioName(nom, {handleComprobacio, handleErrors});
+        ComprobacioCognoms(cognoms, {handleComprobacio, handleErrors});
+        ComprobacioDNI(dni, {handleComprobacio, handleErrors});
+        ComprobacioEmail(email, {handleComprobacio, handleErrors});
+        ComprobacioPassword(password, {handleComprobacio, handleErrors});
+        ComprobacioConfPassword(confirm_password, {handleComprobacio, handleErrors});
+
 		if (!Object.values(comprobacio).includes(false)) {
                 fetch("http://localhost:5000/autenticacions/registerAPI", {
 				method: "POST",

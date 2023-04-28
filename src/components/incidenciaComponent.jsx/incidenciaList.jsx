@@ -26,17 +26,17 @@ function IncidenciaList(){
     }, [currentPage]);
 
     return (
-        <div>
-            <div className="card mt-2 w-100">
-                <div className="card-body">
-                    <h5 className="card-title">Incidencia</h5>
-                    <div className="mx-auto">
-                        <IncidenciaTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+       
+        <div className="card mt-2 w-100">
+            <div className="card-body">
+                <h5 className="card-title">Incidencia</h5>
+                <div className="mx-auto">
+                    <IncidenciaTable list={list} />
+                    <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                 </div>
             </div>
         </div>
+        
     )
 }
 

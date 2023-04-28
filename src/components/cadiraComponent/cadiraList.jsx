@@ -25,10 +25,13 @@ function CadiraList() {
     }, [currentPage]);
 
     return (
-        <div className="d-flex align-items-center ">
-            <div className="mx-auto">
-                <CadiraTable list={list} />
-                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <div className="card mt-2 w-100">
+            <div className="card-body">
+                <h5 className="card-title">Cadira</h5>
+                <div className="mx-auto">
+                    <CadiraTable list={list} />
+                    <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                </div>
             </div>
         </div>
     )

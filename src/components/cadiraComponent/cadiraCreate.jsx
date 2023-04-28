@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ComprobacioFila, ComprobacioNumero} from "../../js/comprobacioCampsCadira";
 
 function CadiraCreate(props) {
+  const navigate = useNavigate();
   const [CadiraData, setCadiraData] = useState({
     fila: "",
     numero: "",
@@ -40,12 +42,14 @@ function CadiraCreate(props) {
       })
       .then((response) => response.json())
       .then((json) => {
-        if (json.ok) props.history.push("/home/cadira");
+        console.log(json)
+        if (json.ok) navigate("/home/cadira/list");
+        //props.history.push
         if(json.error) setErrorBack(json.error);
       }
         
-      )}
-      };
+    )}
+  };
 
   const handleComprobacio = (camp, valor) => {
     setComprobacio({
@@ -70,7 +74,7 @@ function CadiraCreate(props) {
       <form onSubmit={handleSubmit}>
       {(errorBack !== '' && (<DivError error={errorBack}  />) )}
 
-        <div>
+        <div className="form-group">
           <label htmlFor="fila">Fila:</label>
           <input
             type="number"
@@ -84,21 +88,19 @@ function CadiraCreate(props) {
           />
           {errorsForm.errorFila && (<p className="error-message">{errorsForm.errorFila}</p>)}
         </div>
-        <div>
-          <div>
-            <label htmlFor="numero">Numero:</label>
-            <input
-              type="number"
-              id="numero"
-              name="numero"
-              className="form-control"
-              value={CadiraData.numero}
-              onChange={handleChange}
-              onBlur={(e) => ComprobacioNumero(e.target.value, {handleComprobacio, handleErrors})}
-              required
-            />
-            {errorsForm.errorNumero && (<p className="error-message">{errorsForm.errorNumero}</p>)}
-          </div>
+        <div className="form-group">
+          <label htmlFor="numero">Numero:</label>
+          <input
+            type="number"
+            id="numero"
+            name="numero"
+            className="form-control"
+            value={CadiraData.numero}
+            onChange={handleChange}
+            onBlur={(e) => ComprobacioNumero(e.target.value, {handleComprobacio, handleErrors})}
+            required
+          />
+          {errorsForm.errorNumero && (<p className="error-message">{errorsForm.errorNumero}</p>)}
         </div>
         <button type="submit" className="btn btn-primary">Crear</button>
       </form>

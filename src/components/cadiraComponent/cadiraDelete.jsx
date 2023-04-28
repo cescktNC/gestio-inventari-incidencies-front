@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function CadiraDelete(props) {
   const { id } = useParams();
+
+  const navigate = useNavigate();
   
 
   const [CadiraData, setCadiraData] = useState({
@@ -10,8 +12,10 @@ function CadiraDelete(props) {
     numero: "",
   });
 
+	const [errorBack, setErrorBack] = useState('');
+
   useEffect(() => {
-    fetch(`http://localhost:5000/cadira/${id}`,{
+    fetch(`http://localhost:5000/cadira/APIshow/${id}`,{
       headers: { 
         "Authorization": "Bearer " + window.localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -19,11 +23,14 @@ function CadiraDelete(props) {
       },
     })
       .then((response) => response.json())
-      .then((json) => setCadiraData(json));
+      .then((json) => {
+        if(json.cadira) setCadiraData(json.cadira);
+        if(json.error) setErrorBack(json.error)
+      });
   }, [id]);
 
   const handleDelete = () => {
-    fetch(`http://localhost:5000/cadira/delete/${id}`, {
+    fetch(`http://localhost:5000/cadira/APIdelete/${id}`, {
       method: "DELETE",
       headers: { 
         "Authorization": "Bearer " + window.localStorage.getItem("token"),
@@ -33,27 +40,32 @@ function CadiraDelete(props) {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          props.history.push("/home/cadira");
+        if (json.ok) {
+          navigate("/home/cadira/list");
         } else {
-          alert("Error al eliminar la cadira");
+          setErrorBack(json.error)
         }
       });
   };
 
   return (
-    <div>
-      <h1>Eliminar cadira {id}</h1>
-      <div>
-        <p>Estàs a punt d'eliminar el següent centre:</p>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+				<h5 className="card-title">Eliminar cadira, fila: {CadiraData.fila}, numero: {CadiraData.numero}</h5>
+        <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent cadira:
+				</div>
+
         <ul>
           <li>Fila: {CadiraData.fila}</li>
           <li>Cadira: {CadiraData.numero}</li>
         </ul>
         <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
 
