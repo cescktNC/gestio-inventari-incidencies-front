@@ -42,22 +42,25 @@ function CategoryUpdate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/categories/APIupdate/${id}`, {
-      method: "PUT",
-      headers: { 
-        "Authorization": "Bearer " + window.localStorage.getItem("token"),
-        "Content-Type": "application/json",
-        "Accept-Type": "application/json"
-      },
-      body: JSON.stringify({categoryData}),
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.ok) navigate("/home/categories/list");
+    ComprobacioName(categoryData.nom, {handleComprobacio, handleErrors})
+    if (!Object.values(comprobacio).includes(false)) {
+      fetch(`http://localhost:5000/categories/APIupdate/${id}`, {
+        method: "PUT",
+        headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+        },
+        body: JSON.stringify({categoryData}),
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.ok) navigate("/home/categories/list");
 
-      if(json.error) setErrorBack(json.error);
+        if(json.error) setErrorBack(json.error);
 
-    });
+      });
+    }
   };
 
   const handleComprobacio = (camp, valor) => {
@@ -85,7 +88,7 @@ function CategoryUpdate() {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
-                <div>
+                <div className="form-group">
                   <label htmlFor="Nom">Nom:</label>
                   <input
                     type="text"

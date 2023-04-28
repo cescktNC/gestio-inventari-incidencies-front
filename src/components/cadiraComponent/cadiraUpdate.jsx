@@ -137,9 +137,9 @@ function CadiraUpdate(props) {
 
 function DivError({error}){
   return(
-      <div className="alert alert-danger">
-          <p className="text-danger">{error}</p>
-      </div>
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
   )
 }
 

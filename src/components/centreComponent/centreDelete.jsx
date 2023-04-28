@@ -11,6 +11,8 @@ function CentreDelete(props) {
     codi: "",
   });
 
+	const [errorBack, setErrorBack] = useState('');
+
   useEffect(() => {
     fetch(`http://localhost:5000/centre/APIshow/${id}`,{
       headers: { 
@@ -36,9 +38,9 @@ function CentreDelete(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/centre");
+          navigate("/home/centre/list");
         } else {
-          alert("Error al eliminar el centre");
+          setErrorBack(json.error);
         }
       });
   };
@@ -48,15 +50,24 @@ function CentreDelete(props) {
       <h1>Eliminar centre {CentreData.nom}</h1>
       <div>
         <p>Estàs a punt d'eliminar el següent centre:</p>
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Nom: {CentreData.nom}</li>
           <li>Codi: {CentreData.codi}</li>
         </ul>
         <p>Estàs segur d'eliminar-lo?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
   );
+}
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 }
 
 export default CentreDelete;

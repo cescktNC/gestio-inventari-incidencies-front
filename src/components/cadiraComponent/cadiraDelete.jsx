@@ -56,7 +56,7 @@ function CadiraDelete(props) {
         <div className="alert alert-danger" role="alert">
           Estàs a punt d'eliminar la següent cadira:
 				</div>
-
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Fila: {CadiraData.fila}</li>
           <li>Cadira: {CadiraData.numero}</li>
@@ -67,6 +67,14 @@ function CadiraDelete(props) {
     </div>
     </main>
   );
+}
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 }
 
 export default CadiraDelete;

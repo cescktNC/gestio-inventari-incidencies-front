@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ComprobacioName } from "../../js/comprobacioCampsMaterials";
 
 function CentreUpdate(props) {
   const { id } = useParams();
@@ -8,8 +9,17 @@ function CentreUpdate(props) {
 
   const [centreData, setCentreData] = useState({
     nom: "",
-    codi: "",
   });
+
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioNom: false,
+  });
+
+  const [errorsForm, setErrorsForm] = useState({
+    errorNom: '',
+  });
+
+	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
     fetch(`http://localhost:5000/centre/APIshow/${id}`,{
@@ -30,15 +40,17 @@ function CentreUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/centre/APIupdate/${id}`, {
-      method: "PUT",
-      headers: { 
-        "Authorization": "Bearer " + window.localStorage.getItem("token"),
-        "Content-Type": "application/json",
-        "Accept-Type": "application/json"
-      },
-      body: JSON.stringify(centreData),
-    })
+    ComprobacioName(centreData.nom, {handleComprobacio, handleErrors})
+    if (!Object.values(comprobacio).includes(false)) {
+      fetch(`http://localhost:5000/centre/APIupdate/${id}`, {
+        method: "PUT",
+        headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+        },
+        body: JSON.stringify(centreData),
+      })
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
@@ -47,36 +59,53 @@ function CentreUpdate(props) {
           alert("Error al actualizar el centre");
         }
       });
+    }
+  };
+
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
+  };
+
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
   };
 
   return (
-    <div>
-      <h1>Actualitzant centre {centreData.nom}</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="codi">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            value={centreData.codi}
-            onChange={handleChange}
-            required
-          />
+    <main>
+     <div className="card mt-4">
+        <div className="card-header">
+					<h5 className="card-title">Actualitzar centre: {centreData.nom}</h5>
+				</div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="Nom">Nom:</label>
+                  <input
+                    id="nom"
+                    name="nom"
+                    className="form-control"
+                    value={centreData.nom}
+                    onChange={handleChange}
+                    onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
+                    required
+                  />
+                  {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+                </div>
+                <button type="submit" className="btn btn-primary">Actualitzar</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="Nom">Nom:</label>
-          <input
-            id="nom"
-            name="nom"
-            value={centreData.nom}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Actualitzar</button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 }
 
