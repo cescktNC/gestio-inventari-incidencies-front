@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleCategories.css'
 
 function CategoryList() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {

@@ -74,7 +74,7 @@ function CadiraUpdate(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/cadira/list");
+          navigate(-1);
         } else {
           setErrorBack(json.error);
         }
@@ -83,7 +83,7 @@ function CadiraUpdate(props) {
 
   return (
     <main>
-     <div className="card mt-4">
+      <div className="card mt-4">
         <div className="card-header">
 					<h5 className="card-title">Actualitzant cadira, fila: {CadiraData.fila}, numero: {CadiraData.numero}</h5>
 				</div>

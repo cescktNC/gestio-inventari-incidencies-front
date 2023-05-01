@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleUser.css';
 import '../../css/styleExemplar.css';
 
 import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs";
 
 function ExemplarList(){
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
         fetch("http://localhost:5000/exemplar/APIlist?page=" + currentPage,{
@@ -24,38 +26,6 @@ function ExemplarList(){
             setTotalPages(json.totalPages);
         });
     }, [currentPage]);
-
-    const [exemplar, setExemplar] = useState({
-        codi: '',
-        demarca: false,
-        qr: '',
-        codiMaterial: {},
-        codiLocalitzacio: {}
-    });
-
-	const [errorBack, setErrorBack] = useState('');
-    console.log(window.localStorage.getItem("token"));
-
-
-    useEffect(() => {
-        console.log('b');
-        fetch("http://localhost:5000/exemplar/APIshow/644b63e91ac65720fca7272c" , {
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-            },
-        })
-        .then(response => response.json())
-        .then(json => {
-            console.log(json);
-            if(json.exemplar) setExemplar(json.exemplar)
-            
-            if(json.error) setErrorBack(json.error)
-        });
-    }, []);
-
-    console.log(exemplar)
 
     return (
         <div className="d-flex align-items-center ">

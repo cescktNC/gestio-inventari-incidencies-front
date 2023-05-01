@@ -55,7 +55,7 @@ function CategoryUpdate() {
       })
       .then((response) => response.json())
       .then((json) => {
-        if (json.ok) navigate("/home/categories/list");
+        if (json.ok) navigate(-1);
 
         if(json.error) setErrorBack(json.error);
 
@@ -79,7 +79,7 @@ function CategoryUpdate() {
 
   return (
     <main>
-     <div className="card mt-4">
+      <div className="card mt-4">
         <div className="card-header">
 					<h5 className="card-title">Actualitzar categotia: {categoryData.nom}</h5>
 				</div>
@@ -87,7 +87,7 @@ function CategoryUpdate() {
           <div className="col-md-12">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
-                {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+                {(errorBack !== '' && (<DivError error={errorBack}  />) )}
                 <div className="form-group">
                   <label htmlFor="Nom">Nom:</label>
                   <input
@@ -100,7 +100,7 @@ function CategoryUpdate() {
                     onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
                     required
                   />
-                  {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+                  {errorsForm.errorName && (<p className="error-error">{errorsForm.errorName}</p>)}
                 </div>
                 <button type="submit" className="btn btn-primary">Actualitzar</button>
               </form>
@@ -113,10 +113,10 @@ function CategoryUpdate() {
 }
 
 
-function DivMessage({message}){
+function DivError({error}){
   return(
       <div className="alert alert-danger">
-          <p className="text-danger">{message}</p>
+          <p className="text-danger">{error}</p>
       </div>
   )
 }

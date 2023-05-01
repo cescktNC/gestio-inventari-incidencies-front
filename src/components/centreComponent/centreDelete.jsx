@@ -38,7 +38,7 @@ function CentreDelete(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/centre/list");
+          navigate(-1);
         } else {
           setErrorBack(json.error);
         }

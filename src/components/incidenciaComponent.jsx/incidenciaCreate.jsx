@@ -129,7 +129,7 @@ function IncidenciaCreate(){
 
                         {(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
 
-                        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+                        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
 
                         <InputCodiExemplar 
                             codiExemplar={incidencia.codiExemplar}
@@ -176,10 +176,10 @@ function IncidenciaCreate(){
 
 }
 
-function DivMessage({message}){
+function DivError({error}){
     return(
         <div className="alert alert-danger">
-            <p className="text-danger">{message}</p>
+            <p className="text-danger">{error}</p>
         </div>
     )
 }

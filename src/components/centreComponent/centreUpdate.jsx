@@ -54,9 +54,9 @@ function CentreUpdate(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/centre/list");
+          navigate(-1);
         } else {
-          alert("Error al actualizar el centre");
+          setErrorBack(json.error);
         }
       });
     }
@@ -78,35 +78,40 @@ function CentreUpdate(props) {
 
   return (
     <main>
-     <div className="card mt-4">
+      <div className="card mt-4">
         <div className="card-header">
 					<h5 className="card-title">Actualitzar centre: {centreData.nom}</h5>
 				</div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="card-body">
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="Nom">Nom:</label>
-                  <input
-                    id="nom"
-                    name="nom"
-                    className="form-control"
-                    value={centreData.nom}
-                    onChange={handleChange}
-                    onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
-                    required
-                  />
-                  {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
-                </div>
-                <button type="submit" className="btn btn-primary">Actualitzar</button>
-              </form>
+        <div className="card-body">
+          {(errorBack !== '' && (<DivError error={errorBack}  />) )}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="Nom">Nom:</label>
+              <input
+                id="nom"
+                name="nom"
+                className="form-control"
+                value={centreData.nom}
+                onChange={handleChange}
+                onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
+                required
+              />
+              {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
             </div>
-          </div>
+            <button type="submit" className="btn btn-primary">Actualitzar</button>
+          </form>
         </div>
       </div>
     </main>
   );
+}
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 }
 
 export default CentreUpdate;

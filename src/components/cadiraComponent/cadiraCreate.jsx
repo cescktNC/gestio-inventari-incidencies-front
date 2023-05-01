@@ -30,6 +30,7 @@ function CadiraCreate(props) {
     e.preventDefault();
     ComprobacioFila(CadiraData.fila, {handleComprobacio, handleErrors});
     ComprobacioNumero(CadiraData.numero, {handleComprobacio, handleErrors});
+
     if (!Object.values(comprobacio).includes(false)) {
       fetch("http://localhost:5000/cadira/APIcreate", {
         method: "POST",
@@ -43,7 +44,7 @@ function CadiraCreate(props) {
       .then((response) => response.json())
       .then((json) => {
         console.log(json)
-        if (json.ok) navigate("/home/cadira/list");
+        if (json.ok) navigate(-1);
         //props.history.push
         if(json.error) setErrorBack(json.error);
       }

@@ -39,7 +39,7 @@ function CategoryDelete() {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.ok) navigate("/home/categories/list");
+        if (json.ok) navigate(-1);
 
         if(json.error) setErrorBack(json.error);
         
@@ -50,7 +50,7 @@ function CategoryDelete() {
     <div>
       <h1>Eliminar categoría {categoryData.nom}</h1>
       <div>
-        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <p>Estàs a punt d'eliminar la seguent categoria:</p>
         <ul>
           <li>Nom: {categoryData.nom}</li>
@@ -63,11 +63,11 @@ function CategoryDelete() {
   );
 }
 
-function DivMessage({message}){
+function DivError({error}){
   return(
-      <div className="alert alert-danger">
-          <p className="text-danger">{message}</p>
-      </div>
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
   )
 }
 

@@ -40,20 +40,21 @@ function CategoryCreate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    ComprobacioName(categoryData.nom, {handleComprobacio, handleErrors})
+    ComprobacioName(categoryData.nom, {handleComprobacio, handleErrors});
+
     if (!Object.values(comprobacio).includes(false)) {
       fetch("http://localhost:5000/categories/APIcreate", {
         method: "POST",
         headers: { 
           "Authorization": "Bearer " + window.localStorage.getItem("token"),
-            "Content-Type": "application/json",
-            "Accept-Type": "application/json"
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
         },
         body: JSON.stringify({categoryData: categoryData}),
       })
       .then((response) => response.json())
       .then((json) => {
-        if (json.ok) navigate("/home/categories/list");
+        if (json.ok) navigate(-1);
 
         if(json.error) setErrorBack(json.error);
         
@@ -68,7 +69,7 @@ function CategoryCreate() {
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-        {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
 
           <div className="form-group">
             <label htmlFor="nom">Nom:</label>
@@ -81,7 +82,7 @@ function CategoryCreate() {
               onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
               required
             />
-            {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+            {errorsForm.errorName && (<p className="error-error">{errorsForm.errorName}</p>)}
           </div>
 
           <button type="submit" className="btn btn-primary">Crear</button>
@@ -92,10 +93,10 @@ function CategoryCreate() {
   );
 }
 
-function DivMessage({message}){
+function DivError({error}){
   return(
       <div className="alert alert-danger">
-          <p className="text-danger">{message}</p>
+          <p className="text-danger">{error}</p>
       </div>
   )
 }

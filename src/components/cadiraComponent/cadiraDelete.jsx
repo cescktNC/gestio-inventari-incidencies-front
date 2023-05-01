@@ -41,7 +41,7 @@ function CadiraDelete(props) {
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/cadira/list");
+          navigate(-1);
         } else {
           setErrorBack(json.error)
         }
