@@ -14,18 +14,17 @@ function ComentariCreate(){
 
     const [comprobacio, setComprobacio] = useState({
         comprobacioDescripcio: false,
-      });
+    });
     
-      const [errorsForm, setErrorsForm] = useState({
+    const [errorsForm, setErrorsForm] = useState({
         errorDescripcio: '',
-      });
+    });
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         ComprobacioDescripcio(comentari.descripcio, {handleComprobacio, handleErrors})
-        console.log(comprobacio)
         if (!Object.values(comprobacio).includes(false)) {
             fetch("http://localhost:5000/comentari/comment/create/"+id, {
                 method: "POST",
@@ -56,17 +55,17 @@ function ComentariCreate(){
 
     const handleComprobacio = (camp, valor) => {
         setComprobacio({
-          ...comprobacio,
-          [camp]: valor
+            ...comprobacio,
+            [camp]: valor
         });
-      };
+    };
     
-      const handleErrors = (camp, valor) => {
+    const handleErrors = (camp, valor) => {
         setErrorsForm({
-          ...errorsForm,
-          [camp]: valor
+            ...errorsForm,
+            [camp]: valor
         });
-      };
+    };
 
     return(
         <main>
@@ -112,7 +111,7 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputComentari({comentari, handleChange, handleComprobacio, handleErrors, comprobacio}){
+function InputComentari({comentari, handleChange, handleComprobacio, handleErrors}){
     return(
         <div className="form-group">
             <label htmlFor="descripcio">Comentari</label>
@@ -128,10 +127,10 @@ function InputComentari({comentari, handleChange, handleComprobacio, handleError
     )
 }
 
-function ComprobacioDescripcio(descripcio, {comprobacio, handleComprobacio, handleErrors}) {
+function ComprobacioDescripcio(descripcio, { handleComprobacio, handleErrors}) {
 
 	if (descripcio === "") {
-		handleErrors("errorDescripcio", "El camp Descripcio es obigatori");
+		handleErrors("errorDescripcio", "El camp Comentari es obigatori");
 		handleComprobacio('comprobacioDescripcio', false);
 	}
 	else handleComprobacio('comprobacioDescripcio', true) ;

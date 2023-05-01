@@ -25,6 +25,38 @@ function ExemplarList(){
         });
     }, [currentPage]);
 
+    const [exemplar, setExemplar] = useState({
+        codi: '',
+        demarca: false,
+        qr: '',
+        codiMaterial: {},
+        codiLocalitzacio: {}
+    });
+
+	const [errorBack, setErrorBack] = useState('');
+    console.log(window.localStorage.getItem("token"));
+
+
+    useEffect(() => {
+        console.log('b');
+        fetch("http://localhost:5000/exemplar/APIshow/644b63e91ac65720fca7272c" , {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            if(json.exemplar) setExemplar(json.exemplar)
+            
+            if(json.error) setErrorBack(json.error)
+        });
+    }, []);
+
+    console.log(exemplar)
+
     return (
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
@@ -43,7 +75,7 @@ function ExemplarList(){
 function ExemplarTable({list}){
 
     return(
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead className="thead-green">
                 <tr>
                     <th scope="col">Codi</th>

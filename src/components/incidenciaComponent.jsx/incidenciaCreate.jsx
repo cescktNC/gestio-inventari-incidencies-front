@@ -1,25 +1,33 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ComprobacioCodiExemplar } from "../../js/comprovacioCampsIncidencia";
 
 function IncidenciaCreate(){
     const [incidencia, setIncidencia] = useState({
         codiExemplar: '',
         ubicacio: '',
         codiLocalitzacio: '',
-        tipologia: '',
+        tipologia: 'Altres',
         descripcio: '',
-        prioritat: ''
+        prioritat: 'Mitjana'
     });
 
     const [tipologies, setTipologies] = useState([]);
     const [localitzacions, setLocalitzacions] = useState([]);
     const [prioritats, setPrioritat] = useState([]);
 
+    const [comprobacio, setComprobacio] = useState({
+        comprobacioCodiExemplar: false,
+    });
+
+    const [errorsForm, setErrorsForm] = useState({
+        errorCodiExemplar: '',
+    });
+
     const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
 
     const navigate = useNavigate();
-
     useEffect(() => {
 
         fetch("http://localhost:5000/incidencies/APIEnum", {
@@ -32,25 +40,21 @@ function IncidenciaCreate(){
         .then(response => response.json())
         .then(json => {
             if(json.error) setErrorBack(json.error);
+            if(json.errors) setErrorsBack(json.errors);
             else{
                 setTipologies(json.tipologia);
                 setPrioritat(json.prioritat);
-                setIncidencia(preState => (
-                    { 
-                        ...preState, 
-                        tipologia: json.tipologia[0].nom,
-                        prioritat: json.prioritat[0].nom
-                    }
-                ));
             }
         });
     
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch("http://localhost:5000/localitzacio/APIAllList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -69,24 +73,27 @@ function IncidenciaCreate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        ComprobacioCodiExemplar(incidencia.codiExemplar, {handleComprobacio, handleErrors})
+        if (!Object.values(comprobacio).includes(false)) {
+            fetch("http://localhost:5000/incidencies/APICreate", {
+                method: "POST",
+                body: JSON.stringify({incidencia}),
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                if(json.error !== undefined) setErrorBack(json.error);
+                
+                if(json.errors !== undefined) setErrorsBack(json.errors);
 
-        fetch("http://localhost:5000/incidencies/APICreate", {
-            method: "POST",
-            body: JSON.stringify({incidencia}),
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            console.log(json)
-            if(json.error !== undefined) setErrorBack(json.error);
-            
-            if(json.errors !== undefined) setErrorsBack(json.errors);
-
-            if (json.ok) navigate(`/home/incidencia/list`);
-            
-        });
+                if (json.ok) navigate(-1);
+                
+            });
+        }
     };
 
     const handleChange = e => {
@@ -94,6 +101,20 @@ function IncidenciaCreate(){
 
         setIncidencia({ ...incidencia, [name]: value });
         
+    };
+
+    const handleComprobacio = (camp, valor) => {
+        setComprobacio({
+            ...comprobacio,
+            [camp]: valor
+        });
+    };
+
+    const handleErrors = (camp, valor) => {
+        setErrorsForm({
+            ...errorsForm,
+            [camp]: valor
+        });
     };
 
     return(
@@ -113,7 +134,10 @@ function IncidenciaCreate(){
                         <InputCodiExemplar 
                             codiExemplar={incidencia.codiExemplar}
                             handleChange={handleChange}
+                            handleComprobacio={handleComprobacio}
+                            handleErrors={handleErrors}
                         />
+                        {errorsForm.errorCodiExemplar && (<p className="error-message">{errorsForm.errorCodiExemplar}</p>)}
 
                         <InputUbicacio
                             ubicacio={incidencia.ubicacio}
@@ -169,7 +193,7 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputCodiExemplar({codiExemplar, handleChange}){
+function InputCodiExemplar({codiExemplar, handleChange, handleComprobacio, handleErrors}){
     return (
         <div className="form-group">
             <label htmlFor="codiExemplar"> Codi del exemplar</label>
@@ -178,7 +202,9 @@ function InputCodiExemplar({codiExemplar, handleChange}){
                 name="codiExemplar" 
                 className="form-control" 
                 value={codiExemplar}
+                placeholder="00/00-00/00-00/00/00"
                 onChange={(e) => handleChange(e)}
+                onBlur={(e) => ComprobacioCodiExemplar(e.target.value, {handleComprobacio, handleErrors})}
             /> 
         </div>
     )

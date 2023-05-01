@@ -13,14 +13,6 @@ function ExemplarCreate(){
         codiMaterial: '',
         codiLocalitzacio : ''
     });
-    
-    const [comprobacio, setComprobacio] = useState({
-        comprobacioCodi: true,
-    });
-
-    const [errorsForm, setErrorsForm] = useState({
-        errorCodi: '',
-    });
 
     useEffect(()=>{
         fetch("http://localhost:5000/materials/material/allList", {
@@ -32,6 +24,7 @@ function ExemplarCreate(){
         })
         .then(response => response.json())
         .then(json => {
+            console.log(json)
             if(json.list) {
                 setMaterial(json.list);
                 setExemplar(preState =>(
@@ -69,27 +62,26 @@ function ExemplarCreate(){
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!Object.values(comprobacio).includes(false)) {
-            fetch("http://localhost:5000/exemplar/APICreate", {
-                method: "POST",
-                body: JSON.stringify({exemplar}),
-                headers: { 
-                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                    "Content-Type": "application/json",
-                    "Accept-Type": "application/json"
-                },
-            })
-            .then((response) => response.json())
-            .then((json) => {
-                
-                if(json.error !== undefined) setErrorBack(json.error);
-				
-				if(json.errors !== undefined) setErrorsBack(json.errors);
+        fetch("http://localhost:5000/exemplar/APICreate", {
+            method: "POST",
+            body: JSON.stringify({exemplar}),
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            
+            if(json.error !== undefined) setErrorBack(json.error);
+            
+            if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) navigate(`/home/exemplar/list`);
-				
-            });
-        }
+            if (json.ok) navigate(`/home/exemplar/list`);
+            
+        });
+        
     };
 
     const handleChange = e => {
@@ -97,20 +89,6 @@ function ExemplarCreate(){
 
         setExemplar({ ...exemplar, [name]: value });
         
-    };
-
-    const handleComprobacio = (camp, valor) => {
-        setComprobacio({
-            ...comprobacio,
-            [camp]: valor
-        });
-    };
-
-    const handleErrors = (camp, valor) => {
-        setErrorsForm({
-            ...errorsForm,
-            [camp]: valor
-        });
     };
 
     return(
@@ -129,15 +107,12 @@ function ExemplarCreate(){
                             codiMaterialExemplar={exemplar.codiMaterial} 
                             materials={material}
                             handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
                         />
 
                         <InputSelectLocalitzacio
                             codiLocalitzacioExemplar={exemplar.codiLocalitzacio} 
                             localitzacions={localitzacio} 
                             handleChange={handleChange} 
-                            handleErrors={handleErrors}
                         />
 
                         <button type="submit" className="btn btn-primary">Crea</button>

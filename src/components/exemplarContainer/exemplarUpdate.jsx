@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ComprobacioCodi } from "../../js/comprobacioCampsMaterials";
+import { nomesAdmin, nomesDirector } from "../../js/comprobacioCarrecs";
 
 function ExemplarUpdate(){
     const { id } = useParams();
@@ -28,27 +29,31 @@ function ExemplarUpdate(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/exemplar/APIshow/" + id,{
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
         .then(json => {
-            if(json.exemplar) setExemplar({
-                ...json.exemplar, 
-                codi: json.exemplar.codi.slice(0, exemplar.codi.indexOf('/')),
+            if(json.exemplar) setExemplar(preState => ({
+                ...preState,
+                codi: json.exemplar.codi.slice(0, json.exemplar.codi.indexOf('/')),
                 codiMaterial: json.exemplar.codiMaterial._id,
                 codiLocalitzacio: json.exemplar.codiLocalitzacio._id
-            })
+            }))
             
             if(json.error) setErrorBack(json.error)
         });
-    }, []);
+    }, [id]);
 
     useEffect(()=>{
         fetch("http://localhost:5000/materials/material/allList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -62,8 +67,10 @@ function ExemplarUpdate(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/localitzacio/APIAllList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -77,7 +84,7 @@ function ExemplarUpdate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        ComprobacioCodi(exemplar.codi, {handleComprobacio, handleErrors});
         if (!Object.values(comprobacio).includes(false)) {
             fetch("http://localhost:5000/exemplar/APIUpdate/" + id, {
                 method: "PUT",
@@ -95,7 +102,7 @@ function ExemplarUpdate(){
 				
 				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) navigate(`/home/exemplar/list`);
+				if (json.ok) navigate(-1);
 				
             });
         }
@@ -163,14 +170,16 @@ function ExemplarUpdate(){
                         handleErrors={handleErrors}
                     />
 
-                    <InputDemarca
-                        demarcaExemplar={exemplar.demarca}
-                        localitzacions={localitzacio} 
-                        handleChange={handleChange} 
-                        handleErrors={handleErrors}
-                    />
+                    {(nomesAdmin() || nomesDirector()) && (
+                        <InputDemarca
+                            demarcaExemplar={exemplar.demarca}
+                            localitzacions={localitzacio} 
+                            handleChange={handleChange} 
+                            handleErrors={handleErrors}
+                        />
+                    )}
 
-                    <button type="submit" className="btn btn-primary">Crea</button>
+                    <button type="submit" className="btn btn-primary">Guardar</button>
                 </form>
             </div>
         </div>

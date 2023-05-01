@@ -1,20 +1,28 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ComprobacioCodiExemplar } from "../../js/comprovacioCampsIncidencia";
 
-function IncidenciaEdit(){
+function IncidenciaUpdate(){
     const { id } = useParams();
     const [incidencia, setIncidencia] = useState({
         codiExemplar: '',
         ubicacio: '',
         codiLocalitzacio: '',
         tipologia: '',
-        descrcipcio: '',
+        descripcio: '',
         prioritat: ''
     });
 
     const [tipologies, setTipologies] = useState([]);
     const [localitzacions, setLocalitzacions] = useState([]);
     const [prioritats, setPrioritat] = useState([]);
+    const [comprobacio, setComprobacio] = useState({
+        comprobacioCodiExemplar: false,
+    });
+
+    const [errorsForm, setErrorsForm] = useState({
+        errorCodiExemplar: '',
+    });
 
     const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
@@ -32,19 +40,19 @@ function IncidenciaEdit(){
         })
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             if(json.error) setErrorBack(json.error);
+            if(json.errors) setErrorsBack(json.errors);
             else{
-                console.log(json)
                 setIncidencia(preState => (
                     { 
                         ...preState, 
-                        ...json.incidencia
+                        ...json.incidencia,
+                        codiExemplar: json.incidencia.codiExemplar ? json.incidencia.codiExemplar : preState.codiExemplar,
+                        codiLocalitzacio: json.incidencia.codiLocalitzacio ? json.incidencia.codiLocalitzacio : preState.codiLocalitzacio,
                     }
                 ));
             }
         });
-    
     }, [id]);
 
     useEffect(() => {
@@ -79,9 +87,6 @@ function IncidenciaEdit(){
         .then(json => {
             if(json.list) {
                 setLocalitzacions(json.list);
-                setIncidencia(preState => (
-                    { ...preState, codiLocalitzacio: json.list[0]._id}
-                ));
             }
             
             if(json.error) setErrorBack(json.error);
@@ -91,26 +96,28 @@ function IncidenciaEdit(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        ComprobacioCodiExemplar(incidencia.codiExemplar, {handleComprobacio, handleErrors})
+        if (!Object.values(comprobacio).includes(false)) {
+            fetch("http://localhost:5000/incidencies/APIUpdate/" + id, {
+                method: "PUT",
+                body: JSON.stringify({incidencia}),
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                }
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                
+                if(json.error !== undefined) setErrorBack(json.error);
+                
+                if(json.errors !== undefined) setErrorsBack(json.errors);
 
-        fetch("http://localhost:5000/incidencies/APIUpdate/" + id, {
-            method: "PUT",
-            body: JSON.stringify({incidencia}),
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-            }
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            
-            if(json.error !== undefined) setErrorBack(json.error);
-            
-            if(json.errors !== undefined) setErrorsBack(json.errors);
-
-            if (json.ok) navigate(`/home/incidencia/list`);
-            
-        });
+                if (json.ok) navigate(`/home/incidencia/list`);
+                
+            });
+        }
     };
 
     const handleChange = e => {
@@ -118,6 +125,20 @@ function IncidenciaEdit(){
 
         setIncidencia({ ...incidencia, [name]: value });
         
+    };
+
+    const handleComprobacio = (camp, valor) => {
+        setComprobacio({
+            ...comprobacio,
+            [camp]: valor
+        });
+    };
+
+    const handleErrors = (camp, valor) => {
+        setErrorsForm({
+            ...errorsForm,
+            [camp]: valor
+        });
     };
 
     return(
@@ -137,7 +158,10 @@ function IncidenciaEdit(){
                         <InputCodiExemplar 
                             codiExemplar={incidencia.codiExemplar}
                             handleChange={handleChange}
+                            handleComprobacio={handleComprobacio}
+                            handleErrors={handleErrors}
                         />
+                        {errorsForm.errorCodiExemplar && (<p className="error-message">{errorsForm.errorCodiExemplar}</p>)}
 
                         <InputUbicacio
                             ubicacio={incidencia.ubicacio}
@@ -193,7 +217,7 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputCodiExemplar({codiExemplar, handleChange}){
+function InputCodiExemplar({codiExemplar, handleChange, handleComprobacio, handleErrors}){
     return (
         <div className="form-group">
             <label htmlFor="codiExemplar"> Codi del exemplar</label>
@@ -201,8 +225,10 @@ function InputCodiExemplar({codiExemplar, handleChange}){
                 type="text" 
                 name="codiExemplar" 
                 className="form-control" 
-                value={codiExemplar}
+                placeholder="00/00-00/00-00/00/00"
+                value={ codiExemplar.codi }
                 onChange={(e) => handleChange(e)}
+                onBlur={(e) => ComprobacioCodiExemplar(e.target.value, {handleComprobacio, handleErrors})}
             /> 
         </div>
     )
@@ -273,7 +299,9 @@ function InputDescripcio({descripcio, handleChange}){
                 className="form-control" 
                 value={descripcio}
                 onChange={(e) => handleChange(e)}
-            />
+            >
+                {descripcio}
+            </textarea>
         </div>
     )
 }
@@ -299,4 +327,4 @@ function SelectPrioritat({prioritats, prioritat, handleChange}){
     )
 }
 
-export default IncidenciaEdit;
+export default IncidenciaUpdate;
