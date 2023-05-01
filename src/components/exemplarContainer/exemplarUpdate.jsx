@@ -49,7 +49,7 @@ function ExemplarUpdate(){
     }, [id]);
 
     useEffect(()=>{
-        fetch("http://localhost:5000/materials/material/allList", {
+        fetch("http://localhost:5000/materials/APIallList", {
             headers: { 
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",

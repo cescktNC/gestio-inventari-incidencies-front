@@ -14,7 +14,6 @@ function ExemplarShow(){
     });
 
 	const [errorBack, setErrorBack] = useState('');
-    console.log(window.localStorage.getItem("token"));
 
 
     useEffect(() => {

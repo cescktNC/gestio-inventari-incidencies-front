@@ -15,7 +15,7 @@ function ExemplarCreate(){
     });
 
     useEffect(()=>{
-        fetch("http://localhost:5000/materials/material/allList", {
+        fetch("http://localhost:5000/materials/APIallList", {
             headers: { 
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
@@ -24,7 +24,6 @@ function ExemplarCreate(){
         })
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             if(json.list) {
                 setMaterial(json.list);
                 setExemplar(preState =>(
@@ -78,7 +77,7 @@ function ExemplarCreate(){
             
             if(json.errors !== undefined) setErrorsBack(json.errors);
 
-            if (json.ok) navigate(`/home/exemplar/list`);
+            if (json.ok) navigate(-1);
             
         });
         

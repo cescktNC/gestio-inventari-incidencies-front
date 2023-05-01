@@ -43,7 +43,6 @@ function CadiraCreate(props) {
       })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.ok) navigate(-1);
         //props.history.push
         if(json.error) setErrorBack(json.error);

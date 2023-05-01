@@ -1,25 +1,23 @@
 import { React, useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { ComprobacioName, ComprobacioCodi, ComprobacioDescripcio, ComprobacioAnyCompra, 
+import { ComprobacioName, ComprobacioDescripcio, ComprobacioAnyCompra, 
     ComprobacioFotografia, ComprobacioPreuCompra } from "../../js/comprobacioCampsMaterials";
 
 function MaterialCreate(){
     const navigate = useNavigate();
 
     const [material, setMaterial]=useState({
-        codi: '',
         nom: '',
         descripcio: '',
         preuCompra: '',
         anyCompra: '',
-        fotografia: '',
+        fotografia: File,
         codiSubCategoria: ''
     });
 
     const [subCategories, setSubCategories] = useState([]);
 
     const [comprobacio, setComprobacio] = useState({
-        comprobacioCodi: false,
         comprobacioNom: false,
         comprobacioDescripcio: false,
         comprobacioPreuCompra: false,
@@ -28,7 +26,6 @@ function MaterialCreate(){
     });
 
     const [errorsForm, setErrorsForm] = useState({
-        errorCodi: '',
         errorNom: '',
         errorDescripcio: '',
         errorAnyCompra:'',
@@ -68,16 +65,19 @@ function MaterialCreate(){
         formData.append('preuCompra', material.preuCompra);
         formData.append('anyCompra', material.anyCompra);
         formData.append('fotografia', material.fotografia);
-        formData.append('codiSubCategoria', material.codiSubCategoria);        
+        formData.append('codiSubCategoria', material.codiSubCategoria);  
 
-        if (!Object.values(comprobacio).includes(false)) {
-            fetch("http://localhost:5000/materials/material", {
+        ComprobacioName(material.nom, {handleComprobacio, handleErrors}) 
+        ComprobacioDescripcio(material.descripcio, {handleComprobacio, handleErrors}) 
+        ComprobacioAnyCompra(material.anyCompra, {handleComprobacio, handleErrors}) 
+        ComprobacioFotografia(material.fotografia, {handleComprobacio, handleErrors}) 
+        ComprobacioPreuCompra(material.preuCompra, {handleComprobacio, handleErrors})
+        if (!Object.values(comprobacio).includes(false)) { 
+            fetch("http://localhost:5000/materials/APIcreate", {
                 method: "POST",
                 body: formData,
                 headers: { 
                     "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                    "Content-Type": "application/json",
-                    "Accept-Type": "application/json"
                 }
             })
             .then((response) => response.json())
@@ -87,7 +87,7 @@ function MaterialCreate(){
 				
 				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) navigate(`/home/material/list`);
+				if (json.ok) navigate(-1);
 				
             });
         }
@@ -121,21 +121,13 @@ function MaterialCreate(){
         <main>
             <div className="card mt-4">
                 <div className="card-header">
-                    <h5 className="card-title">Nou Usuari</h5>
+                    <h5 className="card-title">Nou Material</h5>
                 </div>
                 <div className="card-body">
                     <form onSubmit={handleSubmit} >
                         {(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
 
                         {(errorBack !== '' && (<DivError error={errorBack}  />) )}
-
-                        <InputCodi 
-                            codiMaterial={material.codi} 
-                            handleChange={handleChange} 
-                            handleComprobacio={handleComprobacio} 
-                            handleErrors={handleErrors}
-                        />
-                        {errorsForm.errorCodi && (<p className="error-message">{errorsForm.errorCodi}</p>)}
 
                         <InputNom 
                             nomMaterial={material.nom} 
@@ -209,24 +201,6 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputCodi({codiMaterial, handleChange, handleComprobacio, handleErrors}){
-
-    return(
-        <div className="form-group">
-            <label form="codi">Codi</label>
-            <input
-                type="text"
-                name="codi"
-                value={codiMaterial}
-                onChange={handleChange}
-                onBlur={(e) => ComprobacioCodi(e.target.value, {handleComprobacio, handleErrors})}
-                className="form-control"
-                required
-            />
-        </div>
-    )
-}
-
 function InputNom({nomMaterial, handleChange, handleComprobacio, handleErrors}){
 
     return(
@@ -284,13 +258,15 @@ function InputPreuCompra({preuCompraMaterial, handleChange, handleComprobacio, h
 
 function InputAnyCompra({anyCompraMaterial, handleChange, handleComprobacio, handleErrors}){
 
-    let data = new Date();
-    let dia = data.getDate();
-    if (dia < 0) dia = '0' + dia;
-    let mes = data.getMonth() + 1;
-    if (mes < 10) mes = '0' + mes
+    // let data = new Date();
+    // let dia = data.getDate();
+    // if (dia < 0) dia = '0' + dia;
+    // let mes = data.getMonth() + 1;
+    // if (mes < 10) mes = '0' + mes
 
-    let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
+    // let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
+
+    // max={dataActual}
 
     return(
         <div className="form-group">
@@ -302,7 +278,7 @@ function InputAnyCompra({anyCompraMaterial, handleChange, handleComprobacio, han
                 onChange={handleChange}
                 onBlur={(e) => ComprobacioAnyCompra(e.target.value, {handleComprobacio, handleErrors})}
                 className="form-control"
-                max={dataActual}
+                
                 required
             />
         </div>

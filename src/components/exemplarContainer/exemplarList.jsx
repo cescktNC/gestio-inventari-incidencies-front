@@ -53,8 +53,11 @@ function ExemplarTable({list}){
                     <th scope="col">QR</th>
                     <th scope="col">Nom del material</th>
                     <th scope="col">Nom de la localitzacio</th>
-                    <th scope="col" colSpan={2} className="W-15">
+                    <th scope="col" className="W-15">
                         <Link to="/home/exemplar/create" className="btn btn-primary">Nou</Link>
+                    </th>
+                    <th scope="col">
+                        <Link to="/home/exemplar/import" className="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>

@@ -83,8 +83,6 @@ function LocalitzacioUpdate(props) {
     }
   };
 
-  console.log(LocalitzacioData)
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if(name === 'especial')setLocalitzacioData({ ...LocalitzacioData, [name]: !LocalitzacioData.especial });

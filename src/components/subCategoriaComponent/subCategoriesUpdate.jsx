@@ -64,7 +64,6 @@ function SubCategoryUpdate(props) {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.ok) navigate('/home/subcategories/list');
         if (json.error) setErrorBack(json.error);
       });
