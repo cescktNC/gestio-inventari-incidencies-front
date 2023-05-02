@@ -60,7 +60,7 @@ function UserShow() {
 		.then(json => {
 			setUser(json.usuari);
 		});
-	}, [])
+	}, [id])
 
 	let imgProfile = 'http://localhost:5000/'+ user.profilePicture;
 

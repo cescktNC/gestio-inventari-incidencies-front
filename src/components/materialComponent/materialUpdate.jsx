@@ -89,7 +89,7 @@ function MaterialUpdate() {
         formData.append('anyCompra', material.anyCompra);
         if(material.fotografia !== '') {
             formData.append('fotografia', material.fotografia);
-            setComprobacio({...comprobacio, comprobacioFotografia: true});
+            ComprobacioFotografia(material.fotografia, {handleComprobacio, handleErrors}); 
         }
         formData.append('codiSubCategoria', material.codiSubCategoria);   
         formData.append('newCodiSubCategoria', material.newCodiSubCategoria);   
@@ -323,7 +323,6 @@ function InputFotografia({ handleChange, handleComprobacio, handleErrors}){
                 name="fotografia"
                 accept="image/png, .jpeg, .jpg"
                 onChange={handleChange}
-                onBlur={(e) => ComprobacioFotografia(e.target.files[0], {handleComprobacio, handleErrors})}
                 className="form-control"
             />
         </div>

@@ -59,7 +59,6 @@ function MaterialCreate(){
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('codi', material.codi);
         formData.append('nom', material.nom);
         formData.append('descripcio', material.descripcio);
         formData.append('preuCompra', material.preuCompra);
@@ -67,11 +66,11 @@ function MaterialCreate(){
         formData.append('fotografia', material.fotografia);
         formData.append('codiSubCategoria', material.codiSubCategoria);  
 
-        ComprobacioName(material.nom, {handleComprobacio, handleErrors}) 
-        ComprobacioDescripcio(material.descripcio, {handleComprobacio, handleErrors}) 
-        ComprobacioAnyCompra(material.anyCompra, {handleComprobacio, handleErrors}) 
-        ComprobacioFotografia(material.fotografia, {handleComprobacio, handleErrors}) 
-        ComprobacioPreuCompra(material.preuCompra, {handleComprobacio, handleErrors})
+        ComprobacioName(material.nom, {handleComprobacio, handleErrors}); 
+        ComprobacioDescripcio(material.descripcio, {handleComprobacio, handleErrors}); 
+        ComprobacioAnyCompra(material.anyCompra, {handleComprobacio, handleErrors}); 
+        ComprobacioFotografia(material.fotografia, {handleComprobacio, handleErrors}); 
+        ComprobacioPreuCompra(material.preuCompra, {handleComprobacio, handleErrors});
         if (!Object.values(comprobacio).includes(false)) { 
             fetch("http://localhost:5000/materials/APIcreate", {
                 method: "POST",

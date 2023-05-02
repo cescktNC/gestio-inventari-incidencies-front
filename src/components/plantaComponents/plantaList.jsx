@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleCategories.css'
 
 function PlantaList() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
@@ -15,12 +17,12 @@ function PlantaList() {
                 "Accept-Type": "application/json"
             }
         })
-            .then(response => response.json())
-            .then(json => {    
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            });
+        .then(response => response.json())
+        .then(json => {    
+            setList(json.list);
+            setCurrentPage(json.currentPage);
+            setTotalPages(json.totalPages);
+        });
     }, [currentPage]);
 
     return (
@@ -46,7 +48,7 @@ function PlantaTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">CodiCentre</th>
+                    <th scope="col">Nom centre</th>
                     <th scope="col">Planol</th>
                     <th scope="col" colSpan={2}>
                         <Link to="/home/planta/create" className="btn btn-primary">Nou</Link>
@@ -72,7 +74,7 @@ function PlantaTbody({ list }) {
                 {planta.nom}
             </td>
             <td>
-                {planta.codiCentre}
+                {planta.codiCentre.nom}
             </td>
             <td className="W-15">
                 <img className="img-fluid mx-auto w-50 h-50" src={'http://localhost:5000/'+ planta.planol} alt="" />
