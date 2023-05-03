@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleUser.css';
 import '../../css/styleExemplar.css';
 
 import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs";
 
 function ExemplarList(){
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
         fetch("http://localhost:5000/exemplar/APIlist?page=" + currentPage,{
@@ -43,7 +45,7 @@ function ExemplarList(){
 function ExemplarTable({list}){
 
     return(
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead className="thead-green">
                 <tr>
                     <th scope="col">Codi</th>
@@ -51,8 +53,11 @@ function ExemplarTable({list}){
                     <th scope="col">QR</th>
                     <th scope="col">Nom del material</th>
                     <th scope="col">Nom de la localitzacio</th>
-                    <th scope="col" colSpan={2} className="W-15">
+                    <th scope="col" className="W-15">
                         <Link to="/home/exemplar/create" className="btn btn-primary">Nou</Link>
+                    </th>
+                    <th scope="col">
+                        <Link to="/home/exemplar/import" className="btn btn-primary">Importar</Link>
                     </th>
                 </tr>
             </thead>

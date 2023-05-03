@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ComprobacioCodi } from "../../js/comprobacioCampsMaterials";
+import { nomesAdmin, nomesDirector } from "../../js/comprobacioCarrecs";
 
 function ExemplarUpdate(){
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [exemplar, setExemplar] = useState({
-        codi:'',
         demarca: false,
         codiMaterial: '',
         codiLocalitzacio : ''
@@ -18,37 +17,33 @@ function ExemplarUpdate(){
     const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
 
-    const [comprobacio, setComprobacio] = useState({
-        comprobacioCodi: false,
-    });
-
-    const [errorsForm, setErrorsForm] = useState({
-        errorCodi: '',
-    });
-
     useEffect(()=>{
         fetch("http://localhost:5000/exemplar/APIshow/" + id,{
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
         .then(json => {
-            if(json.exemplar) setExemplar({
-                ...json.exemplar, 
-                codi: json.exemplar.codi.slice(0, exemplar.codi.indexOf('/')),
+            if(json.exemplar) setExemplar(preState => ({
+                ...preState,
+                codi: json.exemplar.codi.slice(0, json.exemplar.codi.indexOf('/')),
                 codiMaterial: json.exemplar.codiMaterial._id,
                 codiLocalitzacio: json.exemplar.codiLocalitzacio._id
-            })
+            }))
             
             if(json.error) setErrorBack(json.error)
         });
-    }, []);
+    }, [id]);
 
     useEffect(()=>{
-        fetch("http://localhost:5000/materials/material/allList", {
-            headers: {
+        fetch("http://localhost:5000/materials/APIallList", {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -62,8 +57,10 @@ function ExemplarUpdate(){
 
     useEffect(()=>{
         fetch("http://localhost:5000/localitzacio/APIAllList", {
-            headers: {
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
+                "Accept-Type": "application/json"
             },
         })
         .then(response => response.json())
@@ -78,29 +75,26 @@ function ExemplarUpdate(){
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!Object.values(comprobacio).includes(false)) {
-            fetch("http://localhost:5000/exemplar/APIUpdate/" + id, {
-                method: "PUT",
-                body: JSON.stringify({ exemplar }),
-                headers: { 
-                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                    "Content-Type": "application/json",
-                    "Accept-Type": "application/json"
-                }
-            })
-            .then((response) => response.json())
-            .then((json) => {
+        fetch("http://localhost:5000/exemplar/APIUpdate/" + id, {
+            method: "PUT",
+            body: JSON.stringify({ exemplar }),
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            
+            if(json.error !== undefined) setErrorBack(json.error);
+            
+            if(json.errors !== undefined) setErrorsBack(json.errors);
 
-                console.log(json)
-                
-                if(json.error !== undefined) setErrorBack(json.error);
-				
-				if(json.errors !== undefined) setErrorsBack(json.errors);
-
-				if (json.ok) navigate(`/home/exemplar/list`);
-				
-            });
-        }
+            if (json.ok) navigate(-1);
+            
+        });
+        
     };
 
     const handleChange = e => {
@@ -116,20 +110,6 @@ function ExemplarUpdate(){
         
     };
 
-    const handleComprobacio = (camp, valor) => {
-        setComprobacio({
-            ...comprobacio,
-            [camp]: valor
-        });
-    };
-
-    const handleErrors = (camp, valor) => {
-        setErrorsForm({
-            ...errorsForm,
-            [camp]: valor
-        });
-    };
-
     return(
         <main>
         <div className="card mt-4">
@@ -142,37 +122,27 @@ function ExemplarUpdate(){
 
                     {(errorBack !== '' && (<DivError error={errorBack}  />) )}
 
-                    <InputCodi 
-                        codiExemplar={exemplar.codi} 
-                        handleChange={handleChange} 
-                        handleComprobacio={handleComprobacio} 
-                        handleErrors={handleErrors}
-                    />
-                    {errorsForm.errorCodi && (<p className="error-message">{errorsForm.errorCodi}</p>)}
-
                     <InputSelectMaterial
                         codiMaterialExemplar={exemplar.codiMaterial} 
                         materials={material}
                         handleChange={handleChange} 
-                        handleComprobacio={handleComprobacio} 
-                        handleErrors={handleErrors}
                     />
 
                     <InputSelectLocalitzacio
                         codiLocalitzacioExemplar={exemplar.codiLocalitzacio} 
                         localitzacions={localitzacio} 
                         handleChange={handleChange} 
-                        handleErrors={handleErrors}
                     />
 
-                    <InputDemarca
-                        demarcaExemplar={exemplar.demarca}
-                        localitzacions={localitzacio} 
-                        handleChange={handleChange} 
-                        handleErrors={handleErrors}
-                    />
+                    {(nomesAdmin() || nomesDirector()) && (
+                        <InputDemarca
+                            demarcaExemplar={exemplar.demarca}
+                            localitzacions={localitzacio} 
+                            handleChange={handleChange} 
+                        />
+                    )}
 
-                    <button type="submit" className="btn btn-primary">Crea</button>
+                    <button type="submit" className="btn btn-primary">Guardar</button>
                 </form>
             </div>
         </div>
@@ -195,24 +165,6 @@ function DivArrayErrors({errors}){
         <ul className="alert alert-danger list-unstyled">
             {errors.map((error, index) => <li key={index}>{error}</li>)}
         </ul>
-    )
-}
-
-function InputCodi({codiExemplar, handleChange, handleComprobacio, handleErrors}){
-
-    return(
-        <div className="form-group">
-            <label form="codi">Codi</label>
-            <input
-                type="text"
-                name="codi"
-                value={codiExemplar}
-                onChange={handleChange}
-                onBlur={(e) => ComprobacioCodi(e.target.value, {handleComprobacio, handleErrors})}
-                className="form-control"
-                required
-            />
-        </div>
     )
 }
 

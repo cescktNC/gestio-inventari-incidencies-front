@@ -77,7 +77,7 @@ export function ComprobacioFitxer(fitxer, { handleComprobacio, handleErrors }) {
         errorFitxer = 'El camp Fitxer es obligatori';
         handleComprobacio('comprobacioFitxer', false);
     } else if(!['application/json', 'text/csv'].includes(fitxer.type)){
-        errorFitxer = "La fitxer ha de ser un fitxer 'png', 'jpeg', 'jpg'";
+        errorFitxer = "La fitxer ha de ser un fitxer 'csv', 'json'";
         handleComprobacio('comprobacioFitxer', false);
     }
     else handleComprobacio('comprobacioFitxer', true);

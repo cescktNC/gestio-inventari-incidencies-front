@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 
 function ComentariList(){
     const { id } = useParams();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
     
     useEffect(() => {
@@ -13,16 +15,15 @@ function ComentariList(){
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
                 "Accept-Type": "application/json"
-              }
+            }
         })
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             setList(json.list);
             setCurrentPage(json.currentPage);
             setTotalPages(json.totalPages);
         });
-    }, [currentPage]);
+    }, [currentPage, id]);
 
     return(
         <div className="d-flex align-items-center ">
@@ -73,7 +74,7 @@ function ComentariTbody({list}){
                 { comentari.codiUsuari.nom }
             </td>
             <td>
-                { comentari.data.substring(0, 10) }
+                { comentari.data.substring(0, 10).split("-").reverse().join("-") }
             </td>
             <td>
                 { comentari.descripcio }

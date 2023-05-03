@@ -12,37 +12,59 @@ function ComentariCreate(){
     const [errorsBack, setErrorsBack] = useState([]);
 	const [errorBack, setErrorBack] = useState('');
 
+    const [comprobacio, setComprobacio] = useState({
+        comprobacioDescripcio: false,
+    });
+    
+    const [errorsForm, setErrorsForm] = useState({
+        errorDescripcio: '',
+    });
+
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        fetch("http://localhost:5000/comentari/comment/create/"+id, {
-            method: "POST",
-            body: JSON.stringify({ comentari }),
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-              },
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            
-            if(json.error) setErrorBack(json.error);
+        ComprobacioDescripcio(comentari.descripcio, {handleComprobacio, handleErrors})
+        if (!Object.values(comprobacio).includes(false)) {
+            fetch("http://localhost:5000/comentari/comment/create/"+id, {
+                method: "POST",
+                body: JSON.stringify({ comentari }),
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                
+                if(json.error) setErrorBack(json.error);
 
-            if(json.errors) setErrorsBack(json.errors);
+                if(json.errors) setErrorsBack(json.errors);
 
-            if (json.ok) navigate(`/home/comentari/list/` + id);
-            
-        });
+                if (json.ok) navigate(`/home/comentari/list/` + id);
+                
+            });
+        }
 
     }
 
-    console.log(comentari)
-
     const handleChange = input => {
         setComentari({ ...comentari, [input.name]: input.value });
+    };
+
+    const handleComprobacio = (camp, valor) => {
+        setComprobacio({
+            ...comprobacio,
+            [camp]: valor
+        });
+    };
+    
+    const handleErrors = (camp, valor) => {
+        setErrorsForm({
+            ...errorsForm,
+            [camp]: valor
+        });
     };
 
     return(
@@ -60,8 +82,10 @@ function ComentariCreate(){
                         <InputComentari 
                             comentari={comentari.descripcio} 
                             handleChange={handleChange} 
+                            handleComprobacio={handleComprobacio}
+                            handleErrors={handleErrors}
                         />
-
+                        {errorsForm.errorDescripcio && (<p className="error-message">{errorsForm.errorDescripcio}</p>)}
                         <button type="submit" className="btn btn-primary">Crea</button>
                     </form>
                 </div>
@@ -87,7 +111,7 @@ function DivArrayErrors({errors}){
     )
 }
 
-function InputComentari({comentari, handleChange}){
+function InputComentari({comentari, handleChange, handleComprobacio, handleErrors}){
     return(
         <div className="form-group">
             <label htmlFor="descripcio">Comentari</label>
@@ -97,9 +121,20 @@ function InputComentari({comentari, handleChange}){
                 className="form-control"
                 value={comentari}
                 onChange={(e) => handleChange(e.target)}
-            />
+				onBlur={(e) => ComprobacioDescripcio(e.target.value, {handleComprobacio, handleErrors})}
+                />
         </div>
     )
+}
+
+function ComprobacioDescripcio(descripcio, { handleComprobacio, handleErrors}) {
+
+	if (descripcio === "") {
+		handleErrors("errorDescripcio", "El camp Comentari es obigatori");
+		handleComprobacio('comprobacioDescripcio', false);
+	}
+	else handleComprobacio('comprobacioDescripcio', true) ;
+	
 }
 
 export default ComentariCreate;

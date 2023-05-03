@@ -46,6 +46,13 @@ function Register() {
 
         const { nom, cognoms, dni, email, password, confirm_password } = {...user};
 
+        ComprobacioName(nom, {handleComprobacio, handleErrors});
+        ComprobacioCognoms(cognoms, {handleComprobacio, handleErrors});
+        ComprobacioDNI(dni, {handleComprobacio, handleErrors});
+        ComprobacioEmail(email, {handleComprobacio, handleErrors});
+        ComprobacioPassword(password, {handleComprobacio, handleErrors});
+        ComprobacioConfPassword(confirm_password, {handleComprobacio, handleErrors});
+
 		if (!Object.values(comprobacio).includes(false)) {
                 fetch("http://localhost:5000/autenticacions/registerAPI", {
 				method: "POST",
@@ -56,7 +63,6 @@ function Register() {
 			})
 				.then(response => response.json())
 				.then(json => {
-                    console.log(json)
                     if(json.error !== undefined) setErrorBack(json.error);
 
                     if(json.errors !== undefined) setErrorsBack(json.errors);
@@ -144,7 +150,6 @@ function DivMessage({message}){
 }
 
 function DivArrayErrors({errors}){
-    console.log(errors)
     return(
         <ul className="alert alert-danger list-unstyled">
             {errors.map((error, index) => <li key={index}>{error.msg}</li>)}

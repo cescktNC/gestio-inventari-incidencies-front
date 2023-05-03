@@ -20,7 +20,7 @@ function MaterialDelete(props) {
 	const [errorBack, setErrorBack] = useState('');
 
     useEffect(() => {
-        fetch("http://localhost:5000/materials/material/" + id, {
+        fetch("http://localhost:5000/materials/APIshow/" + id, {
             headers: { 
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
@@ -39,10 +39,10 @@ function MaterialDelete(props) {
             if(json.error) setErrorBack(json.error);
             if(json.errors) setErrorsBack(json.errors);
         });
-    }, []);
+    }, [id]);
 
     const handleDelete = () => {
-        fetch(`http://localhost:5000/materials/material/${id}`, {
+        fetch(`http://localhost:5000/materials/APidelete/${id}`, {
         method: "DELETE",
         headers: { 
             "Authorization": "Bearer " + window.localStorage.getItem("token"),
@@ -52,7 +52,7 @@ function MaterialDelete(props) {
         })
         .then((response) => response.json())
         .then((json) => {
-            if (json.ok)  navigate("/home/material/list");
+            if(json.ok)  navigate("/home/material/list");
             if(json.error) setErrorBack(json.error);
         });
     };

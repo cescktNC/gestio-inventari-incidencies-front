@@ -38,7 +38,6 @@ function PrestecUpdate(){
         })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);
@@ -76,7 +75,6 @@ function PrestecUpdate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('a')
         fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
             method: "PUT",
             body: JSON.stringify({ prestec }),
@@ -88,7 +86,6 @@ function PrestecUpdate(){
         }) 
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);

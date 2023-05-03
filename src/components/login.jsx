@@ -18,6 +18,8 @@ function Login() {
 		setMessage('');
 		setErrors([]);
 		setUserData({ id: '', carrec: '', token: '' });
+		ComprobacioEmail(email, {setcomprobacioEmail});
+		ComprobacioPassword(pass, {setComprobacioPass})
 
 		if (comprobacioEmail && ComprobacioPass) {
 			fetch("http://localhost:5000/autenticacions/loginAPI", {

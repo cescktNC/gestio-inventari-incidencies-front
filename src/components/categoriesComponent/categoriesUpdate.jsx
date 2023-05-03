@@ -42,22 +42,25 @@ function CategoryUpdate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:5000/categories/APIupdate/${id}`, {
-      method: "PUT",
-      headers: { 
-        "Authorization": "Bearer " + window.localStorage.getItem("token"),
-        "Content-Type": "application/json",
-        "Accept-Type": "application/json"
-      },
-      body: JSON.stringify({categoryData}),
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.ok) navigate("/home/categories/list");
+    ComprobacioName(categoryData.nom, {handleComprobacio, handleErrors})
+    if (!Object.values(comprobacio).includes(false)) {
+      fetch(`http://localhost:5000/categories/APIupdate/${id}`, {
+        method: "PUT",
+        headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+        },
+        body: JSON.stringify({categoryData}),
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.ok) navigate(-1);
 
-      if(json.error) setErrorBack(json.error);
+        if(json.error) setErrorBack(json.error);
 
-    });
+      });
+    }
   };
 
   const handleComprobacio = (camp, valor) => {
@@ -76,7 +79,7 @@ function CategoryUpdate() {
 
   return (
     <main>
-     <div className="card mt-4">
+      <div className="card mt-4">
         <div className="card-header">
 					<h5 className="card-title">Actualitzar categotia: {categoryData.nom}</h5>
 				</div>
@@ -84,8 +87,8 @@ function CategoryUpdate() {
           <div className="col-md-12">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
-                {(errorBack !== '' && (<DivMessage message={errorBack}  />) )}
-                <div>
+                {(errorBack !== '' && (<DivError error={errorBack}  />) )}
+                <div className="form-group">
                   <label htmlFor="Nom">Nom:</label>
                   <input
                     type="text"
@@ -97,7 +100,7 @@ function CategoryUpdate() {
                     onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
                     required
                   />
-                  {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+                  {errorsForm.errorName && (<p className="error-error">{errorsForm.errorName}</p>)}
                 </div>
                 <button type="submit" className="btn btn-primary">Actualitzar</button>
               </form>
@@ -110,10 +113,10 @@ function CategoryUpdate() {
 }
 
 
-function DivMessage({message}){
+function DivError({error}){
   return(
       <div className="alert alert-danger">
-          <p className="text-danger">{message}</p>
+          <p className="text-danger">{error}</p>
       </div>
   )
 }

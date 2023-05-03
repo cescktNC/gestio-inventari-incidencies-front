@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../../css/styleCategories.css'
 
 function IncidenciaList(){
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
@@ -18,7 +19,6 @@ function IncidenciaList(){
         })
             .then(response => response.json())
             .then(json => {          
-                console.log(json)     
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -26,17 +26,17 @@ function IncidenciaList(){
     }, [currentPage]);
 
     return (
-        <div>
-            <div className="card mt-2 w-100">
-                <div className="card-body">
-                    <h5 className="card-title">Incidencia</h5>
-                    <div className="mx-auto">
-                        <IncidenciaTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+
+        <div className="card mt-2 w-100">
+            <div className="card-body">
+                <h5 className="card-title">Incidencia</h5>
+                <div className="mx-auto">
+                    <IncidenciaTable list={list} />
+                    <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                 </div>
             </div>
         </div>
+        
     )
 }
 
@@ -78,7 +78,7 @@ function IncidenciaTbody({ list }) {
                 {incidencia.estat}
             </td>
             <td>
-                {incidencia.data.substring(0, 10)}
+                {incidencia.data.substring(0, 10).split("-").reverse().join("-")}
             </td>
             <td>
                 {incidencia.tipologia}
@@ -90,7 +90,8 @@ function IncidenciaTbody({ list }) {
                 {incidencia.ubicacio}
             </td>
             <td>
-                {incidencia.codiExemplar !== undefined ? incidencia.codiExemplar.codiMaterial.nom : 'Element no inventariable'}
+                {(incidencia.codiExemplar !== undefined && incidencia.codiExemplar !== null) 
+                ? incidencia.codiExemplar.codiMaterial.nom : 'Element no inventariable'}
             </td>
             <td>
                 {incidencia.codiLocalitzacio !== undefined ? incidencia.codiLocalitzacio.nom : 'Ubicació no resgistrada'}

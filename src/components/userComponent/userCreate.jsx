@@ -69,17 +69,13 @@ function UserUpdate(){
             })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
                 
-                if(json.error !== undefined) {
-					setErrorBack(json.error);
-				}
-
+                if(json.error !== undefined) setErrorBack(json.error);
+				
 				if(json.errors !== undefined) setErrorsBack(json.errors);
 
-				if (json.ok) {
-                    navigate(`/home/user/show/${json.id}`)
-				}
+				if (json.ok) navigate(`/home/user/show/${json.id}`)
+				
             });
         }
     }

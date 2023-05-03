@@ -1,70 +1,102 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ComprobacioName } from "../../js/comprobacioCampsMaterials";
 
 function CentreCreate(props) {
   const navigate = useNavigate();
   const [CentreData, setCentreData] = useState({
     nom: "",
-    codi: "",
   });
+
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioNom: false,
+  });
+
+  const [errorsForm, setErrorsForm] = useState({
+    errorNom: '',
+  });
+
+	const [errorBack, setErrorBack] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCentreData({ ...CentreData, [name]: value });
   };
 
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
+  };
+
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/centre/APIcreate", {
-      method: "POST",
-      headers: { 
-        "Authorization": "Bearer " + window.localStorage.getItem("token"),
-        "Content-Type": "application/json",
-        "Accept-Type": "application/json"
-      },
-      body: JSON.stringify(CentreData),
-    })
+    ComprobacioName(CentreData.nom, {handleComprobacio, handleErrors});
+    if (!Object.values(comprobacio).includes(false)) {
+      fetch("http://localhost:5000/centre/APIcreate", {
+        method: "POST",
+        headers: { 
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+        },
+        body: JSON.stringify(CentreData),
+      })
       .then((response) => response.json())
       .then((json) => {
         if (json.ok) {
-          navigate("/home/centre/list");
+          navigate(-1);
         } else {
-          alert("Error al crear el centre");
+          setErrorBack(json.error);
         }
       });
+    }
   };
 
   return (
-    <div>
-      <h1>Crear nou centre</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nom">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            value={CentreData.codi}
-            onChange={handleChange}
-            required
-          />
+    <main>
+      <div className="card mt-4">
+        <div className="card-header">
+          <h5 className="card-title">Nou Centre</h5>
         </div>
-        <div>
-          <div>
-            <label htmlFor="nom">Nom:</label>
-            <input
-              id="nom"
-              name="nom"
-              value={CentreData.nom}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            {(errorBack !== '' && (<DivError error={errorBack}  />) )}
+            <div className="form-group">
+              <label htmlFor="nom">Nom:</label>
+              <input
+                id="nom"
+                name="nom"
+                className="form-control"
+                value={CentreData.nom}
+                onChange={handleChange}
+                onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
+                required
+              />
+              {errorsForm.errorName && (<p className="error-message">{errorsForm.errorName}</p>)}
+            </div>
+            <button type="submit" className="btn btn-primary">Crear</button>
+          </form>
         </div>
-        <button type="submit">Crear</button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
+}
+
+function DivError({error}){
+  return(
+      <div className="alert alert-danger">
+          <p className="text-danger">{error}</p>
+      </div>
+  )
 }
 
 export default CentreCreate;

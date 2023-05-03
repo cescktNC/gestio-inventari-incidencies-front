@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleCategories.css'
 
 function LocalitzacioList() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/localitzacio/APIlist?page=" + currentPage,{
+        fetch("http://localhost:5000/localitzacio/APIlist?page=" + currentPage, {
             headers: { 
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
@@ -16,7 +18,7 @@ function LocalitzacioList() {
             }
         })
             .then(response => response.json())
-            .then(json => {               
+            .then(json => {      
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -46,7 +48,7 @@ function LocalitzacioTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">codiPlanta</th>
+                    <th scope="col">Planta</th>
                     <th scope="col">Especial</th>
                     <th scope="col" colSpan={2}>
                         <Link to="/home/localitzacio/create" className="btn btn-primary">Nou</Link>
@@ -72,10 +74,10 @@ function LocalitzacioTbody({ list }) {
                 {localitzacio.nom}
             </td>
             <td>
-                {localitzacio.codiPlanta}
+                {localitzacio.codiPlanta.nom}
             </td>
             <td>
-                {localitzacio.especial}
+                {localitzacio.especial ? 'Si' : 'No'}
             </td>
             <td className="edit-delete-cell">
                 <Link className="btn btn-secondary" to={`/home/localitzacio/update/${localitzacio._id}`}>Edit</Link>

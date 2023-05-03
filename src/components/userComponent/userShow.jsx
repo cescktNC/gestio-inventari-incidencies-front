@@ -60,7 +60,7 @@ function UserShow() {
 		.then(json => {
 			setUser(json.usuari);
 		});
-	}, [])
+	}, [id])
 
 	let imgProfile = 'http://localhost:5000/'+ user.profilePicture;
 
@@ -80,7 +80,6 @@ function UserShow() {
 			})
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json)
 
 				if(json.error !== undefined) setErrorBack(json.error);
 		

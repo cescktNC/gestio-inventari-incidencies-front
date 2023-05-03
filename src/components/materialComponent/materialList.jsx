@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function MaterialList(){
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
-        fetch("http://localhost:5000/materials/material?page=" + currentPage,{
+        fetch("http://localhost:5000/materials/APIlist?page=" + currentPage,{
             headers: { 
                 "Authorization": "Bearer " + window.localStorage.getItem("token"),
                 "Content-Type": "application/json",
@@ -25,7 +27,7 @@ function MaterialList(){
         <div className="d-flex align-items-center ">
             <div className="card mt-2">
                 <div className="card-body">
-                    <h5 className="card-title">Usuaris</h5>
+                    <h5 className="card-title">Material</h5>
                     <div className="mx-auto">
                         <MaterialTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
