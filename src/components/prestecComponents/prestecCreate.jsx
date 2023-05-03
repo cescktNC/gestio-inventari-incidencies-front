@@ -29,28 +29,33 @@ function PrestecCreate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        fetch("http://localhost:5000/prestec/APIcreate", {
-            method: "POST",
-            body: JSON.stringify({ prestec }),
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-            },
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            
-            if(json.error) setErrorBack(json.error);
+        ComprobacioDNI(prestec.dni, {handleComprobacio, handleErrors}); 
+        ComprobacioDataInici(prestec.dataInici, {handleComprobacio, handleErrors}); 
+        ComprobacioDataRetorn(prestec.dataRetorn, {handleComprobacio, handleErrors}); 
+        if (!Object.values(comprobacio).includes(false)) { 
+            fetch("http://localhost:5000/prestec/APIcreate", {
+                method: "POST",
+                body: JSON.stringify({ prestec }),
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if(json.error) setErrorBack(json.error);
 
-            if(json.errors) setErrorsBack(json.errors);
+                if(json.errors) setErrorsBack(json.errors);
 
-            if (json.ok) navigate(`/home/prestec/list`)
-            
-        });
+                if (json.ok) navigate(-1)
+                
+            });
+        }
 
     }
+    console.log(comprobacio)
 
     const handleChange = input => {
         setPrestec({ ...prestec, [input.name]: input.value });
@@ -152,11 +157,12 @@ function InputDNI({DNI, handleChange, handleComprobacio, handleErrors}){
 function InputDataInici({dataInici, handleChange, handleComprobacio, handleErrors}){
     let data = new Date();
     let dia = data.getDate();
-    if (dia < 0) dia = '0' + dia;
+    if (dia < 10) dia = '0' + dia;
     let mes = data.getMonth() + 1;
     if (mes < 10) mes = '0' + mes
 
     let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
+
     return(
         <div className="form-group">
             <label form="dataInici">Data d'inici</label>

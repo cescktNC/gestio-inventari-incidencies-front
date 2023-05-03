@@ -52,7 +52,7 @@ function MaterialDelete(props) {
         })
         .then((response) => response.json())
         .then((json) => {
-            if(json.ok)  navigate("/home/material/list");
+            if(json.ok)  navigate(-1);
             if(json.error) setErrorBack(json.error);
         });
     };
