@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleCategories.css'
 
 function ReservaList() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
@@ -16,7 +18,8 @@ function ReservaList() {
             }
         })
             .then(response => response.json())
-            .then(json => {               
+            .then(json => {    
+                console.log(json)           
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);
@@ -63,33 +66,26 @@ function ReservaTable({ list }) {
 }
 
 function ReservaTbody({ list }) {
+    return list.map((reserva, index) => {
+        const formattedDate = new Date(reserva.horaInici).toLocaleDateString();
+        const formattedHour = new Date(reserva.horaInici).toLocaleTimeString();
 
-    return list.map((reserva, index) => (
-        <tr key={index}>
-            <td>
-                {reserva.codi}
-            </td>
-            <td>
-                {reserva.hora}
-            </td>
-            <td>
-                {reserva.data}
-            </td>
-            <td>
-                {reserva.dniUsuari}
-            </td>
-            <td>
-                {reserva.codiLocalitzacio}
-            </td>
-            <td className="edit-delete-cell">
-                <Link className="btn btn-secondary" to={`/home/reserva/update/${reserva._id}`}>Edit</Link>
-                <Link className="btn btn-danger" to={`/home/reserva/delete/${reserva._id}`}>Eliminar</Link>
-            </td>
-                
-            
-        </tr>
-    ));
+        return (
+            <tr key={index}>
+                <td>{reserva.codi}</td>
+                <td>{formattedHour}</td>
+                <td>{formattedDate}</td>
+                <td>{reserva.dniUsuari.nom}</td>
+                <td>{reserva.codiLocalitzacio.nom}</td>
+                <td className="edit-delete-cell">
+                    <Link className="btn btn-secondary" to={`/home/reserva/update/${reserva._id}`}>Edit</Link>
+                    <Link className="btn btn-danger" to={`/home/reserva/delete/${reserva._id}`}>Eliminar</Link>
+                </td>
+            </tr>
+        );
+    });
 }
+
 
 
 

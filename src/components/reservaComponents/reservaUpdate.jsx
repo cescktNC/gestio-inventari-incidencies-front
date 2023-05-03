@@ -1,28 +1,42 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { ComprobacioCodi, ComprobacioHora, ComprobacioData } from "../../js/comprobacioCampsReserva";
 
 function ReservaUpdate(props) {
   const { id } = useParams();
-  
 
-  const [ReservaData,setReservaData] = useState({
+  const navigate = useNavigate();
+
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioCodi: false,
+    comprobacioData: false,
+    comprobacioHora: false
+  });
+
+  const [ReservaData, setReservaData] = useState({
     codi: "",
     hora: "",
     data: "",
-    dniUsuari:"",
-    codiLocalitzacio:""
+  });
+  
+  const [errorsForm, setErrorsForm] = useState({
+    errorCodi: '',
+    errorHora:'',
+    errorData:''
   });
 
+	const [errorBack, setErrorBack] = useState('');
+
   useEffect(() => {
-    fetch(`http://localhost:5000/reserva/update/${id}`,{
-      headers: { 
-          "Authorization": "Bearer " + window.localStorage.getItem("token"),
-          "Content-Type": "application/json",
-          "Accept-Type": "application/json"
+    fetch(`http://localhost:5000/reserva/update/${id}`, {
+      headers: {
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
       }
     })
-    .then((response) => response.json())
-    .then((json) => setReservaData(json));
+      .then((response) => response.json())
+      .then((json) => setReservaData(json));
   }, [id]);
 
   const handleChange = (e) => {
@@ -32,84 +46,135 @@ function ReservaUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    ComprobacioCodi(ReservaData.codi, {handleComprobacio, handleErrors})
+    ComprobacioData(ReservaData.data, {handleComprobacio, handleErrors})
+    ComprobacioHora(ReservaData.hora, {handleComprobacio, handleErrors})
+    if (!Object.values(comprobacio).includes(false)) {
     fetch(`http://localhost:5000/reserva/update/${id}`, {
       method: "PUT",
-      headers: { 
-          "Authorization": "Bearer " + window.localStorage.getItem("token"),
-          "Content-Type": "application/json",
-          "Accept-Type": "application/json"
+      headers: {
+        "Authorization": "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+        "Accept-Type": "application/json"
       },
       body: JSON.stringify(ReservaData),
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/reserva");
-        } else {
-          alert("Error al actualizar la reserva");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) navigate(-1);
+
+      if(json.error) setErrorBack(json.error);
+
+    });
+  }
+};
+
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
   };
 
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
+  };
+
+
   return (
-    <div>
-      <h1>Actualitzant reserva {id}</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="codi">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            value={ReservaData.codi}
-            onChange={handleChange}
-            required
-          />
+    <main>
+      <div className="card mt-4">
+        <div className="card-header">
+          <h5 className="card-title">Actualizar reserva: {ReservaData.codi}</h5>
         </div>
-        <div>
-          <label htmlFor="hora">Hora:</label>
-          <input
-            id="hora"
-            name="hora"
-            value={ReservaData.hora}
-            onChange={handleChange}
-            required
-          />
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
+                {errorBack !== '' && <DivError error={errorBack} />}
+                <div className="form-group">
+                  <label htmlFor="codi">Codi:</label>
+                  <input
+                    type="text"
+                    id="codi"
+                    name="codi"
+                    className="form-control"
+                    value={ReservaData.codi}
+                    onChange={handleChange}
+                    onBlur={(e) =>
+                      ComprobacioCodi(e.target.value, {
+                        handleComprobacio,
+                        handleErrors,
+                      })
+                    }
+                    required
+                  />
+                  {errorsForm.errorCodi && (
+                    <p className="error-message">{errorsForm.errorCodi}</p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="hora">Hora:</label>
+                  <input
+                    id="hora"
+                    name="hora"
+                    className="form-control"
+                    value={ReservaData.hora}
+                    onChange={handleChange}
+                    onBlur={(e) =>
+                      ComprobacioHora(e.target.value, {
+                        handleComprobacio,
+                        handleErrors,
+                      })
+                    }
+                    required
+                  />
+                  {errorsForm.errorHora && (
+                    <p className="error-message">{errorsForm.errorHora}</p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="data">Data:</label>
+                  <input
+                    id="data"
+                    name="data"
+                    className="form-control"
+                    value={ReservaData.data}
+                    onChange={handleChange}
+                    onBlur={(e) =>
+                      ComprobacioData(e.target.value, {
+                        handleComprobacio,
+                        handleErrors,
+                      })
+                    }
+                    required
+                  />
+                  {errorsForm.errorData && (
+                    <p className="error-message">{errorsForm.errorData}</p>
+                  )}
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Actualizar
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="data">Data:</label>
-          <input
-            id="data"
-            name="data"
-            value={ReservaData.data}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="dniUsuari">Dni Usuari:</label>
-          <input
-            id="dniUsuari"
-            name="dniUsuari"
-            value={ReservaData.dniUsuari}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="codilocalitzacio">Codi Localitzacio:</label>
-          <input
-            id="codilocalitzacio"
-            name="codilocalitzacio"
-            value={ReservaData.codiLocalitzacio}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Actualitzar</button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 }
 
+function DivError({ error }) {
+  return (
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
+}
+
 export default ReservaUpdate;
+
