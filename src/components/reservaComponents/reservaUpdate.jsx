@@ -18,17 +18,17 @@ function ReservaUpdate(props) {
     hora: "",
     data: "",
   });
-  
+
   const [errorsForm, setErrorsForm] = useState({
     errorCodi: '',
-    errorHora:'',
-    errorData:''
+    errorHora: '',
+    errorData: ''
   });
 
-	const [errorBack, setErrorBack] = useState('');
+  const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/reserva/update/${id}`, {
+    fetch(`http://localhost:5000/reserva/APIupdate/${id}`, {
       headers: {
         "Authorization": "Bearer " + window.localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -43,31 +43,31 @@ function ReservaUpdate(props) {
     const { name, value } = e.target;
     setReservaData({ ...ReservaData, [name]: value });
   };
-
+console.log(ReservaData)
   const handleSubmit = (e) => {
     e.preventDefault();
-    ComprobacioCodi(ReservaData.codi, {handleComprobacio, handleErrors})
-    ComprobacioData(ReservaData.data, {handleComprobacio, handleErrors})
-    ComprobacioHora(ReservaData.hora, {handleComprobacio, handleErrors})
+    ComprobacioCodi(ReservaData.codi, { handleComprobacio, handleErrors })
+    ComprobacioData(ReservaData.data, { handleComprobacio, handleErrors })
+    ComprobacioHora(ReservaData.hora, { handleComprobacio, handleErrors })
     if (!Object.values(comprobacio).includes(false)) {
-    fetch(`http://localhost:5000/reserva/update/${id}`, {
-      method: "PUT",
-      headers: {
-        "Authorization": "Bearer " + window.localStorage.getItem("token"),
-        "Content-Type": "application/json",
-        "Accept-Type": "application/json"
-      },
-      body: JSON.stringify(ReservaData),
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.ok) navigate(-1);
+      fetch(`http://localhost:5000/reserva/APIupdate/${id}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + window.localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          "Accept-Type": "application/json"
+        },
+        body: JSON.stringify({ReservaData}),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.ok) navigate(-1);
 
-      if(json.error) setErrorBack(json.error);
+          if (json.error) setErrorBack(json.error);
 
-    });
-  }
-};
+        });
+    }
+  };
 
   const handleComprobacio = (camp, valor) => {
     setComprobacio({
@@ -119,6 +119,7 @@ function ReservaUpdate(props) {
                 <div className="form-group">
                   <label htmlFor="hora">Hora:</label>
                   <input
+                    type="time"
                     id="hora"
                     name="hora"
                     className="form-control"
@@ -139,6 +140,7 @@ function ReservaUpdate(props) {
                 <div className="form-group">
                   <label htmlFor="data">Data:</label>
                   <input
+                    type="date"
                     id="data"
                     name="data"
                     className="form-control"

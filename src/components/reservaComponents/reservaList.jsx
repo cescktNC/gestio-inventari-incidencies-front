@@ -68,7 +68,7 @@ function ReservaTable({ list }) {
 function ReservaTbody({ list }) {
     return list.map((reserva, index) => {
         const formattedDate = new Date(reserva.horaInici).toLocaleDateString();
-        const formattedHour = new Date(reserva.horaInici).toLocaleTimeString();
+        const formattedHour = new Date(reserva.horaInici).toLocaleTimeString().substring(0,5);
 
         return (
             <tr key={index}>

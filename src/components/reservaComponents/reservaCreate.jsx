@@ -54,6 +54,7 @@ function ReservaCreate(props) {
           <div>
             <label htmlFor="hora">Hora:</label>
             <input
+              type="time"
               id="hora"
               name="hora"
               value={ReservaData.hora}
@@ -66,6 +67,7 @@ function ReservaCreate(props) {
           <div>
             <label htmlFor="data">Data:</label>
             <input
+              type="date"
               id="data"
               name="data"
               value={ReservaData.data}
