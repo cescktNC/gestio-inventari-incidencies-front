@@ -68,12 +68,13 @@ function ReservaTable({ list }) {
 function ReservaTbody({ list }) {
     return list.map((reserva, index) => {
         const formattedDate = new Date(reserva.horaInici).toLocaleDateString();
-        const formattedHour = new Date(reserva.horaInici).toLocaleTimeString().substring(0,5);
+        const timeString = new Date(reserva.horaInici).toLocaleTimeString();
+        const formattedHour = timeString.length === 8 ? timeString.substring(0, 5) : timeString.substring(0, 4);
 
         return (
             <tr key={index}>
                 <td>{reserva.codi}</td>
-                <td>{formattedHour}</td>
+                <td>{formattedHour} h</td>
                 <td>{formattedDate}</td>
                 <td>{reserva.dniUsuari.nom}</td>
                 <td>{reserva.codiLocalitzacio.nom}</td>
