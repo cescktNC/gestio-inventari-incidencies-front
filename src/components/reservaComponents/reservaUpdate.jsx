@@ -36,8 +36,8 @@ function ReservaUpdate(props) {
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setReservaData(json.reserva));
+    .then((response) => response.json())
+    .then((json) => setReservaData(json.reserva));
   }, [id]);
 
   const handleChange = (e) => {
@@ -200,13 +200,13 @@ function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, han
 
 function InputHoraInici({horaInici, handleChange}) {
   let value = new Date(horaInici);
+  console.log(value)
   return(
     <div class="form-group">
       <label for="horaInici">Hora Inici</label>
       <input name="horaInici" 
         list="llista-hores-inici" 
         class="form-control" 
-        value={typeof horaInici == String  ? value.getHours()+':00 h' : horaInici.getHours()+':00 h'}
         onChange={handleChange} 
       />
       <datalist id="llista-hores-inici">

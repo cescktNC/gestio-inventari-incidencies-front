@@ -67,13 +67,14 @@ function ReservaTable({ list }) {
 
 function ReservaTbody({ list }) {
     return list.map((reserva, index) => {
-        const formattedDate = new Date(reserva.horaInici).toLocaleDateString();
-        const formattedHour = new Date(reserva.horaInici).toLocaleTimeString().substring(0,5);
+        const formattedDate = new Date(reserva.horaInici).toISOString().substring(0, 10).split("-").reverse().join("-");
+        const formattedHourInitial = FormatHour(new Date(reserva.horaInici).toLocaleTimeString());
+        const formattedHourEnd = FormatHour(new Date(reserva.horaFi).toLocaleTimeString());
 
         return (
             <tr key={index}>
                 <td>{reserva.codi}</td>
-                <td>{formattedHour}</td>
+                <td>{formattedHourInitial + '-' + formattedHourEnd}</td>
                 <td>{formattedDate}</td>
                 <td>{reserva.dniUsuari.nom}</td>
                 <td>{reserva.codiLocalitzacio.nom}</td>
@@ -157,6 +158,13 @@ function PagesLinks({startPage, endPage, currentPage, setCurrentPage}){
     }
 
     return pageLinks;
+}
+
+function FormatHour(Date){
+    let hour = Date.substring(0, Date.lastIndexOf(':'));
+    if(parseInt(hour.substring(0, hour.indexOf(':'))) < 10 ) hour = '0' + hour;
+
+    return hour;
 }
 
 export default ReservaList;
