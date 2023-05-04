@@ -5,12 +5,12 @@ export function ComprobacioDataInici(dataInici, { handleComprobacio, handleError
 
     if (dataInici === '') {
         errorDataInici = "El camp Data d'inici es obligatori";
-        handleComprobacio('comprobacioName', false);
+        handleComprobacio('comprobacioDataInici', false);
     } else if (dataActual > dataInput) {
         errorDataInici = "La data d'inici no pot ser anterior a la data actual";
-        handleComprobacio('comprobacioName', false);
+        handleComprobacio('comprobacioDataInici', false);
     }
-    else handleComprobacio('comprobacioName', true);
+    else handleComprobacio('comprobacioDataInici', true);
 
     handleErrors('errorDataInici', errorDataInici)
 }
@@ -23,15 +23,15 @@ export function ComprobacioDataRetorn(dataRetorn, { dataInici, handleComprobacio
 
     if (dataRetorn === '') {
         errorDataRetorn = 'El camp data de retorn es obligatori';
-        handleComprobacio('comprobacioName', false);
+        handleComprobacio('comprobacioDataRetorn', false);
     } else if (dataActual > dataRetornInput) {
         errorDataRetorn = 'La data de retorn no pot ser anterior a la data actual';
-        handleComprobacio('comprobacioName', false);
+        handleComprobacio('comprobacioDataRetorn', false);
     } else if(dataIniciInput > dataRetornInput){
         errorDataRetorn = "La data de retorn no pot ser anterior a la data d'inici";
-        handleComprobacio('comprobacioName', false);
+        handleComprobacio('comprobacioDataRetorn', false);
     }
-    else handleComprobacio('comprobacioName', true);
+    else handleComprobacio('comprobacioDataRetorn', true);
 
     handleErrors('errorDataRetorn', errorDataRetorn)
 }

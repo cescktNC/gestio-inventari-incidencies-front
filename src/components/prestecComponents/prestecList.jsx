@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../css/styleUser.css';
 import '../../css/styleExemplar.css';
 
 
 function PrestecList(){
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [list, setList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
         fetch("http://localhost:5000/prestec/APIlist?page=" + currentPage,{
@@ -42,7 +44,7 @@ function PrestecList(){
 function PrestecTable({list}){
 
     return(
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead className="thead-green">
                 <tr>
                     <th scope="col">Codi</th>
@@ -95,9 +97,9 @@ function PrestecTbody({list}){
             <td className="align-middle">
                 <Link className="btn btn-secondary" to={`/home/prestec/update/${prestec._id}`}>Editar</Link>
             </td>
-            <td className="align-middle">
+            {/* <td className="align-middle">
                 <Link className="btn btn-danger" to={`/home/prestec/delete/${prestec._id}`}>Eliminar</Link>
-            </td>
+            </td> */}
         </tr>
     ));
 }
