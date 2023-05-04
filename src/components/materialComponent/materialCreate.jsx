@@ -257,15 +257,13 @@ function InputPreuCompra({preuCompraMaterial, handleChange, handleComprobacio, h
 
 function InputAnyCompra({anyCompraMaterial, handleChange, handleComprobacio, handleErrors}){
 
-    // let data = new Date();
-    // let dia = data.getDate();
-    // if (dia < 0) dia = '0' + dia;
-    // let mes = data.getMonth() + 1;
-    // if (mes < 10) mes = '0' + mes
+    let data = new Date();
+    let dia = data.getDate();
+    if (dia < 0) dia = '0' + dia;
+    let mes = data.getMonth() + 1;
+    if (mes < 10) mes = '0' + mes
 
-    // let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
-
-    // max={dataActual}
+    let dataActual = data.getFullYear() + '-' + mes + '-' + dia;
 
     return(
         <div className="form-group">
@@ -277,7 +275,7 @@ function InputAnyCompra({anyCompraMaterial, handleChange, handleComprobacio, han
                 onChange={handleChange}
                 onBlur={(e) => ComprobacioAnyCompra(e.target.value, {handleComprobacio, handleErrors})}
                 className="form-control"
-                
+                max={dataActual}
                 required
             />
         </div>
