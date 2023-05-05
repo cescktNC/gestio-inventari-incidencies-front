@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ComprobacioCodi, ComprobacioHora, ComprobacioData } from "../../js/comprobacioCampsReserva";
+import { ComprobacioCodi } from "../../js/comprobacioCampsReserva";
 
 function ReservaUpdate(props) {
   const { id } = useParams();
@@ -9,20 +9,16 @@ function ReservaUpdate(props) {
 
   const [comprobacio, setComprobacio] = useState({
     comprobacioCodi: false,
-    comprobacioData: false,
-    comprobacioHora: false
   });
 
   const [ReservaData, setReservaData] = useState({
     codi: "",
-    hora: "",
-    data: "",
+    horainici: "",
+    horafi: "",
   });
 
   const [errorsForm, setErrorsForm] = useState({
     errorCodi: '',
-    errorHora: '',
-    errorData: ''
   });
 
   const [errorBack, setErrorBack] = useState('');
@@ -47,8 +43,6 @@ console.log(ReservaData)
   const handleSubmit = (e) => {
     e.preventDefault();
     ComprobacioCodi(ReservaData.codi, { handleComprobacio, handleErrors })
-    ComprobacioData(ReservaData.data, { handleComprobacio, handleErrors })
-    ComprobacioHora(ReservaData.hora, { handleComprobacio, handleErrors })
     if (!Object.values(comprobacio).includes(false)) {
       fetch(`http://localhost:5000/reserva/APIupdate/${id}`, {
         method: "PUT",
@@ -117,46 +111,28 @@ console.log(ReservaData)
                   )}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="hora">Hora:</label>
-                  <input
-                    type="time"
-                    id="hora"
-                    name="hora"
-                    className="form-control"
-                    value={ReservaData.hora}
-                    onChange={handleChange}
-                    onBlur={(e) =>
-                      ComprobacioHora(e.target.value, {
-                        handleComprobacio,
-                        handleErrors,
-                      })
-                    }
-                    required
-                  />
-                  {errorsForm.errorHora && (
-                    <p className="error-message">{errorsForm.errorHora}</p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="data">Data:</label>
+                  <label htmlFor="horainici">Hora:</label>
                   <input
                     type="date"
-                    id="data"
-                    name="data"
+                    id="horainici"
+                    name="horainici"
                     className="form-control"
-                    value={ReservaData.data}
+                    value={ReservaData.horainici}
                     onChange={handleChange}
-                    onBlur={(e) =>
-                      ComprobacioData(e.target.value, {
-                        handleComprobacio,
-                        handleErrors,
-                      })
-                    }
                     required
                   />
-                  {errorsForm.errorData && (
-                    <p className="error-message">{errorsForm.errorData}</p>
-                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="horafi">Hora Fi:</label>
+                  <input
+                    type="date"
+                    id="horafi"
+                    name="horafi"
+                    className="form-control"
+                    value={ReservaData.horafi}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Actualizar
