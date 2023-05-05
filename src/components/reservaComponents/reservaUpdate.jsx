@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ComprobacioCodi } from "../../js/comprobacioCampsReserva";
+import { ComprobacioCodi, ComprobacioHora, ComprobacioData } from "../../js/comprobacioCampsReserva";
 
 function ReservaUpdate(props) {
   const { id } = useParams();
@@ -13,8 +13,8 @@ function ReservaUpdate(props) {
 
   const [ReservaData, setReservaData] = useState({
     codi: "",
-    horainici: "",
-    horafi: "",
+    hora: "",
+    data: "",
   });
 
   const [errorsForm, setErrorsForm] = useState({
@@ -24,15 +24,15 @@ function ReservaUpdate(props) {
   const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/reserva/APIupdate/${id}`, {
+    fetch(`http://localhost:5000/reserva/APIshow/${id}`, {
       headers: {
         "Authorization": "Bearer " + window.localStorage.getItem("token"),
         "Content-Type": "application/json",
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setReservaData(json));
+    .then((response) => response.json())
+    .then((json) => setReservaData(json.reserva));
   }, [id]);
 
   const handleChange = (e) => {
@@ -89,33 +89,26 @@ console.log(ReservaData)
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 {errorBack !== '' && <DivError error={errorBack} />}
-                <div className="form-group">
-                  <label htmlFor="codi">Codi:</label>
-                  <input
-                    type="text"
-                    id="codi"
-                    name="codi"
-                    className="form-control"
-                    value={ReservaData.codi}
-                    onChange={handleChange}
-                    onBlur={(e) =>
-                      ComprobacioCodi(e.target.value, {
-                        handleComprobacio,
-                        handleErrors,
-                      })
-                    }
-                    required
-                  />
+                <InputCodi 
+                  codi={ReservaData.codi} 
+                  handleChange={handleChange} 
+                  handleComprobacio={handleComprobacio}
+                  handleErrors={handleErrors}
+                  ComprobacioCodi={ComprobacioCodi}
+                />
                   {errorsForm.errorCodi && (
                     <p className="error-message">{errorsForm.errorCodi}</p>
                   )}
-                </div>
+                  <InputHoraInici 
+                    horaInici={ReservaData.horaInici}
+                    handleChange={handleChange}
+                  />
                 <div className="form-group">
                   <label htmlFor="horainici">Hora:</label>
                   <input
-                    type="date"
-                    id="horainici"
-                    name="horainici"
+                    type="time"
+                    id="hora"
+                    name="hora"
                     className="form-control"
                     value={ReservaData.horainici}
                     onChange={handleChange}
@@ -151,6 +144,60 @@ function DivError({ error }) {
     <div className="alert alert-danger">
       <p className="text-danger">{error}</p>
     </div>
+  )
+}
+
+function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, handleErrors}){
+  return(
+    <div className="form-group">
+      <label htmlFor="codi">Codi:</label>
+      <input
+        type="text"
+        id="codi"
+        name="codi"
+        className="form-control"
+        value={codi}
+        onChange={handleChange}
+        onBlur={(e) =>
+          ComprobacioCodi(e.target.value, {
+            handleComprobacio,
+            handleErrors,
+          })
+        }
+        required
+      />
+    </div>
+  )
+}
+
+function InputHoraInici({horaInici, handleChange}) {
+  let value = new Date(horaInici);
+  console.log(value)
+  return(
+    <div class="form-group">
+      <label for="horaInici">Hora Inici</label>
+      <input name="horaInici" 
+        list="llista-hores-inici" 
+        class="form-control" 
+        onChange={handleChange} 
+      />
+      <datalist id="llista-hores-inici">
+          <option value="08:00 h" label="De les vuit en punt del matí"></option>
+          <option value="09:00 h" label="De les nou en punt del matí"></option>
+          <option value="10:00 h" label="De les deu en punt del matí"></option>
+          <option value="11:30 h" label="De dos quarts de dotze del matí"></option>
+          <option value="12:30 h" label="De dos quarts d'una del matí"></option>
+          <option value="13:30 h" label="De dos quarts de dos de la tarda"></option>
+          <option value="14:30 h" label="De dos quarts de tres de la tarda"></option>
+          <option value="15:00 h" label="De les tres en punt de la tarda"></option>
+          <option value="16:00 h" label="De les quatre en punt de la tarda"></option>
+          <option value="17:00 h" label="De les cinc en punt de la tarda"></option>
+          <option value="18:00 h" label="De les sis en punt de la tarda"></option>
+          <option value="19:00 h" label="De les set en punt de la tarda"></option>
+          <option value="20:00 h" label="De les vuit en punt de la nit"></option>
+          <option value="21:00 h" label="De les nou en punt de la nit"></option>
+      </datalist>
+  </div>
   )
 }
 

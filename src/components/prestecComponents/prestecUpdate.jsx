@@ -19,14 +19,10 @@ function PrestecUpdate(){
 	const [errorBack, setErrorBack] = useState('');
 
     const [comprobacio, setComprobacio] = useState({
-        comprobacioDNI: true,
-        comprobacioDataInici: true,
         comprobacioDataRetorn: true
     });
 
     const [errorsForm, setErrorsForm] = useState({
-        errorDNI: '',
-        errorDataInici: '',
         errorDataRetorn: ''
     });
 
@@ -34,24 +30,31 @@ function PrestecUpdate(){
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIShow/` + id,{
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            },
         })
         .then((response) => response.json())
         .then((json) => {
+            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);
 
             if (json.prestec) setPrestec({
                 ...prestec, 
-                dni: json.prestec.dniUsuari.dni,
+                dni: json.prestec.dniUsuari._id,
                 dataInici: json.prestec.dataInici.substring(0, 10),
                 dataRetorn: json.prestec.dataRetorn.substring(0, 10),
                 estat: json.prestec.estat
             });
             
         });
-    }, []);
+    }, [id]);
+
+    console.log(prestec)
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIEstats`,{
@@ -75,24 +78,29 @@ function PrestecUpdate(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
-            method: "PUT",
-            body: JSON.stringify({ prestec }),
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-            },
-        }) 
-        .then((response) => response.json())
-        .then((json) => {
-            if(json.error) setErrorBack(json.error);
 
-            if(json.errors) setErrorsBack(json.errors);
+        ComprobacioDataRetorn(prestec.dataRetorn, {handleComprobacio, handleErrors}); 
+        if (!Object.values(comprobacio).includes(false)) { 
+            fetch(`http://localhost:5000/prestec/APIUpdate/` + id, {
+                method: "PUT",
+                body: JSON.stringify({ prestec }),
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                },
+            }) 
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if(json.error) setErrorBack(json.error);
 
-            if (json.ok) navigate(`/home/prestec/list`)
-            
-        });
+                if(json.errors) setErrorsBack(json.errors);
+
+                if (json.ok) navigate(-1)
+                
+            });
+        }
     };
 
     const handleChange = input => {
@@ -117,7 +125,7 @@ function PrestecUpdate(){
         <main>
             <div className="card mt-4">
                 <div className="card-header">
-                    <h5 className="card-title">Nou Prestec</h5>
+                    <h5 className="card-title">Actualitzar Prestec</h5>
                 </div>
                 <div className="card-body">
                     <form onSubmit={handleSubmit} >
@@ -137,7 +145,7 @@ function PrestecUpdate(){
                         <InputEstat estats={estats} estatPrestec={prestec.estat} handleChange={handleChange} />
 
 
-                        <button type="submit" className="btn btn-primary">Crea</button>
+                        <button type="submit" className="btn btn-primary">Actualitzar</button>
                     </form>
                 </div>
             </div>
