@@ -1,35 +1,13 @@
-import { nomesDirector, nomesEncaregatMaterial, nomesAdmin } from "../../js/comprobacioCarrecs";
-import { useState, useEffect } from 'react';
+import { nomesEncaregatMaterial, nomesAdmin } from "../../js/comprobacioCarrecs";
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function InventariMenu(){
-    const [resultat, setResultat] = useState(0);
+function InventariMenu({resultat}){
     const [subMenuState, setSubMenuState] = useState({
 		prestec: true,
 		incidencia: true
 	});
-
-	useEffect(() => {
-		if(nomesDirector()){
-			fetch(
-				"http://localhost:5000/prestec/APIPendent",
-				{
-					method: "GET",
-					headers: { 
-						"Authorization": "Bearer " + window.localStorage.getItem("token"),
-						"Content-Type": "application/json",
-						"Accept-Type": "application/json"
-					},
-				}
-			)
-			.then(response => response.json())
-			.then(json => {
-				setResultat(json.prestecsPendents);
-			});
-			
-		}
-	}, []);
-
+  
 	function handleSubMenuClick(menuItem) {
 		setSubMenuState(prevState => ({
 			...prevState,

@@ -15,12 +15,12 @@ function SessioList() {
                 "Accept-Type": "application/json"
             }
         })
-            .then(response => response.json())
-            .then(json => {               
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            });
+        .then(response => response.json())
+        .then(json => {               
+            setList(json.list);
+            setCurrentPage(json.currentPage);
+            setTotalPages(json.totalPages);
+        });
     }, [currentPage]);
 
     return (

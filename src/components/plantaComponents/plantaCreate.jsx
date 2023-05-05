@@ -37,7 +37,6 @@ function PlantaCreate(props) {
     .then(response => response.json())
     .then(json => {
       if(json.list) {
-        console.log(json)
         setCentres(json.list);
         setPlantaData({...PlantaData, codicentre: json.list[0]._id})
       }
@@ -66,7 +65,6 @@ function PlantaCreate(props) {
       })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.ok) navigate(-1);
 
         if(json.error !== undefined) setErrorBack(json.error);
