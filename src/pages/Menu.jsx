@@ -17,13 +17,12 @@ import { Route, Routes } from "react-router-dom";
 import "../css/styleMenu.css";
 
 
-export function Menu() {
-	
+export function Menu({setIsLoggedIn}) {
 	return (
 
 		<div className="containerPrincipal">
 			<div className="divMenu BG-black">
-				<MenuContainer />
+				<MenuContainer setIsLoggedIn={setIsLoggedIn} />
 			</div>
 			<div className="container">
 				<Routes>

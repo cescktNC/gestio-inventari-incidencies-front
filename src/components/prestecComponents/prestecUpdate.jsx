@@ -38,7 +38,6 @@ function PrestecUpdate(){
         })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);
@@ -54,7 +53,6 @@ function PrestecUpdate(){
         });
     }, [id]);
 
-    console.log(prestec)
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIEstats`,{
@@ -92,7 +90,6 @@ function PrestecUpdate(){
             }) 
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
                 if(json.error) setErrorBack(json.error);
 
                 if(json.errors) setErrorsBack(json.errors);

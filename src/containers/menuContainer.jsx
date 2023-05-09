@@ -14,14 +14,14 @@ import "../css/styleLlistatMenu.css";
 
 // import LlistatMenu from '../components/llistatMenu';
 
-function menuContainer() {
+function menuContainer({setIsLoggedIn}) {
   return (
     <div>
       <Logo />
       <div className="containerMenu">
         <ProfileMenu />
         <ul className="menu">
-          <UserMenu />
+          <UserMenu setIsLoggedIn={setIsLoggedIn} />
           <InventariMenu />
           <GeneralMenu />
           <ReservesMenu />

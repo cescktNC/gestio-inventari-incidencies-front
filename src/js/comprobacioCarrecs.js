@@ -1,4 +1,8 @@
-let carrec = window.localStorage.getItem('carrec');
+let carrec;
+
+export function guardarCarrec(){
+    carrec = window.localStorage.getItem('carrec');
+}
 
 export function nomesAdmin(){
     return (carrec === 'Administrador');
@@ -10,7 +14,7 @@ export function nomesDirector(){
 }
 
 export function nomesEquipDocent(){
-    return(!['Alumne', 'Conserge', 'Director'].includes(carrec));
+    return(!['Alumne', 'Conserge', 'Manteniment'].includes(carrec));
 }
 
 export function nomesTreballadors(){

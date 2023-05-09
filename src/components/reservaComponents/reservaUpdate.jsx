@@ -44,7 +44,7 @@ function ReservaUpdate(props) {
     const { name, value } = e.target;
     setReservaData({ ...ReservaData, [name]: value });
   };
-console.log(ReservaData)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     ComprobacioCodi(ReservaData.codi, { handleComprobacio, handleErrors })
@@ -200,7 +200,6 @@ function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, han
 
 function InputHoraInici({horaInici, handleChange}) {
   let value = new Date(horaInici);
-  console.log(value)
   return(
     <div class="form-group">
       <label for="horaInici">Hora Inici</label>

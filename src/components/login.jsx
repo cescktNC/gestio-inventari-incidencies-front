@@ -1,8 +1,10 @@
 import {React, useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/styleLogin.css";
+import { guardarCarrec } from "../js/comprobacioCarrecs";
 
-function Login() {
+
+function Login({setIsLoggedIn}) {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
 	const [comprobacioEmail, setcomprobacioEmail] = useState(false);
@@ -54,6 +56,8 @@ function Login() {
 			window.localStorage.setItem("id", userData.id);
 			window.localStorage.setItem("carrec", userData.carrec);
 			window.localStorage.setItem("token", userData.token);
+			setIsLoggedIn(userData.token);
+			guardarCarrec();
 			navigate("/home/user/show/" + userData.id);
 		}
 	}, [message, errors, userData]);

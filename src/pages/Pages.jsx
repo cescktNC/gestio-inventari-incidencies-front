@@ -1,28 +1,36 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Menu } from './Menu';
-import { useEffect, useState } from 'react';
+import { useState, React, useEffect } from 'react';
 import { LoginContainer } from "../containers/loginContainer";
-
+import { guardarCarrec } from "../js/comprobacioCarrecs";
 
 function Pages() {
   const [isLoggedIn, setIsLoggedIn] = useState('');
-  
-  useEffect(() =>{
-    setIsLoggedIn(window.localStorage.getItem('token'));
+
+  useEffect(() => {
+
+    if(window.localStorage.getItem('token')) {
+      setIsLoggedIn(window.localStorage.getItem('token'));
+      guardarCarrec();
+    }
   }, [])
 
   return (
     <Routes>
       {isLoggedIn ? (
         <>
-          <Route path="/" element={<Navigate to={`/home/user/show/${window.localStorage.getItem('id')}`} />} />
-          <Route path="/home/*" element={<Menu />} />
+          <Route path="/home/*" element={<Menu setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/*" element={<Navigate to={`/home/user/show/${window.localStorage.getItem('id')}`} />} />
         </>
       ) : (
-        <Route path="/" element={<Navigate to="/auth/login" />} />
+        <>
+          <Route path="/auth/*" element={<LoginContainer setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/*" element={<LoginContainer setIsLoggedIn={setIsLoggedIn} />} />
+        </>
       )}
-      <Route path="/auth/*" element={<LoginContainer />} />
+
     </Routes>
+
   );
 }
 

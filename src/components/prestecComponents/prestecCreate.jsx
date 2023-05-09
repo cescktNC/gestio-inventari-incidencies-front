@@ -44,7 +44,6 @@ function PrestecCreate(){
             })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
                 if(json.error) setErrorBack(json.error);
 
                 if(json.errors) setErrorsBack(json.errors);
@@ -55,7 +54,6 @@ function PrestecCreate(){
         }
 
     }
-    console.log(comprobacio)
 
     const handleChange = input => {
         setPrestec({ ...prestec, [input.name]: input.value });
