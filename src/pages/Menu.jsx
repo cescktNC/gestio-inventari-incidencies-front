@@ -13,23 +13,50 @@ import SessioContainer from "../containers/sessioContainer";
 import CadiraContainer from "../containers/cadiraContainer";
 import IncidenciaContainer from "../containers/incidenciaContainer";
 import ComentariContainer from "../containers/comentariContainer";
+
 import { Route, Routes } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { nomesDirector } from "../js/comprobacioCarrecs";
+
 import "../css/styleMenu.css";
 
-
 export function Menu({setIsLoggedIn}) {
+
+	const [resultat, setResultat] = useState(0);
+
+	useEffect(() => {
+		if(nomesDirector()){
+			fetch(
+				"http://localhost:5000/prestec/APIPendent",
+				{
+					method: "GET",
+					headers: { 
+						"Authorization": "Bearer " + window.localStorage.getItem("token"),
+						"Content-Type": "application/json",
+						"Accept-Type": "application/json"
+					},
+				}
+			)
+			.then(response => response.json())
+			.then(json => {
+				setResultat(json.prestecsPendents);
+			});
+			
+		}
+	}, []);
+	
 	return (
 
 		<div className="containerPrincipal">
 			<div className="divMenu BG-black">
-				<MenuContainer setIsLoggedIn={setIsLoggedIn} />
+				<MenuContainer resultat={resultat} setIsLoggedIn={setIsLoggedIn} />
 			</div>
 			<div className="container">
 				<Routes>
 					<Route path="/user/*" element={<UserContainer />} />
 					<Route path="/material/*" element={<MaterialContainer />} />
 					<Route path="/exemplar/*" element={<ExemplarContainer />} />
-					<Route path="/prestec/*" element={<PrestecContainer />} />
+					<Route path="/prestec/*" element={<PrestecContainer resultat={resultat} setResultat={setResultat} />} />
 					<Route path="/categories/*" element={<CategoriaContainer />} />
 					<Route path="/subcategories/*" element={<SubCategoriaContainer />} />
 					<Route path="/centre/*" element={<CentreContainer/>} />

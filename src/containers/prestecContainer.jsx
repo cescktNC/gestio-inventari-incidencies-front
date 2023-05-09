@@ -4,7 +4,7 @@ import PrestecList from "../components/prestecComponents/prestecList";
 import PrestecCreate from "../components/prestecComponents/prestecCreate";
 import PrestecUpdate from "../components/prestecComponents/prestecUpdate";
 
-function PrestecContainer(){
+function PrestecContainer({resultat, setResultat}){
     return (
 
         <Routes>
@@ -12,7 +12,7 @@ function PrestecContainer(){
             <Route path="/list" element={<PrestecList />} />
             <Route path="/create" element={<PrestecCreate />} />
             {/* <Route path="/delete/:id" element={<LocalitzacioDelete />} /> */}
-            <Route path="/update/:id" element={<PrestecUpdate />} />
+            <Route path="/update/:id" element={<PrestecUpdate resultat={resultat} setResultat={setResultat} />} />
 
         </Routes>
     )

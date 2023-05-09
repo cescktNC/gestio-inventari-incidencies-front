@@ -7,14 +7,13 @@ import GeneralMenu from '../components/menuComponents/generalMenu';
 import ReservesMenu from '../components/menuComponents/reservesMenu';
 import LogoFinal from '../components/menuComponents/logoFinal';
 
-
 import "../css/styleImage.css";
 import "../css/styleLlistatMenu.css";
 
 
 // import LlistatMenu from '../components/llistatMenu';
 
-function menuContainer({setIsLoggedIn}) {
+function menuContainer({resultat, setIsLoggedIn}) {
   return (
     <div>
       <Logo />
@@ -22,7 +21,7 @@ function menuContainer({setIsLoggedIn}) {
         <ProfileMenu />
         <ul className="menu">
           <UserMenu setIsLoggedIn={setIsLoggedIn} />
-          <InventariMenu />
+          <InventariMenu resultat={resultat} />
           <GeneralMenu />
           <ReservesMenu />
         </ul>
