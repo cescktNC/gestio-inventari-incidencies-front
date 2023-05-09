@@ -1,12 +1,16 @@
-import Pages from "./pages/pages";
-import MenuContainer from './pages/menu.jsx';
+import Pages from "./pages/Pages";
+import { BrowserRouter } from "react-router-dom";
+
 
 function App() {
-  return (
-    <div className="App">
-      <Pages />
-    </div>
-  );
+	
+	return (
+
+		<BrowserRouter>
+			<Pages />
+		</BrowserRouter>
+		
+	)
 }
 
 export default App;

@@ -1,0 +1,104 @@
+.App {
+    text-align: center;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D);
+  }
+  
+  .auth-form-container, .login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #f2f2f2; 
+    padding: 5rem;
+    border: 1px solid #ccc; 
+    border-radius: 10px;
+    margin: 0.5rem;
+    color: #000; 
+    animation: slide-up 2s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+  
+  @media screen and (min-width: 600px) {
+    .auth-form-container {
+      padding: 5rem;
+      border: 1px solid white;
+      border-radius: 10px;
+      margin: 0.5rem;
+    }
+  }
+  input, button {
+    border: 2px solid #7439db;
+    border-radius: 5px;
+  }
+  
+  label {
+    text-align: left;
+    padding: 0.25rem 0;
+  }
+  
+  input {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .buttonLR {
+    border: none;
+    background: linear-gradient(to bottom, #f2f2f2, #e6e6e6);
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #7439db;
+  
+  }
+  
+  .login-btn:hover {
+    background: linear-gradient(to bottom, #e6e6e6, #f2f2f2);
+  }
+  
+  input[type="text"], 
+  input[type="password"],
+  input[type="email"],
+  option {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  
+  button:hover {
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .link-btn {
+    background: none;
+    color: black;
+    text-decoration: underline;
+  }
+  
+  .login-form {
+    animation: slide-up 4s ease;
+  }
+  .register-form {
+    animation: slide-up 4s ease;
+  }
+
+  .error-message {
+    color: red;
+  }
+  
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

@@ -1,0 +1,115 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ComprobacioFitxer } from '../../js/comprobacioCampsMaterials';
+
+function ExemplarImport(){
+    const navigate = useNavigate();
+
+    const [exemplar, setExemplar]=useState({
+        fitxer: '',
+    });
+
+    const [comprobacio, setComprobacio] = useState({
+        comprobacioFitxer: false,
+    });
+
+    const [errorsForm, setErrorsForm] = useState({
+        errorFitxer: '',
+    });
+
+    const [errorsBack, setErrorsBack] = useState([]);
+    const [errorBack, setErrorBack] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('fitxer', exemplar.fitxer);        
+        ComprobacioFitxer(exemplar.fitxer, {handleComprobacio, handleErrors});
+        if (!Object.values(comprobacio).includes(false)) {
+            fetch("http://localhost:5000/exemplar/APIImport", {
+                method: "POST",
+                body: formData,
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                }
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                if(json.error !== undefined) setErrorBack(json.error);
+				
+				if(json.errors !== undefined) setErrorsBack(json.errors);
+
+				if (json.ok) navigate(-1);
+				
+            });
+        }
+    }
+
+    const handleComprobacio = (camp, valor) => {
+        setComprobacio({
+            ...comprobacio,
+            [camp]: valor
+        });
+    };
+
+    const handleErrors = (camp, valor) => {
+        setErrorsForm({
+            ...errorsForm,
+            [camp]: valor
+        });
+    };
+
+    return(
+        <div className="card mt-4">
+			<div className="card-header">
+				<h5 className="card-title">Importar exemplars</h5>
+			</div>
+			<div className="card-body">
+
+				<form onSubmit={handleSubmit}>
+					<div className="form-group">
+						<label htmlFor="fitxer">Fitxer:</label>
+						<input 
+                            type="file" 
+                            name="fitxer" 
+                            accept="application/json, text/csv" 
+                            className="form-control" 
+                            onChange={(e) => setExemplar({...exemplar, fitxer: e.target.files[0]})}
+                            onBlur={(e) => ComprobacioFitxer(e.target.files[0], {handleComprobacio, handleErrors})}
+                        />
+                        {errorsForm.errorFitxer && (<p className="error-message">{errorsForm.errorFitxer}</p>)}
+					</div>
+					<button type="submit" className="btn btn-primary">Save</button>
+                    <a className="btn btn-info card-link"
+                        href={'http://localhost:5000/csv/exempleExemplars.csv'}
+                        download="exempleExemplars.csv" >Descarregar CSV</a>
+				</form>
+
+                {(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
+
+                {(errorBack !== '' && (<DivError error={errorBack}  />) )}
+
+			</div>
+        </div>
+
+    )
+}
+
+function DivError({error}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{error}</p>
+        </div>
+    )
+}
+
+
+function DivArrayErrors({errors}){
+    return(
+        <ul className="alert alert-danger list-unstyled">
+            {Object.values(errors).map((error, index) => <li key={index}>{error.message}</li>)}
+        </ul>
+    )
+}
+
+export default ExemplarImport;
