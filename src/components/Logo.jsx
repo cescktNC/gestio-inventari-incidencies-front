@@ -4,7 +4,7 @@ function Logo() {
     return (
         <Wrapper>
             <WrapperLogo>
-                <Img src="images/logo_vidal_i_barraquer.jpg" alt='Logo Institut F. Vidal i Barraquer' />
+                <Img src="images/logo_vidal_i_barraquer.png" alt='Logo Institut F. Vidal i Barraquer' />
                 <NameApp>GIIF</NameApp>
             </WrapperLogo>
             <ImatgeLogo xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -33,6 +33,7 @@ const Img = styled.img`
 `;
 
 const NameApp = styled.span`
+    font-family: Inter var, Roboto, "Helvetica", Arial, sans-serif;
     font-size: 1.2rem;
     color: white;
 `;
