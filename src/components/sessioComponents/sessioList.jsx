@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleCategories.css';
 // import '../../css/styleSessio.css';
 
 function SessioList() {
@@ -25,7 +24,7 @@ function SessioList() {
     }, [currentPage]);
 
     return (
-        <div class="taula">
+        <div className="taula">
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h3 className="card-title">Sessió</h3>
@@ -77,7 +76,7 @@ function SessioTbody({ list }) {
             <td className="edit-delete-cell text-center">
                 <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
                 <Link className="btn btn-warning " to={`/home/reservaCadira/${sessio._id}`}>Cadires</Link>
-                <Link className="btn btn-success" to={`/home/tickets/${sessio._id}`}>Tickets</Link>
+                <Link className="btn btn-success" to={`/home/tickets/list/${sessio._id}`}>Tickets</Link>
             </td>
                 
         </tr>
