@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { nomesTreballadors } from "../../js/comprobacioCarrecs"
 
 
-function UserMenu(){
+function UserMenu({setIsLoggedIn}){
 
 	const [componentActual, setComponentActual] = useState(true);
     const id = window.localStorage.getItem('id');
@@ -41,7 +41,7 @@ function UserMenu(){
 
 				</li>
 
-				<CreacioSubMenuUsuari componentActual={componentActual} id={id} /> 
+				<CreacioSubMenuUsuari componentActual={componentActual} id={id} setIsLoggedIn={setIsLoggedIn} /> 
 				
 			</ul>
 			
@@ -80,7 +80,7 @@ function SVGDown(){
 	)
 }
 
-function CreacioSubMenuUsuari({componentActual, id}){
+function CreacioSubMenuUsuari({componentActual, id, setIsLoggedIn}){
 	const navigate = useNavigate()
 
 	function handleClick(e){
@@ -88,6 +88,7 @@ function CreacioSubMenuUsuari({componentActual, id}){
 		window.localStorage.removeItem("id");
 		window.localStorage.removeItem("carrec");
 		window.localStorage.removeItem("token");
+		setIsLoggedIn('')
 		navigate("/auth/login");
 	}
 

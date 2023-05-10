@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ComprobacioDataRetorn } from '../../js/comprobacioCampsPrestec'
 
-function PrestecUpdate(){
+function PrestecUpdate({resultat, setResultat}){
 
     const {id} = useParams();
 
@@ -38,7 +38,6 @@ function PrestecUpdate(){
         })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
             if(json.error) setErrorBack(json.error);
 
             if(json.errors) setErrorsBack(json.errors);
@@ -53,8 +52,6 @@ function PrestecUpdate(){
             
         });
     }, [id]);
-
-    console.log(prestec)
 
     useEffect(() => {
         fetch(`http://localhost:5000/prestec/APIEstats`,{
@@ -92,12 +89,16 @@ function PrestecUpdate(){
             }) 
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
                 if(json.error) setErrorBack(json.error);
 
                 if(json.errors) setErrorsBack(json.errors);
 
-                if (json.ok) navigate(-1)
+                if (json.ok) {
+                    if(prestec.estat !== 'Pendent'){
+                        setResultat((resultat - 1));
+                    }
+                    navigate(-1);
+                }
                 
             });
         }

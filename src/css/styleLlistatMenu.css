@@ -33,7 +33,7 @@
 	pointer-events: none;
 	transition: border-radius 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
 	color: rgb(255, 255, 255);
-	background-color: rgba(255, 255, 255, 0.1) !important;
+	background-color: rgba(129, 49, 49, 0.1) !important;
 }
 
 .a {
@@ -98,7 +98,7 @@
 	display: flex;
 	background-repeat: no-repeat;
 	background-size: 100% 40px, 100% 10px;
-	max-height: 1000px;
+	height: 1000px;
 	overflow-y: auto;
 }
 

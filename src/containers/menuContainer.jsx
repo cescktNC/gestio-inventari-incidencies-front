@@ -7,22 +7,21 @@ import GeneralMenu from '../components/menuComponents/generalMenu';
 import ReservesMenu from '../components/menuComponents/reservesMenu';
 import LogoFinal from '../components/menuComponents/logoFinal';
 
-
 import "../css/styleImage.css";
 import "../css/styleLlistatMenu.css";
 
 
 // import LlistatMenu from '../components/llistatMenu';
 
-function menuContainer() {
+function menuContainer({resultat, setIsLoggedIn}) {
   return (
     <div>
       <Logo />
       <div className="containerMenu">
         <ProfileMenu />
         <ul className="menu">
-          <UserMenu />
-          <InventariMenu />
+          <UserMenu setIsLoggedIn={setIsLoggedIn} />
+          <InventariMenu resultat={resultat} />
           <GeneralMenu />
           <ReservesMenu />
         </ul>

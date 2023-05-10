@@ -19,7 +19,6 @@ function ReservaList() {
         })
             .then(response => response.json())
             .then(json => {    
-                console.log(json)           
                 setList(json.list);
                 setCurrentPage(json.currentPage);
                 setTotalPages(json.totalPages);

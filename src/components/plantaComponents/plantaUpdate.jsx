@@ -57,7 +57,6 @@ function PlantaUpdate(props) {
     })
     .then((response) => response.json())
     .then((json) => {
-      console.log(json)
       if (json.planta) setPlantaData({
         ...json.planta,
         codiCentre: json.planta.codiCentre._id,
@@ -69,7 +68,6 @@ function PlantaUpdate(props) {
     });
   }, [id]);
 
-  console.log(PlantaData)
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -94,7 +92,6 @@ function PlantaUpdate(props) {
       })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         if (json.ok) navigate(-1);
 
         if(json.error !== undefined) setErrorBack(json.error);

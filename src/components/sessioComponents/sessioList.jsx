@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../css/styleCategories.css'
+import '../../css/styleCategories.css';
+// import '../../css/styleSessio.css';
 
 function SessioList() {
     const [list, setList] = useState([]);
@@ -15,19 +16,19 @@ function SessioList() {
                 "Accept-Type": "application/json"
             }
         })
-            .then(response => response.json())
-            .then(json => {               
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            });
+        .then(response => response.json())
+        .then(json => {               
+            setList(json.list);
+            setCurrentPage(json.currentPage);
+            setTotalPages(json.totalPages);
+        });
     }, [currentPage]);
 
     return (
-        <div>
+        <div className="taula">
             <div className="card mt-2 w-100">
                 <div className="card-body">
-                    <h5 className="card-title">Sessió</h5>
+                    <h3 className="card-title">Sessió</h3>
                     <div className="mx-auto">
                         <SessioTable list={list} />
                         <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
@@ -46,8 +47,8 @@ function SessioTable({ list }) {
                 <tr>
                     <th scope="col">Codi</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">CodiReserva</th>
-                    <th scope="col" colSpan={2}>
+                    <th scope="col" className="text-center">CodiReserva</th>
+                    <th scope="col" className="text-center">
                         <Link to="/home/sessio/create" className="btn btn-primary">Nova</Link>
                     </th>
                 </tr>
@@ -70,12 +71,13 @@ function SessioTbody({ list }) {
             <td>
                 {sessio.nom}
             </td>
-            <td>
-                {sessio.codiReserva}
+            <td className="text-center">
+                {sessio.codiReserva.codi}
             </td>
-            <td className="edit-delete-cell">
+            <td className="edit-delete-cell text-center">
                 <Link className="btn btn-secondary" to={`/home/sessio/update/${sessio._id}`}>Edit</Link>
-                <Link className="btn btn-danger" to={`/home/sessio/delete/${sessio._id}`}>Eliminar</Link>
+                <Link className="btn btn-warning " to={`/home/reservaCadira/${sessio._id}`}>Cadires</Link>
+                <Link className="btn btn-success" to={`/home/tickets/${sessio._id}`}>Tickets</Link>
             </td>
                 
         </tr>

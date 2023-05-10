@@ -67,6 +67,9 @@ function UserShow() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		ComprobacioPassword(pass.password, {handleComprobacio, handleErrors});
+		ComprobacioNewPassword(pass.password1, {handleComprobacio, handleErrors});
+		ComprobacioConfNewPassword(pass.password2, {userPass: pass.password1, handleComprobacio, handleErrors});
 		if (!Object.values(comprobacio).includes(false)) {
 
 			fetch("http://localhost:5000/usuaris/user/password/" + id, {
@@ -132,6 +135,7 @@ function UserShow() {
 								<h5 className="card-subtitle mb-1 text-muted">{user.carrec}</h5>
 								<p className="card-text mb-1">{user.email}</p>
 							</div>
+
 							{id === localStorageID && (
 								<DivEnllaços 
 									id={id} 
@@ -143,6 +147,7 @@ function UserShow() {
 									handleSubmit={handleSubmit}
 								/>
 							)}
+
 							{(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
 
 							{(errorBack !== '' && (<DivErrorMessage message={errorBack}  />) )}

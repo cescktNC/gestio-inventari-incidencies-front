@@ -47,8 +47,10 @@ function UserUpdate(){
       fetch(
         "http://localhost:5000/usuaris/carrecs",
         {
-          headers: {
+          headers: { 
+            "Authorization": "Bearer " + window.localStorage.getItem("token"),
             "Content-Type": "application/json",
+            "Accept-Type": "application/json"
           },
         }
       )
@@ -57,17 +59,18 @@ function UserUpdate(){
         setCarrecs(json.carrecs)
       });
     }
-  },[carrec])
-
+  },[])
+  console.log(carrecs)
   useEffect(() => {
     fetch(
       "http://localhost:5000/usuaris/user/" + id,
       {
         method: "GET",
-        headers: {
-          "Authorization": "Bearer " + window.localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
+        headers: { 
+					"Authorization": "Bearer " + window.localStorage.getItem("token"),
+					"Content-Type": "application/json",
+					"Accept-Type": "application/json"
+				},
       }
     )
     .then(response => response.json())

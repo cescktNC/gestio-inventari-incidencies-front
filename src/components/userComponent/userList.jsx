@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../../css/styleUser.css'
 
-import {nomesAdmin, nomesEquipDocent } from "../../js/comprobacioCarrecs"
+import {nomesAdmin, nomesEquipDocent, nomesDirector } from "../../js/comprobacioCarrecs"
 
 function UserList(){
     const [list, setList] = useState([]);
@@ -42,8 +42,8 @@ function UserList(){
 function UserTable({list}){
 
     return(
-        <table className="table table-responsive table-striped table-hover ">
-            <thead className="thead-green">
+        <table className="table table-responsive table-hover ">
+            <thead>
                 <tr>
                     <th scope="col">Nom</th>
                     <th scope="col">Cognoms</th>
@@ -91,7 +91,7 @@ function UserTbody({list}){
                     <Link className="btn btn-secondary" to={`/home/user/show/${user._id}`}>Perfil</Link>  
                 )}
             </td>
-            {(nomesAdmin()) && (
+            {(nomesAdmin() || nomesDirector()) && (
                 <>
                     <td>
                         <Link className="btn btn-secondary" to={`/home/user/update/${user._id}`}>Editar</Link>

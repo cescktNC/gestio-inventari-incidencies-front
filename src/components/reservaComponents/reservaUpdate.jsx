@@ -32,14 +32,17 @@ function ReservaUpdate(props) {
       }
     })
     .then((response) => response.json())
-    .then((json) => setReservaData(json.reserva));
+    .then((json) => setReservaData({
+      ...json.reserva,
+      horaInici: new Date(json.horaInici).toLocaleTimeString()
+    }));
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setReservaData({ ...ReservaData, [name]: value });
   };
-console.log(ReservaData)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     ComprobacioCodi(ReservaData.codi, { handleComprobacio, handleErrors })
@@ -151,10 +154,8 @@ function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, han
 }
 
 function InputHoraInici({horaInici, handleChange}) {
-  let value = new Date(horaInici);
-  console.log(value)
   return(
-    <div class="form-group">
+    <div className="form-group">
       <label for="horaInici">Hora Inici</label>
       <input   
       id="horaInici"
@@ -187,7 +188,7 @@ function InputHoraInici({horaInici, handleChange}) {
     let value = new Date(horaFi);
     console.log(value)
     return(
-      <div class="form-group">
+      <div className="form-group">
         <label for="horaFi">Hora Fi</label>
         <input 
         id="horaFi"
