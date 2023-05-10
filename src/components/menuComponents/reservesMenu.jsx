@@ -16,7 +16,17 @@ function ReservesMenu(){
 				</div>
 			</li>
 			<ul className="ulSecundari">
-				
+				<li className="d-flex">
+					<Link
+						to="reserva/list"
+						className="a"
+						role="button"
+					>
+						<div className="divEnllaç">
+							<span className="spanSub">Reserva</span>
+						</div>
+				</Link>
+				</li>
 				<li className="d-flex">
 					<Link
 						to="sessio/list"

@@ -47,8 +47,8 @@ function ReservaTable({ list }) {
             <thead>
                 <tr>
                     <th scope="col">Codi</th>
-                    <th scope="col">Hora</th>
-                    <th scope="col">Data</th>
+                    <th scope="col">Hora Inici</th>
+                    <th scope="col">Hora Fi</th>
                     <th scope="col">DniUsuari</th>
                     <th scope="col">Codi Localitzacio</th>
                     <th scope="col" colSpan={2}>
@@ -66,7 +66,7 @@ function ReservaTable({ list }) {
 
 function ReservaTbody({ list }) {
     return list.map((reserva, index) => {
-        const formattedDate = new Date(reserva.horaInici).toLocaleDateString();
+        const timefi = new Date(reserva.horaFi).toLocaleTimeString();
         const timeString = new Date(reserva.horaInici).toLocaleTimeString();
         const formattedHour = timeString.length === 8 ? timeString.substring(0, 5) : timeString.substring(0, 4);
 
@@ -74,7 +74,7 @@ function ReservaTbody({ list }) {
             <tr key={index}>
                 <td>{reserva.codi}</td>
                 <td>{formattedHour} h</td>
-                <td>{formattedDate}</td>
+                <td>{timefi}</td>
                 <td>{reserva.dniUsuari.nom}</td>
                 <td>{reserva.codiLocalitzacio.nom}</td>
                 <td className="edit-delete-cell">
