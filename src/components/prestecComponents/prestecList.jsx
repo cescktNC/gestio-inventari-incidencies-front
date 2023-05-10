@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { nomesTreballadors } from "../../js/comprobacioCarrecs"
 import '../../css/styleUser.css';
 import '../../css/styleExemplar.css';
 
@@ -14,23 +15,42 @@ function PrestecList(){
     const [errorBack, setErrorBack] = useState('');
 
     useEffect(() => {
-        fetch("http://localhost:5000/prestec/APIlist?page=" + currentPage,{
-            headers: { 
-                "Authorization": "Bearer " + window.localStorage.getItem("token"),
-                "Content-Type": "application/json",
-                "Accept-Type": "application/json"
-            }
-        })
-        .then(response => response.json())
-        .then(json => {
-            if(json.error) setErrorBack(json.error);
-            else{
-                
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
-            }
-        });
+        if(nomesTreballadors()){
+            fetch("http://localhost:5000/prestec/APIlist?page=" + currentPage,{
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(json => {
+                if(json.error) setErrorBack(json.error);
+                else{
+                    
+                    setList(json.list);
+                    setCurrentPage(json.currentPage);
+                    setTotalPages(json.totalPages);
+                }
+            });
+        } else{
+            fetch("http://localhost:5000/prestec/APIShowList/" + window.localStorage.getItem('id'),{
+                headers: { 
+                    "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    "Accept-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(json => {
+                if(json.error) setErrorBack(json.error);
+                else{
+                    setList(json.list);
+                    setCurrentPage(json.currentPage);
+                    setTotalPages(json.totalPages);
+                }
+            });
+        }
     }, [currentPage]);
 
     return (
