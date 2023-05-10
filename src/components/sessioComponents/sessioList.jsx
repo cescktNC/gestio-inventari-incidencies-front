@@ -8,6 +8,8 @@ function SessioList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
+    const [errorBack, setErrorBack] = useState('');
+
     useEffect(() => {
         fetch("http://localhost:5000/sessio/APIlist?page=" + currentPage,{
             headers: { 
@@ -18,9 +20,12 @@ function SessioList() {
         })
         .then(response => response.json())
         .then(json => {               
-            setList(json.list);
-            setCurrentPage(json.currentPage);
-            setTotalPages(json.totalPages);
+            if(json.error) setErrorBack(json.error);
+            else{
+                setList(json.list);
+                setCurrentPage(json.currentPage);
+                setTotalPages(json.totalPages);
+            }
         });
     }, [currentPage]);
 
@@ -29,12 +34,25 @@ function SessioList() {
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h3 className="card-title">Sessió</h3>
-                    <div className="mx-auto">
-                        <SessioTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+                    {(errorBack !== '' 
+                        ? (<DivError error={errorBack}  />) 
+                        : (
+                            <div className="mx-auto">
+                                <SessioTable list={list} />
+                                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
+        </div>
+    )
+}
+
+function DivError({error}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{error}</p>
         </div>
     )
 }
@@ -42,7 +60,7 @@ function SessioList() {
 function SessioTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>

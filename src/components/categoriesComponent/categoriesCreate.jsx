@@ -40,6 +40,7 @@ function CategoryCreate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     ComprobacioName(categoryData.nom, {handleComprobacio, handleErrors});
 
     if (!Object.values(comprobacio).includes(false)) {
@@ -54,7 +55,7 @@ function CategoryCreate() {
       })
       .then((response) => response.json())
       .then((json) => {
-        if (json.ok) navigate(-1);
+        if (json.ok) navigate( -1);
 
         if(json.error) setErrorBack(json.error);
         
@@ -95,9 +96,9 @@ function CategoryCreate() {
 
 function DivError({error}){
   return(
-      <div className="alert alert-danger">
-          <p className="text-danger">{error}</p>
-      </div>
+    <div className="alert alert-danger">
+        <p className="text-danger">{error}</p>
+    </div>
   )
 }
 

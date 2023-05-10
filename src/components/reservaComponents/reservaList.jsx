@@ -9,6 +9,8 @@ function ReservaList() {
     const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
+    const [errorBack, setErrorBack] = useState('');
+
     useEffect(() => {
         fetch("http://localhost:5000/reserva/APIlist?page=" + currentPage,{
             headers: { 
@@ -19,9 +21,12 @@ function ReservaList() {
         })
             .then(response => response.json())
             .then(json => {    
-                setList(json.list);
-                setCurrentPage(json.currentPage);
-                setTotalPages(json.totalPages);
+                if(json.error) setErrorBack(json.error);
+                else{
+                    setList(json.list);
+                    setCurrentPage(json.currentPage);
+                    setTotalPages(json.totalPages);
+                }
             });
     }, [currentPage]);
 
@@ -30,12 +35,25 @@ function ReservaList() {
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h5 className="card-title">Reserva</h5>
-                    <div className="mx-auto">
-                        <ReservaTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+                    {(errorBack !== '' 
+                        ? (<DivError error={errorBack}  />) 
+                        : (
+                            <div className="mx-auto">
+                                <ReservaTable list={list} />
+                                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
+        </div>
+    )
+}
+
+function DivError({error}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{error}</p>
         </div>
     )
 }
@@ -64,7 +82,6 @@ function ReservaTable({ list }) {
 
 }
 function ReservaTbody({ list }) {
-    console.log(list)
     return list.map((reserva, index) => {
         const timeFi = new Date(reserva.horaFi).toLocaleTimeString();
         const timeInici = new Date(reserva.horaInici).toLocaleTimeString();

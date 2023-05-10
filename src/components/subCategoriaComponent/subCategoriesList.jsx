@@ -7,6 +7,8 @@ function SubCategoryList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
+    const [errorBack, setErrorBack] = useState('');
+
     useEffect(() => {
         fetch("http://localhost:5000/subcategories/APIlist?page=" + currentPage, {
             headers: { 
@@ -17,9 +19,12 @@ function SubCategoryList() {
         })
         .then(response => response.json())
         .then(json => {               
-            setList(json.list);
-            setCurrentPage(json.currentPage);
-            setTotalPages(json.totalPages);
+            if(json.error) setErrorBack(json.error);
+            else{
+                setList(json.list);
+                setCurrentPage(json.currentPage);
+                setTotalPages(json.totalPages);
+            }
         });
     }, [currentPage]);
     return (
@@ -27,12 +32,25 @@ function SubCategoryList() {
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h5 className="card-title">SubCategories</h5>
-                    <div className="mx-auto">
-                        <SubcategoryTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+                    {(errorBack !== '' 
+                        ? (<DivError error={errorBack}  />) 
+                        : (
+                            <div className="mx-auto">
+                                <SubcategoryTable list={list} />
+                                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
+        </div>
+    )
+}
+
+function DivError({error}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{error}</p>
         </div>
     )
 }

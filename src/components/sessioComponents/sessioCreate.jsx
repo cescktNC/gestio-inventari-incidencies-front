@@ -31,7 +31,6 @@ function SessioCreate(props) {
 }, []);
 
   const handleChange = (e) => {
-    console.log(e);
     const { name, value } = e.target;
     setSessioData({ ...SessioData, [name]: value });
   };
@@ -47,17 +46,12 @@ function SessioCreate(props) {
     },
       body: JSON.stringify({SessioData}),
     })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        if (json.ok) {
-          navigate(-1);
-        } else {
-          alert("Error al crear la sessio");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) navigate(-1);
+    });
   };
-  // console.log(SessioData);
+
   return (
     <main>
       <div className="form-container">
