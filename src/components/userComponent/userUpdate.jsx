@@ -59,8 +59,8 @@ function UserUpdate(){
         setCarrecs(json.carrecs)
       });
     }
-  },[])
-  console.log(carrecs)
+  },[]);
+
   useEffect(() => {
     fetch(
       "http://localhost:5000/usuaris/user/" + id,

@@ -9,6 +9,8 @@ function PlantaList() {
     const [currentPage, setCurrentPage] = useState(!searchParams.get('page') ? 1 : searchParams.get('page'));
     const [totalPages, setTotalPages] = useState(0);
 
+    const [errorBack, setErrorBack] = useState('');
+
     useEffect(() => {
         fetch("http://localhost:5000/planta/APIlist?page=" + currentPage,{
             headers: { 
@@ -19,9 +21,12 @@ function PlantaList() {
         })
         .then(response => response.json())
         .then(json => {    
-            setList(json.list);
-            setCurrentPage(json.currentPage);
-            setTotalPages(json.totalPages);
+            if(json.error) setErrorBack(json.error);
+            else{
+                setList(json.list);
+                setCurrentPage(json.currentPage);
+                setTotalPages(json.totalPages);
+            }
         });
     }, [currentPage]);
 
@@ -30,12 +35,25 @@ function PlantaList() {
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h5 className="card-title">Planta</h5>
-                    <div className="mx-auto">
-                        <PlantaTable list={list} />
-                        <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                    </div>
+                    {(errorBack !== '' 
+                        ? (<DivError error={errorBack}  />) 
+                        : (
+                            <div className="mx-auto">
+                                <PlantaTable list={list} />
+                                <Paginate currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
+        </div>
+    )
+}
+
+function DivError({error}){
+    return(
+        <div className="alert alert-danger">
+            <p className="text-danger">{error}</p>
         </div>
     )
 }
@@ -43,7 +61,7 @@ function PlantaList() {
 function PlantaTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>

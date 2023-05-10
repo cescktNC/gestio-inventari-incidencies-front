@@ -41,7 +41,7 @@ function MaterialList(){
 function MaterialTable({list}){
 
     return(
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead className="thead-green">
                 <tr>
                     <th scope="col">Codi</th>

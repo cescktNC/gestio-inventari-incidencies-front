@@ -185,8 +185,6 @@ function InputHoraInici({horaInici, handleChange}) {
   )
 }
   function InputHoraFi({horaFi, handleChange}) {
-    let value = new Date(horaFi);
-    console.log(value)
     return(
       <div className="form-group">
         <label for="horaFi">Hora Fi</label>
