@@ -25,7 +25,6 @@ function Pages() {
       ) : (
         <>
           <Route path="/auth/*" element={<LoginContainer setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/*" element={<LoginContainer setIsLoggedIn={setIsLoggedIn} />} />
         </>
       )}
 
