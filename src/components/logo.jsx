@@ -47,3 +47,5 @@ const ImatgeLogo = styled.svg`
     line-height: 20;
     fill: white;
 `;
+
+export default Logo;

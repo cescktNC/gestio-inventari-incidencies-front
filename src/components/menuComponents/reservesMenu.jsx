@@ -36,7 +36,7 @@ function ReservesMenu(){
 						</div>
 				</Link>
 					<ButtonSubMenu componentActual={subMenuState.reserva} handleClick={ () => handleSubMenuClick('reserva')} />
-			</li>
+				</li>
 				<li className="d-flex">
 					<Link
 						to="sessio/list"
