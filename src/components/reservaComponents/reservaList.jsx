@@ -61,7 +61,7 @@ function DivError({error}){
 function ReservaTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>

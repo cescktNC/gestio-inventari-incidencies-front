@@ -64,7 +64,7 @@ function DivError({error}){
 function CategoryTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover">
+        <table className="table table-responsive table-hover">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>
