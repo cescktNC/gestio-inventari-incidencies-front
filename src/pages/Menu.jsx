@@ -13,6 +13,7 @@ import SessioContainer from "../containers/sessioContainer";
 import CadiraContainer from "../containers/cadiraContainer";
 import IncidenciaContainer from "../containers/incidenciaContainer";
 import ComentariContainer from "../containers/comentariContainer";
+import ReservaCadiraContainer from '../containers/reservaCadiraContainer';
 
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect } from 'react';
@@ -59,14 +60,15 @@ export function Menu({setIsLoggedIn}) {
 					<Route path="/prestec/*" element={<PrestecContainer resultat={resultat} setResultat={setResultat} />} />
 					<Route path="/categories/*" element={<CategoriaContainer />} />
 					<Route path="/subcategories/*" element={<SubCategoriaContainer />} />
-					<Route path="/centre/*" element={<CentreContainer/>} />
-					<Route path="/planta/*" element={<PlantaContainer/>} />
-					<Route path="/localitzacio/*" element={<LocalitzacioContainer/>} />
-					<Route path="/reserva/*" element={<ReservaContainer/>} />
-					<Route path="/sessio/*" element={<SessioContainer/>} />
-					<Route path="/cadira/*" element={<CadiraContainer/>} />
-					<Route path="/incidencia/*" element={<IncidenciaContainer/>} />
-					<Route path="/comentari/*" element={<ComentariContainer/>} />
+					<Route path="/centre/*" element={<CentreContainer />} />
+					<Route path="/planta/*" element={<PlantaContainer />} />
+					<Route path="/localitzacio/*" element={<LocalitzacioContainer />} />
+					<Route path="/reserva/*" element={<ReservaContainer />} />
+					<Route path="/sessio/*" element={<SessioContainer />} />
+					<Route path="/cadira/*" element={<CadiraContainer />} />
+					<Route path="/incidencia/*" element={<IncidenciaContainer />} />
+					<Route path="/comentari/*" element={<ComentariContainer />} />
+					<Route path="/reservaCadira/*" element={<ReservaCadiraContainer />} />
 				</Routes>
 				
 			</div>

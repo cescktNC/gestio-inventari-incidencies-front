@@ -1,7 +1,6 @@
 import {React, useState, useEffect} from "react";
 import "../../css/styleReservaCadires.css"
 import { useParams } from "react-router";
-import { element } from "prop-types";
 
 function ReservaCadiraList(){
     const { id } = useParams();
@@ -22,7 +21,8 @@ function ReservaCadiraList(){
             setCadiraReservades(json.cadiresReservades);
             setCadiresReservadesProvisionalment(json.cadiresReservadesProvisionalment);
         });
-    }, []);
+    }, [id]);
+
     console.log({cadiraReservades, cadiresReservadesProvisionalment})
     return(
         <main>
@@ -49,64 +49,84 @@ function ReservaCadiraList(){
 }
 
 function Files({cadiraReservades, cadiresReservadesProvisionalment, idSessio}){
+    let elements=[], index=0;
     
     for (let fila = 1; fila <= 8; fila++){
         for (let seccio = 1; seccio <= 2; seccio++){
-            return(
-                <div className="seccio">
-                    { (fila <= 4) 
-                        ? <FilesPrincipals 
-                            cadiraReservades={cadiraReservades} 
-                            cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
-                            idSessio={idSessio} 
-                            fila={fila}
-                            seccio={seccio}
-                        /> 
-                        : ''
+            elements.push(
+                <div className="seccio" key={index}>
+                    { fila <= 4 ? (
+                            <FilesPrincipals 
+                                cadiraReservades={cadiraReservades} 
+                                cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
+                                idSessio={idSessio} 
+                                fila={fila}
+                                seccio={seccio}
+                            /> 
+                        ) : fila <= 6 ? (
+                            <FilesSecunadries
+                                cadiraReservades={cadiraReservades} 
+                                cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
+                                idSessio={idSessio} 
+                                fila={fila}
+                                seccio={seccio}
+                            />      
+                        ) : (
+                            <FilesTerciaries
+                                cadiraReservades={cadiraReservades} 
+                                cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
+                                idSessio={idSessio} 
+                                fila={fila}
+                                seccio={seccio}
+                            /> 
+                        )
                     }
                 </div>
             )
+            index++;
         }
     }
+
+    return elements
     
 }
 
 function FilesPrincipals({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
     let cadiraReservada, cadiraReservadaProvisional, elements=[];
     for (let cadira = 1; cadira <= 16; cadira++) {
-        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila == fila && cadiraReservada.idCadira.numero == cadira); 
-        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila == fila && cadiraReservadaProvisional.idCadira.numero == cadira);
+        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
 
         elements.push(
-            <span key={cadira}>
+            <div className="cadira" key={cadira}>
                 {
                     seccio === 1 ? (
                         cadiraReservada !== undefined ? (
                             <a className="butaca">
-                                <img src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
                             </a>
                         ) : cadiraReservadaProvisional !== undefined ? (
                             <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
                             </a>
                         ) : (
                             <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
                             </a>
                         )
-                    ) :  (
+                    ) : (
                         cadiraReservada !== undefined ? (
                             // sumar a la cadira +16
                             <a className="butaca">
-                                <img src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
                             </a>
                         ) : cadiraReservadaProvisional !== undefined ? (
                             <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
                             </a>
                         ) : (
                             <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
                             </a>
                         )
                     )
@@ -119,16 +139,123 @@ function FilesPrincipals({cadiraReservades, cadiresReservadesProvisionalment, id
                         <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
                     )
                 }
-            </span>
+            </div>
         )
-                 
     }
-    console.log(elements[0]);
-    return (
-        <div className="cadira">
-            {elements}
-        </div>
-    );
+    
+    return elements;
 }
+
+function FilesSecunadries({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
+    let cadiraReservada, cadiraReservadaProvisional, elements=[], condicio;
+    for (let cadira = 1; cadira <= 15; cadira++) {
+        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
+        condicio = (seccio === 1 && cadira === 1) ? 'desplacament1' : '';
+        elements.push(
+            <div className={`cadira ${condicio}`} key={cadira}>
+                {
+                    seccio === 1 ? (
+                        cadiraReservada !== undefined ? (
+                            <a className="butaca">
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                            </a>
+                        ) : cadiraReservadaProvisional !== undefined ? (
+                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                            </a>
+                        ) : (
+                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                            </a>
+                        )
+                    ) : (
+                        cadiraReservada !== undefined ? (
+                            // sumar a la cadira +16
+                            <a className="butaca">
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                            </a>
+                        ) : cadiraReservadaProvisional !== undefined ? (
+                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                            </a>
+                        ) : (
+                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                            </a>
+                        )
+                    )
+                }
+                <div className="fletxa"></div>
+                {
+                    seccio === 1 ? (
+                        <div className="info-cadira">Fila {fila}  Cadira {cadira}</div>
+                    ) : (
+                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
+                    )
+                }
+            </div>
+        )
+    }
+    
+    return elements;
+}
+
+function FilesTerciaries({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
+    let cadiraReservada, cadiraReservadaProvisional, elements=[], condicio;
+    for (let cadira = 1; cadira <= 14; cadira++) {
+        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
+        condicio = (seccio === 1 && cadira === 1) ? 'desplacament2' : '';
+        elements.push(
+            <div className={`cadira ${condicio}`} key={cadira}>
+                {
+                    seccio === 1 ? (
+                        cadiraReservada !== undefined ? (
+                            <a className="butaca">
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                            </a>
+                        ) : cadiraReservadaProvisional !== undefined ? (
+                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                            </a>
+                        ) : (
+                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                            </a>
+                        )
+                    ) : (
+                        cadiraReservada !== undefined ? (
+                            // sumar a la cadira +16
+                            <a className="butaca">
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                            </a>
+                        ) : cadiraReservadaProvisional !== undefined ? (
+                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                            </a>
+                        ) : (
+                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                            </a>
+                        )
+                    )
+                }
+                <div className="fletxa"></div>
+                {
+                    seccio === 1 ? (
+                        <div className="info-cadira">Fila {fila}  Cadira {cadira}</div>
+                    ) : (
+                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
+                    )
+                }
+            </div>
+        )
+    }
+    
+    return elements;
+}
+
+
 
 export default ReservaCadiraList;

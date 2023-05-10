@@ -25,7 +25,7 @@ function SessioList() {
     }, [currentPage]);
 
     return (
-        <div class="taula">
+        <div className="taula">
             <div className="card mt-2 w-100">
                 <div className="card-body">
                     <h3 className="card-title">Sessió</h3>

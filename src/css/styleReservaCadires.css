@@ -5,6 +5,11 @@
     font-size: 62.5%; /* 1rem = 10px*/
 }
 
+.svg{
+    width: 24px;
+    height: 21px;
+}
+
 .escenari {
     width: 35%;
     height: 8rem;
