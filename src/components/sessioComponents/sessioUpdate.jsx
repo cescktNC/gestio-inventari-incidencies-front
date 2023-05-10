@@ -1,27 +1,38 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { ComprobacioName, ComprobacioCodi } from "../../js/comprobacioCampsSessio";
 
 function SessioUpdate(props) {
   const { id } = useParams();
-  
+  const navigate = useNavigate();
+  const [comprobacio, setComprobacio] = useState({
+    comprobacioNom: false,
+    comprobacioCodi: false
+  });
+  const [errorsForm, setErrorsForm] = useState({
+    errorNom: '',
+    errorCodi: ''
+  });
 
   const [SessioData,setSessioData] = useState({
     nom: "",
     codi: "",
-    codiReserva: ""
   });
+	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/sessio/update/${id}`,{
+    fetch(`http://localhost:5000/sessio/APIupdate/${id}`,{
       headers: { 
         "Authorization": "Bearer " + window.localStorage.getItem("token"),
         "Content-Type": "application/json",
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setSessioData(json));
-  }, [id]);
+    .then((response) => response.json())
+    .then((json) => {
+      setSessioData(json.sessio)
+    });
+}, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +41,8 @@ function SessioUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    ComprobacioName(SessioData.nom, {handleComprobacio, handleErrors})
+    ComprobacioCodi(SessioData.codi, {handleComprobacio, handleErrors})
     fetch(`http://localhost:5000/sessio/update/${id}`, {
       method: "PUT",
       headers: { 
@@ -37,61 +50,88 @@ function SessioUpdate(props) {
         "Content-Type": "application/json",
         "Accept-Type": "application/json"
       },
-      body: JSON.stringify(SessioData),
+      body: JSON.stringify({SessioData}),
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/sessio");
-        } else {
-          alert("Error al actualizar la sessio");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) navigate(-1);
+
+      if(json.error) setErrorBack(json.error);
+
+    });
+  }
+
+  const handleComprobacio = (camp, valor) => {
+    setComprobacio({
+      ...comprobacio,
+      [camp]: valor
+    });
   };
 
+  const handleErrors = (camp, valor) => {
+    setErrorsForm({
+      ...errorsForm,
+      [camp]: valor
+    });
+  };
+
+
   return (
-    <div>
-      <h1>Actualitzant sessio {id}</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="codi">Codi:</label>
-          <input
-            type="text"
-            id="codi"
-            name="codi"
-            value={SessioData.codi}
-            onChange={handleChange}
-            required
-          />
+   <main>
+      <div className="card mt-4">
+        <div className="card-header">
+        <h5 className="card-title">Actualitzant sessio {SessioData.nom}</h5>
         </div>
-        <div>
-          <div>
-            <label htmlFor="nom">Nom:</label>
-            <input
-              id="nom"
-              name="nom"
-              value={SessioData.nom}
-              onChange={handleChange}
-              required
-            />
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
+              {(errorBack !== '' && (<DivError error={errorBack}  />) )}
+                <div className="form-group">
+                  <label htmlFor="Nom">Nom:</label>
+                  <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    className="form-control"
+                    value={SessioData.nom}
+                    onChange={handleChange}
+                    onBlur={(e) => ComprobacioName(e.target.value, {handleComprobacio, handleErrors})}
+                    required
+                  />
+                  {errorsForm.errorNom && (<p className="error-error">{errorsForm.errorNom}</p>)}
+                  </div>
+                  <div className="form-group">
+                  <label htmlFor="codi">Codi:</label>
+                  <input
+                    type="text"
+                    id="codi"
+                    name="codi"
+                    className="form-control"
+                    value={SessioData.codi}
+                    onChange={handleChange}
+                    onBlur={(e) => ComprobacioCodi(e.target.value, {handleComprobacio, handleErrors})}
+                    required
+                  />
+                  {errorsForm.errorCodi && (<p className="error-error">{errorsForm.errorCodi}</p>)}
+                  </div>
+                  <button type="submit" className="btn btn-primary">Actualitzar</button>
+              </form>
+            </div>
           </div>
         </div>
-        <div>
-          <div>
-            <label htmlFor="codiReserva">Codi Reserva:</label>
-            <input
-              id="codiReserva"
-              name="codiReserva"
-              value={SessioData.codiReserva}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-        <button type="submit">Actualitzar</button>
-      </form>
-    </div>
+      </div>
+    </main> 
   );
 }
+
+function DivError({error}){
+  return(
+      <div className="alert alert-danger">
+          <p className="text-danger">{error}</p>
+      </div>
+  )
+}
+
 
 export default SessioUpdate;

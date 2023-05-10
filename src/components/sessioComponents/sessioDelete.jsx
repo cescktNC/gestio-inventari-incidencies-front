@@ -19,9 +19,12 @@ function SessioDelete(props) {
           "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setSessioData(json));
-  }, [id]);
+    .then((response) => response.json())
+    .then((json) => {
+      if(json.sessio) setSessioData(json.sessio);
+      if(json.error) setErrorBack(json.error)
+    });
+}, [id]);
 
   const handleDelete = () => {
     fetch(`http://localhost:5000/sessio/delete/${id}`, {
@@ -32,31 +35,44 @@ function SessioDelete(props) {
           "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/sessio");
-        } else {
-          alert("Error al eliminar la sessio");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) {
+        navigate(-1);
+      } else {
+        setErrorBack(json.error);
+      }
+    });
   };
 
   return (
-    <div>
-      <h1>Eliminar Sessio {id}</h1>
-      <div>
-        <p>Estàs a punt d'eliminar la següent sessio:</p>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar sessio:  nom: {SessioData.nom}, codi: {SessioData.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent sessio:
+				</div>
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Codi: {SessioData.codi}</li>
           <li>Nom: {SessioData.nom}</li>
           <li>codiReserva: {SessioData.codiReserva}</li>
         </ul>
         <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
 
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
+}
 export default SessioDelete;

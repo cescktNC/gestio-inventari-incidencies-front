@@ -49,8 +49,8 @@ function ReservaTable({ list }) {
                     <th scope="col">Codi</th>
                     <th scope="col">Hora Inici</th>
                     <th scope="col">Hora Fi</th>
-                    <th scope="col">DniUsuari</th>
-                    <th scope="col">Codi Localitzacio</th>
+                    <th scope="col">Usuari</th>
+                    <th scope="col">Localitzacio</th>
                     <th scope="col" colSpan={2}>
                         <Link to="/home/reserva/create" className="btn btn-primary">Nova</Link>
                     </th>
@@ -63,18 +63,20 @@ function ReservaTable({ list }) {
     )
 
 }
-
 function ReservaTbody({ list }) {
+    console.log(list)
     return list.map((reserva, index) => {
-        const timefi = new Date(reserva.horaFi).toLocaleTimeString();
-        const timeString = new Date(reserva.horaInici).toLocaleTimeString();
-        const formattedHour = timeString.length === 8 ? timeString.substring(0, 5) : timeString.substring(0, 4);
+        const timeFi = new Date(reserva.horaFi).toLocaleTimeString();
+        const timeInici = new Date(reserva.horaInici).toLocaleTimeString();
+        
+        const formattedHourInici = timeInici.length === 8 ? timeInici.substring(0, 5) : timeInici.substring(0, 4);
+        const formattedHourFi = timeFi.length === 8 ? timeFi.substring(0, 5) : timeFi.substring(0, 4);
 
         return (
             <tr key={index}>
                 <td>{reserva.codi}</td>
-                <td>{formattedHour} h</td>
-                <td>{timefi}</td>
+                <td>{formattedHourInici} h</td>
+                <td>{formattedHourFi} h</td>
                 <td>{reserva.dniUsuari.nom}</td>
                 <td>{reserva.codiLocalitzacio.nom}</td>
                 <td className="edit-delete-cell">

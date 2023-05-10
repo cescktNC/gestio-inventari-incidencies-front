@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ComprobacioCodi, ComprobacioHora, ComprobacioData } from "../../js/comprobacioCampsReserva";
+import { ComprobacioCodi } from "../../js/comprobacioCampsReserva";
 
 function ReservaUpdate(props) {
   const { id } = useParams();
@@ -13,8 +13,8 @@ function ReservaUpdate(props) {
 
   const [ReservaData, setReservaData] = useState({
     codi: "",
-    hora: "",
-    data: "",
+    horaInici: "",
+    horaFi: "",
   });
 
   const [errorsForm, setErrorsForm] = useState({
@@ -80,7 +80,6 @@ function ReservaUpdate(props) {
     });
   };
 
-
   return (
     <main>
       <div className="card mt-4">
@@ -92,47 +91,27 @@ function ReservaUpdate(props) {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 {errorBack !== '' && <DivError error={errorBack} />}
-                <InputCodi 
-                  codi={ReservaData.codi} 
-                  handleChange={handleChange} 
+                <InputCodi
+                  codi={ReservaData.codi}
+                  handleChange={handleChange}
                   handleComprobacio={handleComprobacio}
                   handleErrors={handleErrors}
                   ComprobacioCodi={ComprobacioCodi}
                 />
-                  {errorsForm.errorCodi && (
-                    <p className="error-message">{errorsForm.errorCodi}</p>
-                  )}
-                  <InputHoraInici 
-                    horaInici={ReservaData.horaInici}
-                    handleChange={handleChange}
-                  />
-                <div className="form-group">
-                  <label htmlFor="horainici">Hora:</label>
-                  <input
-                    type="time"
-                    id="hora"
-                    name="hora"
-                    className="form-control"
-                    value={ReservaData.horainici}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="horafi">Hora Fi:</label>
-                  <input
-                    type="date"
-                    id="horafi"
-                    name="horafi"
-                    className="form-control"
-                    value={ReservaData.horafi}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+                {errorsForm.errorCodi && (
+                  <p className="error-message">{errorsForm.errorCodi}</p>
+                )}
+                <InputHoraInici
+                  horaInici={ReservaData.horaInici}
+                  handleChange={handleChange}
+                />
+                <InputHoraFi
+                  horaFi={ReservaData.horaFi}
+                  handleChange={handleChange}
+                />
                 <button type="submit" className="btn btn-primary">
                   Actualizar
-                </button>
+                </button> 
               </form>
             </div>
           </div>
@@ -140,8 +119,9 @@ function ReservaUpdate(props) {
       </div>
     </main>
   );
-}
+  
 
+  
 function DivError({ error }) {
   return (
     <div className="alert alert-danger">
@@ -176,12 +156,15 @@ function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, han
 function InputHoraInici({horaInici, handleChange}) {
   let value = new Date(horaInici);
   return(
-    <div className="form-group">
-      <label htmlFor="horaInici">Hora Inici</label>
-      <input name="horaInici" 
-        list="llista-hores-inici" 
-        className="form-control" 
-        onChange={handleChange} 
+    <div class="form-group">
+      <label for="horaInici">Hora Inici</label>
+      <input   
+      id="horaInici"
+        name="horaInici"
+        className="form-control"
+        value={horaInici.slice(0, 5)} // Aquí he realizado el cambio
+        onChange={handleChange}
+        list="llista-hores-inici"
       />
       <datalist id="llista-hores-inici">
           <option value="08:00 h" label="De les vuit en punt del matí"></option>
@@ -202,11 +185,40 @@ function InputHoraInici({horaInici, handleChange}) {
   </div>
   )
 }
-
-function FormatValorHora(date){
-
-  return date;
+  function InputHoraFi({horaFi, handleChange}) {
+    let value = new Date(horaFi);
+    console.log(value)
+    return(
+      <div class="form-group">
+        <label for="horaFi">Hora Fi</label>
+        <input 
+        id="horaFi"
+        name="horaFi"
+        className="form-control"
+        value={horaFi.slice(0, 5)} 
+        onChange={handleChange}
+        list="llista-hores-fi"
+      />
+        <datalist id="llista-hores-fi">
+            <option value="08:00 h" label="De les vuit en punt del matí"></option>
+            <option value="09:00 h" label="De les nou en punt del matí"></option>
+            <option value="10:00 h" label="De les deu en punt del matí"></option>
+            <option value="11:30 h" label="De dos quarts de dotze del matí"></option>
+            <option value="12:30 h" label="De dos quarts d'una del matí"></option>
+            <option value="13:30 h" label="De dos quarts de dos de la tarda"></option>
+            <option value="14:30 h" label="De dos quarts de tres de la tarda"></option>
+            <option value="15:00 h" label="De les tres en punt de la tarda"></option>
+            <option value="16:00 h" label="De les quatre en punt de la tarda"></option>
+            <option value="17:00 h" label="De les cinc en punt de la tarda"></option>
+            <option value="18:00 h" label="De les sis en punt de la tarda"></option>
+            <option value="19:00 h" label="De les set en punt de la tarda"></option>
+            <option value="20:00 h" label="De les vuit en punt de la nit"></option>
+            <option value="21:00 h" label="De les nou en punt de la nit"></option>
+        </datalist>
+    </div>
+    )
 }
 
+}
 export default ReservaUpdate;
 

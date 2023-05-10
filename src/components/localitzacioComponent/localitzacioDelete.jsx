@@ -26,10 +26,9 @@ function LocalitzacioDelete(props) {
     .then((response) => response.json())
     .then((json) => {
       if(json.localitzacio) setLocalitzacioData(json.localitzacio);
-      if(json.error) setErrorBack(json.error);
+      if(json.error) setErrorBack(json.error)
     });
-  }, [id]);
-
+}, [id]);
   const handleDelete = () => {
     fetch(`http://localhost:5000/localitzacio/APIdelete/${id}`, {
       method: "DELETE",
@@ -39,31 +38,39 @@ function LocalitzacioDelete(props) {
         "Accept-Type": "application/json"
     }
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.ok) navigate(-1);
-        if(json.error) setErrorBack(json.error);
-      });
-  };
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) {
+        navigate(-1);
+      } else {
+        setErrorBack(json.error);
+      }
+    });
+};
 
   return (
-    <div>
-      <h1>Eliminar localitzacio {LocalitzacioData.nom}</h1>
-      <div>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar localitzacio:  nom: {LocalitzacioData.nom}, codi: {LocalitzacioData.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent localitzacio:
+				</div>
         {(errorBack !== '' && (<DivError error={errorBack}  />) )}
-        <p>Estàs a punt d'eliminar el següent centre:</p>
         <ul>
           <li>Nom: {LocalitzacioData.nom}</li>
           <li>Codi: {LocalitzacioData.codi}</li>
           <li>Planta: {LocalitzacioData.codiPlanta.nom}</li>
           <li>Especial: {LocalitzacioData.especial ? 'Si' : 'No'}</li>
         </ul>
-        <p>Estàs segur d'eliminar-la?</p>
+        <p>Estàs segur d'eliminar-lo?</p>
         <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
+
 
 function DivError({error}){
   return(
