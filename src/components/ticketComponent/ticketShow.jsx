@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 
 import '../../css/styleTicket.css';
@@ -30,9 +29,9 @@ function TicketShow() {
             setCadires(json.cadires);
         })
         .catch(error => console.error('Error:', error));
-      }, []);
+    }, []);
 
-      return (
+    return (
         <div className="taula">
             <div className="card mt-2 w-100">
                 <div className="card-body">
@@ -65,7 +64,7 @@ function TicketEsquerra({reserva, usuari, sessio, cadires}) {
     let horaInici = new Date(reserva.horaInici);
     let horaFi = new Date(reserva.horaFi);
     let fila;
-    if (cadires.length == 0) {
+    if (cadires.length === 0) {
         fila = 1;
     } else fila = cadires[0].fila;
 
@@ -137,11 +136,11 @@ function getDia(horaInici) {
     let dia;
     if (horaInici.getDay() == 1) dia = "Dilluns"
     else if (horaInici.getDay() == 2) dia = "Dimarts"
-    else if (horaInici.getDay() == 2) dia = "Dimecres"
-    else if (horaInici.getDay() == 2) dia = "Dijous"
-    else if (horaInici.getDay() == 2) dia = "Divendres"
-    else if (horaInici.getDay() == 2) dia = "Dissabte"
-    else if (horaInici.getDay() == 2) dia = "Diumenge"
+    else if (horaInici.getDay() == 3) dia = "Dimecres"
+    else if (horaInici.getDay() == 4) dia = "Dijous"
+    else if (horaInici.getDay() == 5) dia = "Divendres"
+    else if (horaInici.getDay() == 6) dia = "Dissabte"
+    else if (horaInici.getDay() == 7) dia = "Diumenge"
     return dia;
 }
 
