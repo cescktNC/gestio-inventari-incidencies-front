@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function SubCategoryDelete(props) {
   const { id } = useParams();
-  
+  const navigate = useNavigate();
 
   const [subcategoryData, setsubCategoryData] = useState({
     nom: "",
     codi: "",
     codiCategoria: ""
   });
+
+	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
     fetch(`http://localhost:5000/subcategories${id}`,{

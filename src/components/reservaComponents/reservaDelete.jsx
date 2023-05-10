@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-function  ReservaDelete(props) {
+function  ReservaDelete() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [ReservaData, setReservaData] = useState({
     codi: "",
     hora: "",
@@ -10,6 +11,8 @@ function  ReservaDelete(props) {
     dniUsuari: "",
     codiLocalitzacio: ""
   });
+
+	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
     fetch(`http://localhost:5000/reserva/${id}`,{

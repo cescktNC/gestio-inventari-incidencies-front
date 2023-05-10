@@ -42,10 +42,10 @@ function PlantaDelete(props) {
     })
     .then((response) => response.json())
     .then((json) => {
-      if (json.ok){ navigate(-1);
-      }
-      else{ setErrorBack(json.error);
-      }
+      if (json.ok) navigate(-1);
+      
+      else setErrorBack(json.error);
+      
     });
   };
 
@@ -53,7 +53,7 @@ function PlantaDelete(props) {
 <main>
 		<div className="card mt-2">
 			<div className="card-body">
-      <h5 className="card-title">Eliminar planta:  nom: {PlantaData.nom}, codi: {Planta.codi}</h5>
+      <h5 className="card-title">Eliminar planta:  nom: {PlantaData.nom}, codi: {PlantaData.codi}</h5>
       <div className="alert alert-danger" role="alert">
           Estàs a punt d'eliminar la següent localitzacio:
 				</div>

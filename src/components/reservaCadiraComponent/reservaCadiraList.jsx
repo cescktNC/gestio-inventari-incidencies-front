@@ -1,9 +1,12 @@
 import {React, useState, useEffect} from "react";
 import "../../css/styleReservaCadires.css"
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 function ReservaCadiraList(){
     const { id } = useParams();
+    const idUsuari = window.localStorage.getItem('id');
+    const navigate = useNavigate();
+
     const [cadiraReservades, setCadiraReservades] = useState([]);
     const [cadiresReservadesProvisionalment, setCadiresReservadesProvisionalment] = useState([]);
 
@@ -23,7 +26,54 @@ function ReservaCadiraList(){
         });
     }, [id]);
 
-    console.log({cadiraReservades, cadiresReservadesProvisionalment})
+    const reservaProvisional = (fila, cadira) =>{
+        fetch(`http://localhost:5000/reservaCadira/APIcreateProvisional/${id}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`,{
+            method: "GET",
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(json => {  
+            setCadiraReservades(json.cadiresReservades);
+            setCadiresReservadesProvisionalment(json.cadiresReservadesProvisionalment);
+        });
+    }
+
+    const eliminar = (fila, cadira) =>{
+        fetch(`http://localhost:5000/reservaCadira/APIdeleteProvisional/${id}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`,{
+            method: "GET",
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(json => {  
+            setCadiraReservades(json.cadiresReservades);
+            setCadiresReservadesProvisionalment(json.cadiresReservadesProvisionalment);
+        });
+    }
+
+    const reserva = (e) => {
+        fetch(`http://localhost:5000/reservaCadira/APIcreate/${id}/${JSON.stringify(cadiresReservadesProvisionalment)}/${idUsuari}`,{
+            method: "GET",
+            headers: { 
+                "Authorization": "Bearer " + window.localStorage.getItem("token"),
+                "Content-Type": "application/json",
+                "Accept-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(json => {  
+            console.log(json)
+            if(json.ok) navigate('/home/token/')
+        });
+    }
+
     return(
         <main>
             <div className="card mt-2">
@@ -38,17 +88,23 @@ function ReservaCadiraList(){
                             <Files 
                                 cadiraReservades={cadiraReservades} 
                                 cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
-                                idSessio={id} 
+                                reservaProvisional={reservaProvisional}
+                                eliminar={eliminar}
                             />
                         </div>
                     </div>
+                    <button 
+                    className="btn btn-primary reservar card_link" 
+                    onClick={() => reserva()}>
+                        Reservar
+                    </button>
                 </div>
             </div>
         </main>
     )
 }
 
-function Files({cadiraReservades, cadiresReservadesProvisionalment, idSessio}){
+function Files({cadiraReservades, cadiresReservadesProvisionalment, reservaProvisional, eliminar}){
     let elements=[], index=0;
     
     for (let fila = 1; fila <= 8; fila++){
@@ -59,25 +115,28 @@ function Files({cadiraReservades, cadiresReservadesProvisionalment, idSessio}){
                             <FilesPrincipals 
                                 cadiraReservades={cadiraReservades} 
                                 cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
-                                idSessio={idSessio} 
                                 fila={fila}
                                 seccio={seccio}
+                                reservaProvisional={reservaProvisional}
+                                eliminar={eliminar}
                             /> 
                         ) : fila <= 6 ? (
                             <FilesSecunadries
                                 cadiraReservades={cadiraReservades} 
                                 cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
-                                idSessio={idSessio} 
                                 fila={fila}
                                 seccio={seccio}
+                                reservaProvisional={reservaProvisional}
+                                eliminar={eliminar}
                             />      
                         ) : (
                             <FilesTerciaries
                                 cadiraReservades={cadiraReservades} 
                                 cadiresReservadesProvisionalment={cadiresReservadesProvisionalment}
-                                idSessio={idSessio} 
                                 fila={fila}
                                 seccio={seccio}
+                                reservaProvisional={reservaProvisional}
+                                eliminar={eliminar}
                             /> 
                         )
                     }
@@ -91,171 +150,191 @@ function Files({cadiraReservades, cadiresReservadesProvisionalment, idSessio}){
     
 }
 
-function FilesPrincipals({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
-    let cadiraReservada, cadiraReservadaProvisional, elements=[];
+function FilesPrincipals({cadiraReservades, cadiresReservadesProvisionalment, fila, seccio, reservaProvisional, eliminar}){
+    let cadiraReservadac, cadiraReservadaProvisional, elements=[];
     for (let cadira = 1; cadira <= 16; cadira++) {
-        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
-        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
+        cadiraReservadac = cadiraReservades.find(cadiraReservada => (
+            cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === (seccio === 1 ? cadira : (cadira + 16))
+        ));
 
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => (
+            cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === (seccio === 1 ? cadira : (cadira + 16))
+        ));
+
+        
         elements.push(
-            <div className="cadira" key={cadira}>
-                {
-                    seccio === 1 ? (
-                        cadiraReservada !== undefined ? (
-                            <a className="butaca">
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
-                        ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
-                        ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
-                        )
+            <div className="cadira" key={`${seccio}${fila}${cadira}`}>
+                { seccio === 1 ? (
+                        cadiraReservadac !== undefined ? (
+                                <span className="butaca">
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                                </span>
+                            ) : cadiraReservadaProvisional !== undefined ? (
+                                <span className="butaca" onClick={() => eliminar(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                                </span>
+                            ) : (
+                                <span className="butaca" onClick={() => reservaProvisional(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                                </span>
+                            )
                     ) : (
-                        cadiraReservada !== undefined ? (
-                            // sumar a la cadira +16
-                            <a className="butaca">
+                        cadiraReservadac !== undefined ? (
+                            <span className="butaca">
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => eliminar(fila, (cadira + 16))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
+                            </span>
                         ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => reservaProvisional(fila, (cadira + 16))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         )
                     )
                 }
+
                 <div className="fletxa"></div>
+
                 {
                     seccio === 1 ? (
                         <div className="info-cadira">Fila {fila}  Cadira {cadira}</div>
                     ) : (
-                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
+                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 14)}</div>
                     )
                 }
             </div>
         )
+        
     }
-    
     return elements;
 }
 
-function FilesSecunadries({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
-    let cadiraReservada, cadiraReservadaProvisional, elements=[], condicio;
+function FilesSecunadries({cadiraReservades, cadiresReservadesProvisionalment, fila, seccio, reservaProvisional, eliminar}){
+    let cadiraReservadac, cadiraReservadaProvisional, elements=[], condicio;
     for (let cadira = 1; cadira <= 15; cadira++) {
-        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
-        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
+        cadiraReservadac = cadiraReservades.find(cadiraReservada => (
+            cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === (seccio === 1 ? cadira : (cadira + 15))
+        ));
+
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => (
+            cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === (seccio === 1 ? cadira : (cadira + 15))
+        ));
+
         condicio = (seccio === 1 && cadira === 1) ? 'desplacament1' : '';
+        
         elements.push(
-            <div className={`cadira ${condicio}`} key={cadira}>
-                {
-                    seccio === 1 ? (
-                        cadiraReservada !== undefined ? (
-                            <a className="butaca">
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
-                        ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
-                        ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
-                        )
+            <div className={`cadira ${condicio}`} key={`${seccio}${fila}${cadira}`}>
+                { seccio === 1 ? (
+                        cadiraReservadac !== undefined ? (
+                                <span className="butaca">
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                                </span>
+                            ) : cadiraReservadaProvisional !== undefined ? (
+                                <span className="butaca" onClick={() => eliminar(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                                </span>
+                            ) : (
+                                <span className="butaca" onClick={() => reservaProvisional(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                                </span>
+                            )
                     ) : (
-                        cadiraReservada !== undefined ? (
-                            // sumar a la cadira +16
-                            <a className="butaca">
+                        cadiraReservadac !== undefined ? (
+                            <span className="butaca">
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => eliminar(fila, (cadira + 15))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
+                            </span>
                         ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => reservaProvisional(fila, (cadira + 15))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         )
                     )
                 }
+
                 <div className="fletxa"></div>
+
                 {
                     seccio === 1 ? (
                         <div className="info-cadira">Fila {fila}  Cadira {cadira}</div>
                     ) : (
-                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
+                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 14)}</div>
                     )
                 }
             </div>
         )
+        
     }
-    
+
     return elements;
 }
 
-function FilesTerciaries({cadiraReservades, cadiresReservadesProvisionalment, idSessio, fila, seccio}){
-    let cadiraReservada, cadiraReservadaProvisional, elements=[], condicio;
+function FilesTerciaries({cadiraReservades, cadiresReservadesProvisionalment, fila, seccio, reservaProvisional, eliminar}){
+    let cadiraReservadac, cadiraReservadaProvisional, elements=[], condicio;
     for (let cadira = 1; cadira <= 14; cadira++) {
-        cadiraReservada = cadiraReservades.find(cadiraReservada => cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === cadira); 
-        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === cadira);
+        cadiraReservadac = cadiraReservades.find(cadiraReservada => (
+            cadiraReservada.idCadira.fila === fila && cadiraReservada.idCadira.numero === (seccio === 1 ? cadira : (cadira + 14))
+        ));
+
+        cadiraReservadaProvisional = cadiresReservadesProvisionalment.find(cadiraReservadaProvisional => (
+            cadiraReservadaProvisional.idCadira.fila === fila && cadiraReservadaProvisional.idCadira.numero === (seccio === 1 ? cadira : (cadira + 14))
+        ));
+
         condicio = (seccio === 1 && cadira === 1) ? 'desplacament2' : '';
+        
         elements.push(
-            <div className={`cadira ${condicio}`} key={cadira}>
-                {
-                    seccio === 1 ? (
-                        cadiraReservada !== undefined ? (
-                            <a className="butaca">
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
-                        ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
-                        ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
-                                <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
-                        )
+            <div className={`cadira ${condicio}`} key={`${seccio}${fila}${cadira}`} >
+                { seccio === 1 ? (
+                        cadiraReservadac !== undefined ? (
+                                <span className="butaca">
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
+                                </span>
+                            ) : cadiraReservadaProvisional !== undefined ? (
+                                <span className="butaca" onClick={() => eliminar(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
+                                </span>
+                            ) : (
+                                <span className="butaca" onClick={() => reservaProvisional(fila, cadira)}>
+                                    <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
+                                </span>
+                            )
                     ) : (
-                        cadiraReservada !== undefined ? (
-                            // sumar a la cadira +16
-                            <a className="butaca">
+                        cadiraReservadac !== undefined ? (
+                            <span className="butaca">
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_negra.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         ) : cadiraReservadaProvisional !== undefined ? (
-                            <a className="butaca" href={`/reservaCadira/eliminarreserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => eliminar(fila, (cadira + 14))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_groga.svg" alt="Butaca" disabled />
-                            </a>
+                            </span>
                         ) : (
-                            <a className="butaca" href={`/reservaCadira/reserva/${idSessio}/${fila}${cadira}/${JSON.stringify(cadiresReservadesProvisionalment)}`}>
+                            <span className="butaca" onClick={() => reservaProvisional(fila, (cadira + 14))}>
                                 <img className="svg" src="http://localhost:5000/URL/icons/butaca_verda.svg" alt="Butaca" />
-                            </a>
+                            </span>
                         )
                     )
                 }
+
                 <div className="fletxa"></div>
+
                 {
                     seccio === 1 ? (
                         <div className="info-cadira">Fila {fila}  Cadira {cadira}</div>
                     ) : (
-                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 16)}</div>
+                        <div className="info-cadira">Fila {fila}  Cadira {(cadira + 14)}</div>
                     )
                 }
             </div>
         )
+        
     }
-    
+
     return elements;
 }
-
-
 
 export default ReservaCadiraList;

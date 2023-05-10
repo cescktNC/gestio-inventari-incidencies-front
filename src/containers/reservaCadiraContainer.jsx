@@ -8,6 +8,7 @@ function ReservaCadiraContainer(){
         <Routes>
 
             <Route path="/:id" element={<ReservaCadiraList />} />
+            <Route path="/:id/*" element={<ReservaCadiraList />} />
             {/* <Route path="/create" element={<PrestecCreate />} /> */}
             {/* <Route path="/delete/:id" element={<LocalitzacioDelete />} /> */}
             {/* <Route path="/update/:id" element={<PrestecUpdate />} /> */}

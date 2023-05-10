@@ -154,9 +154,8 @@ function InputCodi ({codi, ComprobacioCodi, handleChange, handleComprobacio, han
 }
 
 function InputHoraInici({horaInici, handleChange}) {
-  let value = new Date(horaInici);
   return(
-    <div class="form-group">
+    <div className="form-group">
       <label for="horaInici">Hora Inici</label>
       <input   
       id="horaInici"
@@ -189,7 +188,7 @@ function InputHoraInici({horaInici, handleChange}) {
     let value = new Date(horaFi);
     console.log(value)
     return(
-      <div class="form-group">
+      <div className="form-group">
         <label for="horaFi">Hora Fi</label>
         <input 
         id="horaFi"

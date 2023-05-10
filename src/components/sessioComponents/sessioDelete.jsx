@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-function SessioDelete(props) {
+function SessioDelete() {
   const { id } = useParams();
-  
+  const navigate = useNavigate();
 
   const [SessioData, setSessioData] = useState({
     nom: "",
     codi: "",
     codiReserva: ""
   });
+
+	const [errorBack, setErrorBack] = useState('');
 
   useEffect(() => {
     fetch(`http://localhost:5000/sessio/${id}`,{
