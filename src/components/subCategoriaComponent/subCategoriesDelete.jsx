@@ -19,9 +19,12 @@ function SubCategoryDelete(props) {
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setsubCategoryData(json));
-  }, [id]);
+    .then((response) => response.json())
+    .then((json) => {
+      if(json.sessio) setsubCategoryData(json.sessio);
+      if(json.error) setErrorBack(json.error)
+    });
+}, [id]);
 
   const handleDelete = () => {
     fetch(`http://localhost:5000/subcategories/delete/${id}`, {
@@ -32,31 +35,45 @@ function SubCategoryDelete(props) {
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/subcategories");
-        } else {
-          alert("Error al eliminar la subcategoría");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) {
+        navigate(-1);
+      } else {
+        setErrorBack(json.error);
+      }
+    });
   };
 
   return (
-    <div>
-      <h1>Eliminar subcategoría {id}</h1>
-      <div>
-        <p>Estàs a punt d'eliminar la seguent categoria:</p>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar subcategoria:  nom: {subcategoryData.nom}, codi: {subcategoryData.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent subcategoria:
+				</div>
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Nom: {subcategoryData.nom}</li>
           <li>Codi: {subcategoryData.codi}</li>
           <li>CodiCategoria: {subcategoryData.codiCategoria}</li>
         </ul>
         <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
+}
+
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 }
 
 export default SubCategoryDelete;

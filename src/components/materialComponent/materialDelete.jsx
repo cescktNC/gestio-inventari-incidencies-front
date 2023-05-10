@@ -52,17 +52,23 @@ function MaterialDelete(props) {
         })
         .then((response) => response.json())
         .then((json) => {
-            if(json.ok)  navigate(-1);
-            if(json.error) setErrorBack(json.error);
+          if (json.ok) {
+            navigate(-1);
+          } else {
+            setErrorBack(json.error);
+          }
         });
     };
 
 
     return (
-        <div>
-            <h1>Eliminar material {material.nom}</h1>
-        <div>
+        <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar material:  nom: {material.nom}, codi: {material.codi}</h5>
+      <div className="alert alert-danger" role="alert">
             <p>Estàs a punt d'eliminar el següent material:</p>
+            </div>
             {(errorsBack.length !== 0 && (<DivArrayErrors errors={errorsBack} />) )}
 
             {(errorBack !== '' && (<DivError error={errorBack}  />) )}
@@ -77,19 +83,21 @@ function MaterialDelete(props) {
                     </li>
                     <li>Subcategoria: {material.codiSubCategoria.nom}</li>
                 </ul>
-            <p>Estàs segur d'eliminar-la?</p>
-            <button onClick={handleDelete}>Eliminar</button>
-        </div>
-        </div>
-    );
+                <p>Estàs segur d'eliminar-lo?</p>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
+      </div>
+    </div>
+    </main>
+  );
 }
 
+
 function DivError({error}){
-    return(
-        <div className="alert alert-danger">
-            <p className="text-danger">{error}</p>
-        </div>
-    )
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
 }
 
 

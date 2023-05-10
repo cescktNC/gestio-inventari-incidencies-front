@@ -42,30 +42,36 @@ function PlantaDelete(props) {
     })
     .then((response) => response.json())
     .then((json) => {
-      if (json.ok) navigate(-1);
-
-      if(json.error !== undefined) setErrorBack(json.error);
+      if (json.ok){ navigate(-1);
+      }
+      else{ setErrorBack(json.error);
+      }
     });
   };
 
   return (
-    <div>
-      <h1>Eliminar planta {PlantaData.nom}</h1>
-      <div>
-        {(errorBack.length !== 0 && (<DivError error={errorBack} />) )}
-        <p>Estàs a punt d'eliminar la següent planta:</p>
+<main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar planta:  nom: {PlantaData.nom}, codi: {Planta.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent localitzacio:
+				</div>
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Nom: {PlantaData.nom}</li>
           <li>Codi: {PlantaData.codi}</li>
           <li>Nom Centre: {PlantaData.codiCentre.nom}</li>
           <li>planol: <img src={ 'http://localhost:5000/' + PlantaData.planol} alt={PlantaData.nom} /></li>
         </ul>
-        <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+        <p>Estàs segur d'eliminar-lo?</p>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
+
 
 function DivError({error}){
   return(
@@ -74,5 +80,6 @@ function DivError({error}){
     </div>
   )
 }
+
 
 export default PlantaDelete;

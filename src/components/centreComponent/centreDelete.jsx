@@ -21,9 +21,13 @@ function CentreDelete(props) {
         "Accept-Type": "application/json"
       }
     })
-      .then((response) => response.json())
-      .then((json) => setCentreData(json.centre));
-  }, [id]);
+    .then((response) => response.json())
+    .then((json) => {
+      if(json.centre) setCentreData(json.centre);
+      if(json.error) setErrorBack(json.error)
+    });
+}, [id]);
+
 
 
   const handleDelete = () => {
@@ -46,10 +50,13 @@ function CentreDelete(props) {
   };
 
   return (
-    <div>
-      <h1>Eliminar centre {CentreData.nom}</h1>
-      <div>
-        <p>Estàs a punt d'eliminar el següent centre:</p>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar centre:  nom: {CentreData.nom}, codi: {CentreData.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar el següent centre:
+				</div>
         {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Nom: {CentreData.nom}</li>
@@ -59,8 +66,10 @@ function CentreDelete(props) {
         <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
+
 
 function DivError({error}){
   return(

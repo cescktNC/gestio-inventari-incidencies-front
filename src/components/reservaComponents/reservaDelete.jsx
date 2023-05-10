@@ -19,10 +19,12 @@ function  ReservaDelete(props) {
         "Accept-Type": "application/json"
     }
     })
-      .then((response) => response.json())
-      .then((json) => setReservaData(json));
-  }, [id]);
-
+    .then((response) => response.json())
+    .then((json) => {
+      if(json.reserva) setReservaData(json.reserva);
+      if(json.error) setErrorBack(json.error)
+    });
+}, [id]);
   const handleDelete = () => {
     fetch(`http://localhost:5000/reserva/delete/${id}`, {
       method: "DELETE",
@@ -32,21 +34,25 @@ function  ReservaDelete(props) {
         "Accept-Type": "application/json"
     }
     })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          props.history.push("/home/reserva");
-        } else {
-          alert("Error al eliminar la reserva");
-        }
-      });
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.ok) {
+        navigate(-1);
+      } else {
+        setErrorBack(json.error);
+      }
+    });
   };
 
   return (
-    <div>
-      <h1>Eliminar reserva {id}</h1>
-      <div>
-        <p>Estàs a punt d'eliminar la següent reserva:</p>
+    <main>
+		<div className="card mt-2">
+			<div className="card-body">
+      <h5 className="card-title">Eliminar reserva:  nom: {ReservaData.nom}, codi: {ReservaData.codi}</h5>
+      <div className="alert alert-danger" role="alert">
+          Estàs a punt d'eliminar la següent reserva:
+				</div>
+        {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>
           <li>Codi: {ReservaData.codi}</li>
           <li>Hora: {ReservaData.hora}</li>
@@ -54,11 +60,20 @@ function  ReservaDelete(props) {
           <li>Dni Usuari: {ReservaData.dniUsuari}</li>
           <li>Codi Localitzacio: {ReservaData.codiLocalitzacio}</li>
         </ul>
-        <p>Estàs segur d'eliminar-la?</p>
-        <button onClick={handleDelete}>Eliminar</button>
+    <p>Estàs segur d'eliminar-la?</p>
+        <button onClick={handleDelete} className="btn btn-danger">Eliminar</button>
       </div>
     </div>
+    </main>
   );
 }
 
+
+function DivError({error}){
+  return(
+    <div className="alert alert-danger">
+      <p className="text-danger">{error}</p>
+    </div>
+  )
+}
 export default ReservaDelete;
