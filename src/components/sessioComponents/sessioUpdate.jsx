@@ -43,7 +43,7 @@ function SessioUpdate(props) {
     e.preventDefault();
     ComprobacioName(SessioData.nom, {handleComprobacio, handleErrors})
     ComprobacioCodi(SessioData.codi, {handleComprobacio, handleErrors})
-    fetch(`http://localhost:5000/sessio/update/${id}`, {
+    fetch(`http://localhost:5000/sessio/APIupdate/${id}`, {
       method: "PUT",
       headers: { 
         "Authorization": "Bearer " + window.localStorage.getItem("token"),

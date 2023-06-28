@@ -55,7 +55,7 @@ function PlantaDelete(props) {
 			<div className="card-body">
       <h5 className="card-title">Eliminar planta:  nom: {PlantaData.nom}, codi: {PlantaData.codi}</h5>
       <div className="alert alert-danger" role="alert">
-          Estàs a punt d'eliminar la següent localitzacio:
+          Estàs a punt d'eliminar la següent planta:
 				</div>
         {(errorBack !== '' && (<DivError error={errorBack}  />) )}
         <ul>

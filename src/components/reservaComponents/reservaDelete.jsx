@@ -22,12 +22,14 @@ function  ReservaDelete() {
         "Accept-Type": "application/json"
     }
     })
-    .then((response) => response.json())
-    .then((json) => {
-      if(json.reserva) setReservaData(json.reserva);
-      if(json.error) setErrorBack(json.error)
-    });
-}, [id]);
+  
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.reserva) setReservaData(json.reserva);
+  
+        if(json.error !== undefined) setErrorBack(json.error);
+      });
+    }, [id]);
   const handleDelete = () => {
     fetch(`http://localhost:5000/reserva/delete/${id}`, {
       method: "DELETE",

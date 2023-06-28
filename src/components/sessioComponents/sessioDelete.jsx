@@ -23,10 +23,11 @@ function SessioDelete() {
     })
     .then((response) => response.json())
     .then((json) => {
-      if(json.sessio) setSessioData(json.sessio);
-      if(json.error) setErrorBack(json.error)
+      if (json.sessio) setSessioData(json.sessio);
+
+      if(json.error !== undefined) setErrorBack(json.error);
     });
-}, [id]);
+  }, [id]);
 
   const handleDelete = () => {
     fetch(`http://localhost:5000/sessio/delete/${id}`, {

@@ -23,7 +23,7 @@ function SubCategoryDelete(props) {
     })
     .then((response) => response.json())
     .then((json) => {
-      if(json.sessio) setsubCategoryData(json.sessio);
+      if(json.subcategory) setsubCategoryData(json.subcategory);
       if(json.error) setErrorBack(json.error)
     });
 }, [id]);
