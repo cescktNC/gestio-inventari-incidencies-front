@@ -58,7 +58,7 @@ function DivError({error}){
 function SubcategoryTable({ list }) {
 
     return (
-        <table className="table table-responsive table-striped table-hover ">
+        <table className="table table-responsive table-hover ">
             <thead>
                 <tr>
                     <th scope="col">Codi</th>

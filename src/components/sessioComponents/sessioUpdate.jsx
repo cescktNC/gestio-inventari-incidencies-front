@@ -41,6 +41,7 @@ function SessioUpdate(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     ComprobacioName(SessioData.nom, {handleComprobacio, handleErrors})
     ComprobacioCodi(SessioData.codi, {handleComprobacio, handleErrors})
     fetch(`http://localhost:5000/sessio/APIupdate/${id}`, {
